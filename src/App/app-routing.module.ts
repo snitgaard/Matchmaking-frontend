@@ -5,7 +5,8 @@ import {ChatComponent} from './MatchMaking/Chat/chat.component';
 
 
 const routes: Routes = [
-  {path: 'chat', component: ChatComponent},
+  { path: 'Chat', loadChildren: () => import('./MatchMaking/Chat/chat.module').then(m => m.ChatModule) },
+  { path: 'Profile', loadChildren: () => import('./MatchMaking/Profile/profile.module').then(m => m.ProfileModule)}
 ];
 
 @NgModule({
