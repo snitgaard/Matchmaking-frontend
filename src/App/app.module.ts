@@ -1,9 +1,22 @@
-import {NgModule} from '@angular/core';
+import {Injectable, NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AppRoutingModule} from './app-routing.module';
 import {BrowserModule} from '@angular/platform-browser';
+
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FlexLayoutModule } from '@angular/flex-layout';
+
+import {Socket} from 'ngx-socket-io';
+
+
+
+@Injectable()
+export class SocketUser extends Socket {
+
+  constructor() {
+    super({url: 'http://localhost:1337', options: {}});
+  }
+}
 
 @NgModule({
   declarations: [
