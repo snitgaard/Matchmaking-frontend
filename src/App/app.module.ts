@@ -4,9 +4,11 @@ import {AppRoutingModule} from './app-routing.module';
 import {BrowserModule} from '@angular/platform-browser';
 
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { FlexLayoutModule } from '@angular/flex-layout';
+
 
 import {Socket} from 'ngx-socket-io';
+import {FlexLayoutModule} from '@angular/flex-layout';
+
 
 
 
