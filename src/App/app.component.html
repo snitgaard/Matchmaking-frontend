@@ -1,4 +1,9 @@
-<div>
-  <app-navbar></app-navbar>
-  <router-outlet></router-outlet>
+<div fxLayout="column" fxFill>
+  <div fxLayout="row" fxLayoutGap="5px">
+    <a routerLink="/">Home</a>
+    <a routerLink="/chat">Go to Chats</a>
+    <a routerLink="/profile">Profile</a>
+  </div>
+  <router-outlet class="router-flex"></router-outlet>
 </div>
+
