@@ -1,5 +1,6 @@
 import {NgModule} from '@angular/core';
 import {LobbyComponent} from './lobby.component';
+import {LobbyRoutingModule} from './lobby-routing.module';
 
 
 
@@ -9,7 +10,7 @@ import {LobbyComponent} from './lobby.component';
   ],
 
   imports: [
-
+    LobbyRoutingModule
   ]
 })
 export class LobbyModule { }

@@ -1,5 +1,7 @@
 import {NgModule} from '@angular/core';
 import {ChatComponent} from './chat.component';
+import {AppRoutingModule} from '../../app-routing.module';
+import {ChatRoutingModule} from './chat-routing.module';
 
 
 
@@ -9,7 +11,7 @@ import {ChatComponent} from './chat.component';
   ],
 
   imports: [
-
+    ChatRoutingModule
   ]
 })
 export class ChatModule { }
