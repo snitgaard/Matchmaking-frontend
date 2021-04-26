@@ -2,11 +2,12 @@ import {CommonModule} from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {NgModule} from '@angular/core';
 import {ChatComponent} from './MatchMaking/Chat/chat.component';
+import {ProfileComponent} from './MatchMaking/Profile/profile.component';
 
 
 const routes: Routes = [
-  { path: 'Chat', loadChildren: () => import('./MatchMaking/Chat/chat.module').then(m => m.ChatModule) },
-  { path: 'Profile', loadChildren: () => import('./MatchMaking/Profile/profile.module').then(m => m.ProfileModule)}
+  {path: 'Chat', component: ChatComponent},
+  {path: 'Profile', component: ProfileComponent},
 ];
 
 @NgModule({
