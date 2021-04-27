@@ -8,6 +8,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import {Socket} from 'ngx-socket-io';
 import {FlexLayoutModule} from '@angular/flex-layout';
+import { LoginComponent } from './MatchMaking/login/login.component';
+import {MatCardModule} from '@angular/material/card';
+import {MatFormFieldModule} from '@angular/material/form-field';
+import {MatIconModule} from '@angular/material/icon';
+import {MatInputModule} from '@angular/material/input';
+import {MatButtonModule} from '@angular/material/button';
 
 
 
@@ -25,13 +31,18 @@ export class SocketUser extends Socket {
     AppComponent,
   ],
 
-imports: [
-  BrowserModule,
-  AppRoutingModule,
-  BrowserAnimationsModule,
-  FlexLayoutModule,
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FlexLayoutModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatIconModule,
+    MatInputModule,
+    MatButtonModule,
 
-],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
