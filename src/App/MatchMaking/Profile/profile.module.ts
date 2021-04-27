@@ -6,6 +6,7 @@ import {CommonModule} from '@angular/common';
 import {ReactiveFormsModule} from '@angular/forms';
 import {NgxsModule} from '@ngxs/store';
 import {UserState} from './state/user.state';
+import {FlexModule} from '@angular/flex-layout';
 
 
 @NgModule({
@@ -13,10 +14,12 @@ import {UserState} from './state/user.state';
     ProfileComponent,
   ],
 
+
     imports: [
         ProfileRoutingModule,
         CommonModule,
       ReactiveFormsModule,
+      FlexModule,
       NgxsModule.forFeature([UserState])
     ]
 })
