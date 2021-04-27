@@ -1,4 +1,5 @@
-<h5> tilt</h5>
-<h5> tilt</h5>
-<h5> tilt</h5>
-<h5> tilt</h5>
+<div *ngIf="users$ | async as users">
+  <h5 *ngFor="let user of users">
+    {{user}}
+  </h5>
+</div>
