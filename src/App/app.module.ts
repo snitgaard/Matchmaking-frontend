@@ -13,7 +13,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
 
 
 @Injectable()
-export class SocketUser extends Socket {
+export class SocketApp extends Socket {
 
   constructor() {
     super({url: 'http://localhost:1337', options: {}});
