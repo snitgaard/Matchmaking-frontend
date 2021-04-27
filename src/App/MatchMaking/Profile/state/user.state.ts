@@ -3,7 +3,13 @@ import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 
 import {Subscription} from 'rxjs';
 
-import {ListenForUsers, LoadUserFromStorage, UserLoggedIn, StopListeningForUsers, UpdateUser} from './user.actions';
+import {
+  ListenForUsers,
+  LoadUserFromStorage,
+  UserLoggedIn,
+  StopListeningForUsers,
+  UpdateUsers
+} from './user.actions';
 import {UserModel} from '../../shared/user.model';
 import {UserService} from '../../shared/user.service';
 
@@ -28,29 +34,39 @@ export class UserState {
   }
 
   @Selector()
-  static relevantUser(state: UserStateModel): UserModel |undefined {
-    return state.RelevantUser;
-  }
-
-  @Selector()
   static users(state: UserStateModel): UserModel[] {
     return state.Users;
   }
 
+  @Action(ListenForUsers)
+  getUsers(ctx: StateContext<UserStateModel>){
+    this.usersUnsub = this.userService.listenForUsers().subscribe(users => {
+      ctx.dispatch(new UpdateUsers(users));
+    });
+    this.userService.askForAllUsers();
+  }
+
+  @Action(UpdateUsers)
+  updateClients(ctx: StateContext<UserStateModel>, uc: UpdateUsers): void {
+    const state = ctx.getState();
+    const newState: UserStateModel = {
+      ...state,
+      Users: uc.users
+    };
+    ctx.setState(newState);
+  }
+
+  /*
   @Selector()
   static userIds(state: UserStateModel): string[] {
     return state.Users.map(c => c.id);
   }
 
-
-
-  @Action(ListenForUsers)
-  getUsers(ctx: StateContext<UserStateModel>): void {
-    this.usersUnsub = this.userService.listenForUsers()
-      .subscribe(users => {
-        ctx.dispatch(new UpdateUser(users));
-      });
+  @Selector()
+  static relevantUser(state: UserStateModel): UserModel |undefined {
+    return state.RelevantUser;
   }
+
 
   @Action(StopListeningForUsers)
   stopListeningForClients(ctx: StateContext<UserStateModel>): void {
@@ -59,15 +75,7 @@ export class UserState {
     }
   }
 
-  @Action(UpdateUser)
-  updateClients(ctx: StateContext<UserStateModel>, uc: UpdateUser): void {
-    const state = ctx.getState();
-    const newState: UserStateModel = {
-      ...state,
-      Users: uc.user
-    };
-    ctx.setState(newState);
-  }
+
 
   @Action(UserLoggedIn)
   userLoggedIn(ctx: StateContext<UserStateModel>, userLoggedInAction: UserLoggedIn): void {
@@ -97,4 +105,5 @@ export class UserState {
       });
     }
   }
+   */
 }

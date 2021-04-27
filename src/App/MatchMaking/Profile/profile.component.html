@@ -1,21 +1,6 @@
-<div class="image" fxFlex fxLayout="row">
 
-
-  <div>
-    <h1> sdfg </h1>
-    <h1> sdfg </h1>
-    <h1> sdfg </h1>
-    <h1> sdfg </h1>
-    <h1> sdfg </h1><h1> sdfg </h1>
-    <h1> sdfg </h1>
-    <h1> sdfg </h1>
-    <h1> sdfg </h1>
-    <h1> sdfg </h1>
-    <h1> sdfg </h1><h1> sdfg </h1><h1> sdfg </h1>
-    <h1> sdfg </h1>
-
-
-
-  </div>
-
+<div *ngIf="users$ | async as users">
+  <h5 *ngFor="let user of users">
+    <h1>{{user.username}}</h1>
+  </h5>
 </div>
