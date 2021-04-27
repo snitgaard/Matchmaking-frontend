@@ -9,8 +9,8 @@ export class StopListeningForUsers {
   static readonly type = '[User] Stop Listening For Users';
 }
 
-export class UpdateUser {
-  constructor(public user: UserModel[]) {}
+export class UpdateUsers {
+  constructor(public users: UserModel[]) {}
 
   static readonly type = '[User] Update Users';
 }

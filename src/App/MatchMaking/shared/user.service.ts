@@ -10,6 +10,8 @@ import {SocketApp} from '../../app.module';
   providedIn: 'root'
 })
 export class UserService {
+  userModel: UserModel | undefined;
+
   constructor(private socketApp: SocketApp) { }
   sendUser(user: UserDto): void {
     this.socketApp.emit('user', user)
@@ -24,9 +26,9 @@ export class UserService {
     return this.socketApp.fromEvent<string>('user-created-error')
   }
   listenForUsers(): Observable<UserModel[]>{
-    return this.socketApp.fromEvent<UserModel[]>("users")
+    return this.socketApp.fromEvent<UserModel[]>('users')
   }
-  listenForUserList(): void{
+  askForAllUsers(): void{
     this.socketApp.emit('welcomeUser')
   }
   joinUser(dto: UserModel): void{

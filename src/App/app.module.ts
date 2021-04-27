@@ -21,7 +21,7 @@ import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
 export class SocketApp extends Socket {
 
   constructor() {
-    super({url: 'http://localhost:1337', options: {}});
+    super({url: 'http://localhost:3300', options: {}});
   }
 }
 
