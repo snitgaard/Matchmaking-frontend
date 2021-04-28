@@ -10,6 +10,7 @@ import {MatInputModule} from '@angular/material/input';
 import {FlexModule} from '@angular/flex-layout';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
+import {CommonModule} from '@angular/common';
 
 
 
@@ -18,16 +19,17 @@ import {MatListModule} from '@angular/material/list';
     ChatComponent,
   ],
 
-  imports: [
-    ChatRoutingModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatCardModule,
-    MatButtonModule,
-    MatInputModule,
-    FlexModule,
-    MatDividerModule,
-    MatListModule
-  ]
+    imports: [
+        ChatRoutingModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatCardModule,
+        MatButtonModule,
+        MatInputModule,
+        FlexModule,
+        MatDividerModule,
+        MatListModule,
+        CommonModule
+    ]
 })
 export class ChatModule { }

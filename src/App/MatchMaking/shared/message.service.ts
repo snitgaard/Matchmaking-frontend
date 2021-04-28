@@ -26,7 +26,7 @@ export class MessageService {
   listenForMessages(): Observable<MessageModel[]>{
     return this.socketApp.fromEvent<MessageModel[]>("messages")
   }
-  listenForMessageList(): void{
+  askForAllMessages(): void{
     this.socketApp.emit('welcomeMessages')
   }
   joinMessage(dto: MessageModel): void{

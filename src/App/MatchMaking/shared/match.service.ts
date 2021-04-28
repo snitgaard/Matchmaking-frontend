@@ -26,7 +26,7 @@ export class MatchService {
   listenForMatches(): Observable<MatchModel[]>{
     return this.socketApp.fromEvent<MatchModel[]>("matches")
   }
-  listenForMatchList(): void{
+  askForAllMatches(): void{
     this.socketApp.emit('welcomeMatches')
   }
   joinMatch(dto: MatchModel): void{

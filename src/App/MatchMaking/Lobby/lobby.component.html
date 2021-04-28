@@ -1,3 +1,6 @@
-<h5> tilt</h5>
-<h5> tilt</h5>
-<h5> tilt</h5>
+
+<div *ngIf="matches$ | async as matches">
+  <h5 *ngFor="let match of matches">
+    <h1>{{match.score}}</h1>
+  </h5>
+</div>

@@ -21,6 +21,12 @@
     <mat-card fxFlex fxLayout="column" class="example-card">
       <mat-card-header>
         <h1 class="black"> Welcome </h1>
+        <div *ngIf="messages$ | async as messages">
+          <h5 *ngFor="let message of messages">
+            <h1>{{message.message}}</h1>
+          </h5>
+        </div>
+
       </mat-card-header>
       <mat-card-content fxFlex fxLayout="column">
         <mat-list fxFlex class="scroll">
