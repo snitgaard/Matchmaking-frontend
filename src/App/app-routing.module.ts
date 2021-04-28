@@ -8,6 +8,7 @@ const routes: Routes = [
   { path: 'Profile', loadChildren: () => import('./MatchMaking/Profile/profile.module').then(m => m.ProfileModule)},
   { path: 'Login', loadChildren: () => import('./MatchMaking/Login/login.module').then(m => m.LoginModule) },
   { path: 'CreateUser', loadChildren: () => import('./MatchMaking/CreateUser/create-user-module').then(m => m.CreateUserModule) },
+  { path: 'Lobby', loadChildren: () => import('./MatchMaking/Lobby/lobby.module').then(m => m.LobbyModule) },
   { path: '**', loadChildren: () => import('./MatchMaking/Error/page-not-found/page-not-found.module').then(m => m.PageNotFoundModule) },
 ];
 @NgModule({

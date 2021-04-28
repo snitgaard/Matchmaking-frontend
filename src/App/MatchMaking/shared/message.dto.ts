@@ -1,7 +1,9 @@
-import {MessageModel} from './message.model';
+
+import {UserModel} from './user.model';
 
 export interface MessageDto {
-  messages: MessageModel[];
-  message: MessageModel;
+  message: string;
+  user: UserModel;
+  date: number;
 
 }
