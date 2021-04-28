@@ -20,6 +20,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
 import {MatInputModule} from '@angular/material/input';
 import {MatButtonModule} from '@angular/material/button';
+import {ReactiveFormsModule} from "@angular/forms";
 
 @Injectable()
 export class SocketApp extends Socket {
@@ -34,26 +35,27 @@ export class SocketApp extends Socket {
     AppComponent,
   ],
 
-imports: [
-  BrowserModule,
-  AppRoutingModule,
-  BrowserAnimationsModule,
-  FlexLayoutModule,
-  SocketIoModule,
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    FlexLayoutModule,
+    SocketIoModule,
     MatCardModule,
     MatFormFieldModule,
     MatIconModule,
     MatInputModule,
     MatButtonModule,
-  NgxsModule.forRoot([], {
-    developmentMode: !environment.production
-  }),
-  NgxsLoggerPluginModule.forRoot(),
-  NgxsReduxDevtoolsPluginModule.forRoot(),
-  NgxsStoragePluginModule.forRoot({
-    key: UserState
-  })
-],
+    NgxsModule.forRoot([], {
+      developmentMode: !environment.production
+    }),
+    NgxsLoggerPluginModule.forRoot(),
+    NgxsReduxDevtoolsPluginModule.forRoot(),
+    NgxsStoragePluginModule.forRoot({
+      key: UserState
+    }),
+    ReactiveFormsModule
+  ],
   providers: [SocketApp],
   bootstrap: [AppComponent]
 })
