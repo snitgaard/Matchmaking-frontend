@@ -1,5 +1,5 @@
-import {RouterModule, Routes} from '@angular/router';
-import {NgModule} from '@angular/core';
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
 import {CreateUserComponent} from './create-user.component';
 
 const routes: Routes = [{ path: '', component: CreateUserComponent }];
