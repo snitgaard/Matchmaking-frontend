@@ -1,0 +1,33 @@
+.example-card {
+  background-color: rgba(255, 255, 255, 0.5);
+  margin: 10px;
+}
+
+
+.image {
+  background-image: url('https://wallpapermemory.com/uploads/375/dark-grey-background-hd-1920x1200-64780.jpg');
+}
+
+.black {
+  color: black;
+}
+
+.icon-display {
+  transform: scale(2.5);
+  color: black;
+}
+
+.scroll {
+  overflow: auto;
+}
+
+::ng-deep.mat-form-field-ripple {
+  background-color: white !important;;
+}
+
+.box {
+  display: flex;
+}
+.push {
+  margin-left: auto;
+}
