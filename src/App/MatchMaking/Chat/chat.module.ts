@@ -10,6 +10,7 @@ import {MatInputModule} from '@angular/material/input';
 import {FlexModule} from '@angular/flex-layout';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
+import {CommonModule} from '@angular/common';
 
 
 
@@ -27,7 +28,8 @@ import {MatListModule} from '@angular/material/list';
     MatInputModule,
     FlexModule,
     MatDividerModule,
-    MatListModule
+    MatListModule,
+    CommonModule
   ]
 })
 export class ChatModule { }

@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {SocketApp} from '../../app.module';
 import {MessageDto} from './message.dto';
 import {MessageModel} from './message.model';
+import {map} from 'rxjs/operators';
 
 
 
@@ -23,14 +24,21 @@ export class MessageService {
   listenForCreateError(): Observable<string> {
     return this.socketApp.fromEvent<string>('message-created-error')
   }
-  listenForMessages(): Observable<MessageModel[]>{
-    return this.socketApp.fromEvent<MessageModel[]>("messages")
+  getAllMessages(): void {
+    this.socketApp.emit('getAllMessages');
   }
-  listenForMessageList(): void{
-    this.socketApp.emit('welcomeMessages')
+  listenForMessageList(): Observable<MessageModel[]>{
+    return this.socketApp.fromEvent<MessageDto[]>('allMessages')
+      .pipe(
+        map(messages => {
+          console.log("messages",messages)
+         return JSON.parse(JSON.stringify(messages));
+        })
+      )
   }
   joinMessage(dto: MessageModel): void{
     this.socketApp.emit('joinMessage', dto);
   }
+
 
 }
