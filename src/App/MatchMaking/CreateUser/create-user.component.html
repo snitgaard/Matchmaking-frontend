@@ -1,15 +1,14 @@
-<div>
-  <h1> dasfgs</h1>
-  <h1> dasfgs</h1>
-  <h1> dasfgs</h1>
-  <h1> dasfgs</h1>
-  <h1> dasfgs</h1>
-  <h1> dasfgs</h1>
-  <h1> dasfgs</h1>
-  <h1> dasfgs</h1>
-  <h1> dasfgs</h1>
-  <h1> dasfgs</h1>
-  <h1> dasfgs</h1>
+<div [formGroup]="userFb">
+  <h3>Make new user</h3>
 
+  <label>
+    Username:
+    <input type="text" formControlName="username" id="username">
+  </label>
 
+  <label>
+    Password:
+    <input type="text" formControlName="password">
+  </label>
+  <button type="button" (click)="createUser()">Create</button>
 </div>

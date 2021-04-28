@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import {UserModel} from "../shared/user.model";
-import {UserService} from "../shared/user.service";
-import {FormBuilder} from "@angular/forms";
+import {UserModel} from '../shared/user.model';
+import {UserService} from '../shared/user.service';
+import {FormBuilder} from '@angular/forms';
 
 @Component({
   selector: 'app-create-user',
@@ -12,7 +12,7 @@ export class CreateUserComponent implements OnInit {
   userFb = this.fb.group({
     username: [''],
     password: [''],
-    rating: [1000],
+    rating: [],
   });
   userCreate: UserModel | undefined;
 

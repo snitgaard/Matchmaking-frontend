@@ -1,6 +1,7 @@
 import {NgModule} from '@angular/core';
 import {CreateUserComponent} from './create-user.component';
 import {CreateUserRoutingModule} from './create-user-routing.module';
+import {ReactiveFormsModule} from "@angular/forms";
 
 
 
@@ -9,8 +10,9 @@ import {CreateUserRoutingModule} from './create-user-routing.module';
     CreateUserComponent,
   ],
 
-  imports: [
-    CreateUserRoutingModule
-  ]
+    imports: [
+        CreateUserRoutingModule,
+        ReactiveFormsModule
+    ]
 })
 export class CreateUserModule { }
