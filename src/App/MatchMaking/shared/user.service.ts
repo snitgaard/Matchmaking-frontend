@@ -15,26 +15,26 @@ export class UserService {
   userModel: UserModel | undefined;
 
   constructor(private socketApp: SocketApp) { }
-  sendUser(user: UserDto): void {
-    this.socketApp.emit('user', user)
+  sendUser(user: UserModel): void {
+    this.socketApp.emit('user', user);
   }
   sendUserName(username: string) {
     this.socketApp.emit("username", username);
   }
   updateUser(id: string, user: UserModel): void {
-    this.socketApp.emit('updateUser', user)
+    this.socketApp.emit('updateUser', user);
   }
   listenForCreateSuccess(): Observable<UserDto> {
-    return this.socketApp.fromEvent<UserDto>('user-created-success')
+    return this.socketApp.fromEvent<UserDto>('user-created-success');
   }
   listenForCreateError(): Observable<string> {
-    return this.socketApp.fromEvent<string>('user-created-error')
+    return this.socketApp.fromEvent<string>('user-created-error');
   }
   listenForUsers(): Observable<UserModel[]>{
-    return this.socketApp.fromEvent<UserModel[]>('users')
+    return this.socketApp.fromEvent<UserModel[]>('users');
   }
   askForAllUsers(): void{
-    this.socketApp.emit('welcomeUser')
+    this.socketApp.emit('welcomeUser');
   }
   listenForWelcome(): Observable<MessageDto[]> {
     return this.socketApp
