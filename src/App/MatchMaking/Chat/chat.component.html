@@ -4,12 +4,13 @@
   <div fxLayout="column" fxFlex="20" style="padding: 20px" fxLayoutGap="10px">
     <mat-card fxFlex class="example-card">
       <mat-card-header>
-        <h5 style="font-size: 20px" class="black"> Clients</h5>
+        <h5 style="font-size: 20px" class="black"> Clients Online</h5>
       </mat-card-header>
       <mat-card-content>
-        <div>
+        <div *ngIf="clients$ | async as clients">
           <ul>
-            <li>
+            <li *ngFor="let client of ">
+              {{client.name}}
             </li>
           </ul>
         </div>
