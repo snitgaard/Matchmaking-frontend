@@ -42,7 +42,7 @@ export class ChatState {
     this.messagesUnsub = this.chatService.listenForMessages().subscribe(messages => {
       ctx.dispatch(new UpdateMessages(messages));
     });
-    this.chatService.getAllMessages();
+    this.chatService.listenForMessages();
   }
 
   @Action(UpdateMessages)

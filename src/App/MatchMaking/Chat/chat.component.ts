@@ -21,6 +21,7 @@ import {ListenForMessages, StopListeningForMessages} from './state/chat.actions'
 export class ChatComponent implements OnInit, OnDestroy
 {
   @Select(ChatState.messages) messages$: Observable<ChatModel[]> | undefined;
+  @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
 
   messageFc = new FormControl('');
   nameFC = new FormControl('');
@@ -33,10 +34,9 @@ export class ChatComponent implements OnInit, OnDestroy
   constructor(private store: Store) {
   }
 
-  @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
-
   ngOnInit(): void {
     this.store.dispatch(new ListenForMessages());
+    console.log(this.messages$);
     this.store.dispatch(new ListenForUsers());
   }
 

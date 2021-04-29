@@ -9,5 +9,6 @@ export interface UserModel {
   inGame?: boolean;
   inQueue?: boolean;
   matches?: MatchModel[];
+  messages?: ChatModel[];
   typing?: boolean;
 }
