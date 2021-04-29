@@ -4,11 +4,13 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {Subscription} from 'rxjs';
 
 import {
+  CreateUser,
   ListenForUsers,
   UpdateUsers
 } from './user.actions';
 import {UserModel} from '../../shared/user.model';
 import {UserService} from '../../shared/user.service';
+import {tap} from 'rxjs/operators';
 
 
 export interface UserStateModel {
@@ -52,6 +54,18 @@ export class UserState {
     };
     ctx.setState(newState);
   }
+
+  /*
+  @Action(CreateUser)
+  createUser({getState, patchState}: StateContext<UserStateModel>, {payload}: CreateUser) {
+    return this.userService.createUser(payload).pipe(tap((result) => {
+      const state = getState();
+      patchState({
+        Users: [...state.Users, result]
+      });
+    }));
+  }
+   */
 
   /*
   @Selector()
