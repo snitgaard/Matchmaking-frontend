@@ -25,7 +25,7 @@ export interface ChatStateModel {
   }
 })
 @Injectable()
-export class MessageState {
+export class ChatState {
   private messagesUnsub: Subscription | undefined;
 
   constructor(private chatService: ChatService) {

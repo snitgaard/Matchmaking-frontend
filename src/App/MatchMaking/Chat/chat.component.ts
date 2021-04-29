@@ -8,7 +8,7 @@ import {debounceTime, takeUntil} from 'rxjs/operators';
 import {UserService} from '../shared/user.service';
 import {Select, Store} from '@ngxs/store';
 import {UserState} from '../Profile/state/user.state';
-import {MessageState} from './state/chat.state';
+import {ChatState} from './state/chat.state';
 import {ListenForUsers} from '../Profile/state/user.actions';
 import {ListenForMessages} from './state/chat.actions';
 
@@ -21,7 +21,7 @@ import {ListenForMessages} from './state/chat.actions';
 
 export class ChatComponent implements OnInit, OnDestroy
 {
-  @Select(MessageState.messages) messages$: Observable<ChatModel[]> | undefined;
+  @Select(ChatState.messages) messages$: Observable<ChatModel[]> | undefined;
 
   messageFc = new FormControl('');
   nameFC = new FormControl('');

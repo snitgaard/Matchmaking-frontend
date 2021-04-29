@@ -11,6 +11,8 @@ import {FlexModule} from '@angular/flex-layout';
 import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {CommonModule} from '@angular/common';
+import {NgxsModule} from "@ngxs/store";
+import {ChatState} from "./state/chat.state";
 
 
 
@@ -29,7 +31,8 @@ import {CommonModule} from '@angular/common';
     FlexModule,
     MatDividerModule,
     MatListModule,
-    CommonModule
+    CommonModule,
+    NgxsModule.forFeature([ChatState])
   ]
 })
 export class ChatModule { }
