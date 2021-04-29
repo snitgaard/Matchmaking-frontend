@@ -1,9 +1,9 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormControl} from '@angular/forms';
 import {UserModel} from '../shared/user.model';
-import {MessageModel} from '../shared/message.model';
+import {ChatModel} from '../shared/chat.model';
 import {Observable, Subject} from 'rxjs';
-import {MessageService} from '../shared/message.service';
+import {ChatService} from '../shared/chat.service';
 import {debounceTime, takeUntil} from 'rxjs/operators';
 import {UserService} from '../shared/user.service';
 
@@ -18,15 +18,15 @@ export class ChatComponent implements OnInit, OnDestroy
 {
   messageFc = new FormControl('');
   nameFC = new FormControl('');
-  messages: MessageModel[] = [];
-  allMessages$: Observable<MessageModel[]>;
+  messages: ChatModel[] = [];
+  allMessages$: Observable<ChatModel[]>;
   userTyping: UserModel[] = [];
   unsubscribe$ = new Subject();
   users$: Observable<UserModel[]> | undefined;
   userModel: UserModel | undefined;
   error$: Observable<string> | undefined;
   constructor(private userService: UserService,
-              private messageService: MessageService) {
+              private chatService: ChatService) {
   }
 
   ngOnInit(): void {
@@ -72,10 +72,10 @@ export class ChatComponent implements OnInit, OnDestroy
 
     this.error$ = this.userService.listenForError().pipe(takeUntil(this.unsubscribe$));
 
-    this.allMessages$ = this.messageService.listenForMessageList().pipe(
+    this.allMessages$ = this.chatService.listenForMessages().pipe(
       takeUntil(this.unsubscribe$));
 
-    this.messageService
+    this.chatService
       .getAllMessages();
   }
 

@@ -1,13 +1,10 @@
 import { Injectable } from '@angular/core';
-import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
+import {Action, Selector, State, StateContext} from '@ngxs/store';
 
 import {Subscription} from 'rxjs';
 
 import {
   ListenForUsers,
-  LoadUserFromStorage,
-  UserLoggedIn,
-  StopListeningForUsers,
   UpdateUsers
 } from './user.actions';
 import {UserModel} from '../../shared/user.model';
@@ -43,11 +40,11 @@ export class UserState {
     this.usersUnsub = this.userService.listenForUsers().subscribe(users => {
       ctx.dispatch(new UpdateUsers(users));
     });
-    this.userService.askForAllUsers();
+    this.userService.getAllUsers();
   }
 
   @Action(UpdateUsers)
-  updateClients(ctx: StateContext<UserStateModel>, uc: UpdateUsers): void {
+  updateUsers(ctx: StateContext<UserStateModel>, uc: UpdateUsers): void {
     const state = ctx.getState();
     const newState: UserStateModel = {
       ...state,

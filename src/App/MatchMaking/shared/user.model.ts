@@ -1,5 +1,5 @@
 import {MatchModel} from './match.model';
-import {MessageModel} from './message.model';
+import {ChatModel} from './chat.model';
 
 export interface UserModel {
   id: string;
@@ -8,7 +8,6 @@ export interface UserModel {
   rating: number;
   inGame?: boolean;
   inQueue?: boolean;
-  messages?: MessageModel[];
   matches?: MatchModel[];
   typing?: boolean;
 }
