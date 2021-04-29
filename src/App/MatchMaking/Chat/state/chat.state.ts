@@ -4,12 +4,13 @@ import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 import {Subscription} from 'rxjs';
 
 import {
-  ListenForMessages,
+  ListenForMessages, StopListeningForMessages,
   UpdateMessages
 } from './chat.actions';
 
 import {ChatModel} from "../../shared/chat.model";
 import {ChatService} from "../../shared/chat.service";
+import {StopListeningForUsers} from '../../Profile/state/user.actions';
 
 
 export interface ChatStateModel {
@@ -53,6 +54,13 @@ export class ChatState {
     };
     ctx.setState(newState);
   }
+  @Action(StopListeningForMessages)
+  stopListeningForMessages(ctx: StateContext<ChatStateModel>): void {
+    if (this.messagesUnsub) {
+      this.messagesUnsub.unsubscribe();
+    }
+  }
+
 
   /*
   @Selector()
@@ -66,12 +74,7 @@ export class ChatState {
   }
 
 
-  @Action(StopListeningForUsers)
-  stopListeningForClients(ctx: StateContext<UserStateModel>): void {
-    if (this.usersUnsub) {
-      this.usersUnsub.unsubscribe();
-    }
-  }
+
 
 
 

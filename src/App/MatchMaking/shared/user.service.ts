@@ -15,7 +15,7 @@ export class UserService {
   userModel: UserModel | undefined;
 
   constructor(private socketApp: SocketApp) { }
-  createUser(user: UserModel) {
+  createUser(user: UserModel): Observable<UserModel> {
     return this.socketApp.emit('create-user', user);
   }
   listenForUsers(): Observable<UserModel[]>{

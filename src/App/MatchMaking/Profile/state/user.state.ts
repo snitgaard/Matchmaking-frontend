@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 
 import {
   CreateUser,
-  ListenForUsers,
+  ListenForUsers, StopListeningForUsers,
   UpdateUsers
 } from './user.actions';
 import {UserModel} from '../../shared/user.model';
@@ -54,10 +54,15 @@ export class UserState {
     };
     ctx.setState(newState);
   }
+  @Action(StopListeningForUsers)
+  stopListeningForClients(ctx: StateContext<UserStateModel>): void {
+    if (this.usersUnsub) {
+      this.usersUnsub.unsubscribe();
+    }
+  }
 
-  /*
   @Action(CreateUser)
-  createUser({getState, patchState}: StateContext<UserStateModel>, {payload}: CreateUser) {
+  createUser({getState, patchState }: StateContext<UserStateModel>, { payload }: CreateUser) {
     return this.userService.createUser(payload).pipe(tap((result) => {
       const state = getState();
       patchState({
@@ -65,7 +70,7 @@ export class UserState {
       });
     }));
   }
-   */
+
 
   /*
   @Selector()
@@ -79,12 +84,7 @@ export class UserState {
   }
 
 
-  @Action(StopListeningForUsers)
-  stopListeningForClients(ctx: StateContext<UserStateModel>): void {
-    if (this.usersUnsub) {
-      this.usersUnsub.unsubscribe();
-    }
-  }
+
 
 
 

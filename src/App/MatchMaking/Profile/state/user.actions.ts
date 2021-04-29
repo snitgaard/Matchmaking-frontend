@@ -10,7 +10,7 @@ export class StopListeningForUsers {
 }
 
 export class CreateUser {
-    static readonly type = '[User] Create User';
+  static readonly type = '[User] Create User';
 
   constructor(public payload: UserModel) {
 

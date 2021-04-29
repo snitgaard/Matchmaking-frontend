@@ -10,7 +10,7 @@ import {Select, Store} from '@ngxs/store';
 import {UserState} from '../Profile/state/user.state';
 import {ChatState} from './state/chat.state';
 import {ListenForUsers} from '../Profile/state/user.actions';
-import {ListenForMessages} from './state/chat.actions';
+import {ListenForMessages, StopListeningForMessages} from './state/chat.actions';
 
 @Component({
   selector: 'app-chat',
@@ -38,11 +38,11 @@ export class ChatComponent implements OnInit, OnDestroy
   ngOnInit(): void {
     this.store.dispatch(new ListenForMessages());
     this.store.dispatch(new ListenForUsers());
-
   }
 
   ngOnDestroy(): void {
     console.log('Destroyed');
+    this.store.dispatch(new StopListeningForMessages());
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }

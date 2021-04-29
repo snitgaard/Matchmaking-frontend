@@ -1,8 +1,9 @@
 import {NgModule} from '@angular/core';
 import {CreateUserComponent} from './create-user.component';
 import {CreateUserRoutingModule} from './create-user-routing.module';
-import {ReactiveFormsModule} from "@angular/forms";
-
+import {ReactiveFormsModule} from '@angular/forms';
+import {NgxsModule} from '@ngxs/store';
+import {UserState} from '../Profile/state/user.state';
 
 
 @NgModule({
@@ -10,9 +11,11 @@ import {ReactiveFormsModule} from "@angular/forms";
     CreateUserComponent,
   ],
 
-    imports: [
-        CreateUserRoutingModule,
-        ReactiveFormsModule
-    ]
+  imports: [
+    CreateUserRoutingModule,
+    ReactiveFormsModule,
+    NgxsModule.forFeature([UserState])
+  ]
 })
-export class CreateUserModule { }
+export class CreateUserModule {
+}

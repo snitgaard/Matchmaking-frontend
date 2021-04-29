@@ -14,7 +14,7 @@ export class CreateUserComponent implements OnInit {
   userFb = this.fb.group({
     username: [''],
     password: [''],
-    rating: [],
+    rating: [''],
   });
   userCreate: UserModel | undefined;
 
@@ -25,6 +25,7 @@ export class CreateUserComponent implements OnInit {
 
   createUser(): void {
     const userDto: UserModel = this.userFb.value;
+    console.log(userDto);
     this.store.dispatch(new CreateUser(userDto));
     //this.userService.createUser(userDto);
   }

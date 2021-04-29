@@ -1,10 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {Select, Store} from '@ngxs/store';
+import {ofActionSuccessful, Select, Store} from '@ngxs/store';
 import {UserState} from './state/user.state';
 import {Observable, Subject} from 'rxjs';
 import {UserModel} from '../shared/user.model';
 import {UserService} from '../shared/user.service';
-import {ListenForUsers} from './state/user.actions';
+import {ListenForUsers, StopListeningForUsers} from './state/user.actions';
+import {takeUntil} from 'rxjs/operators';
 
 
 @Component({
@@ -22,11 +23,13 @@ export class ProfileComponent implements OnInit, OnDestroy
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new ListenForUsers());
+    this.store.dispatch(new ListenForUsers()).pipe(takeUntil(this.unsubscribe$))
+      .subscribe();
   }
 
   ngOnDestroy(): void {
     console.log('Destroyed');
+    this.store.dispatch(new StopListeningForUsers())
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
