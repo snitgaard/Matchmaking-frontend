@@ -38,7 +38,7 @@ export class ChatComponent implements OnInit, OnDestroy
   ngOnInit(): void {
     this.store.dispatch(new ListenForMessages());
     this.store.dispatch(new ListenForUsers());
-    
+
   }
 
   ngOnDestroy(): void {
@@ -47,13 +47,13 @@ export class ChatComponent implements OnInit, OnDestroy
     this.unsubscribe$.complete();
   }
 
-  sendMessage(): void {
+  /*sendMessage(): void {
     console.log(this.messageFc.value);
     this.chatService.createMessage(this.messageFc.value);
     this.messageFc.patchValue('');
   }
 
-  /*sendName(): void {
+  sendName(): void {
     if (this.nameFC.value)
     {
       this.userService.createUser(this.nameFC.value);
