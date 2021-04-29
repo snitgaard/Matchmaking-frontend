@@ -42,15 +42,15 @@ export class ChatState {
     this.messagesUnsub = this.chatService.listenForMessages().subscribe(messages => {
       ctx.dispatch(new UpdateMessages(messages));
     });
-    this.chatService.listenForMessages();
+    this.chatService.getAllMessages();
   }
 
   @Action(UpdateMessages)
-  updateMessages(ctx: StateContext<ChatStateModel>, uc: UpdateMessages): void {
+  updateMessages(ctx: StateContext<ChatStateModel>, um: UpdateMessages): void {
     const state = ctx.getState();
     const newState: ChatStateModel = {
       ...state,
-      Messages: uc.users
+      Messages: um.messages
     };
     ctx.setState(newState);
   }

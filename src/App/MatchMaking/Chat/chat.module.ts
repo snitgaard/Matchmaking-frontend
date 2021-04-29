@@ -13,6 +13,7 @@ import {MatListModule} from '@angular/material/list';
 import {CommonModule} from '@angular/common';
 import {NgxsModule} from "@ngxs/store";
 import {ChatState} from "./state/chat.state";
+import {UserState} from "../Profile/state/user.state";
 
 
 
@@ -32,7 +33,7 @@ import {ChatState} from "./state/chat.state";
     MatDividerModule,
     MatListModule,
     CommonModule,
-    NgxsModule.forFeature([ChatState])
+    NgxsModule.forFeature([ChatState, UserState])
   ]
 })
 export class ChatModule { }

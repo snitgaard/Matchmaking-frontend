@@ -20,13 +20,7 @@ export class ChatService {
     this.socketApp.emit('getAllMessages');
   }
   listenForMessages(): Observable<ChatModel[]>{
-    return this.socketApp.fromEvent<ChatDto[]>('allMessages')
-      .pipe(
-        map(messages => {
-          console.log("messages",messages)
-         return JSON.parse(JSON.stringify(messages));
-        })
-      )
+    return this.socketApp.fromEvent<ChatModel[]>('messages');
   }
   listenForUserTyping(): Observable<UserModel> {
     return this.socketApp
