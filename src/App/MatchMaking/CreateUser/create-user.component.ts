@@ -3,7 +3,6 @@ import {UserModel} from '../shared/user.model';
 import {UserService} from '../shared/user.service';
 import {FormBuilder} from '@angular/forms';
 import {Store} from '@ngxs/store';
-import {MessageState} from '../Chat/state/chat.state';
 import {CreateUser, ListenForUsers} from '../Profile/state/user.actions';
 
 @Component({
