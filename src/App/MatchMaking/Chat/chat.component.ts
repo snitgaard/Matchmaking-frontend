@@ -35,18 +35,19 @@ export class ChatComponent implements OnInit, OnDestroy
         takeUntil(this.unsubscribe$),
         debounceTime(500)
       )
-      .subscribe((value) => this.userService.sendTyping(value.length > 0));
+      .subscribe((value) => this.chatService.sendTyping(value.length > 0));
 
     this.users$ = this.userService.listenForUsers();
-
-    this.userService.listenForMessages()
+/*
+    //help
+    this.chatService.listenForMessages()
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe(message => {
         this.messages.push(message)
       });
 
-
-    this.userService.listenForUserTyping()
+*/
+    this.chatService.listenForUserTyping()
       .pipe(takeUntil(this.unsubscribe$)
       )
       .subscribe((userModel) => {
@@ -67,7 +68,7 @@ export class ChatComponent implements OnInit, OnDestroy
       })*/
 
     if(this.userService.userModel) {
-      this.userService.sendUserName(this.userService.userModel.username);
+      this.userService.createUser(this.userService.userModel);
     }
 
     this.error$ = this.userService.listenForError().pipe(takeUntil(this.unsubscribe$));
@@ -81,7 +82,7 @@ export class ChatComponent implements OnInit, OnDestroy
 
   sendMessage(): void {
     console.log(this.messageFc.value);
-    this.userService.sendMessage(this.messageFc.value);
+    this.chatService.createMessage(this.messageFc.value);
     this.messageFc.patchValue('');
   }
 
@@ -94,7 +95,7 @@ export class ChatComponent implements OnInit, OnDestroy
   sendName(): void {
     if(this.nameFC.value)
     {
-      this.userService.sendUser(this.nameFC.value);
+      this.userService.createUser(this.nameFC.value);
     }
   }
 }

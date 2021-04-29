@@ -1,9 +1,9 @@
 
-import {UserModel} from './user.model';
+
+import {ChatModel} from "./chat.model";
 
 export interface ChatDto {
-  message: string;
-  user: UserModel;
-  date: number;
+  messages: ChatModel[];
+  message: ChatModel;
 
 }

@@ -23,7 +23,7 @@ export class CreateUserComponent implements OnInit {
 
   createUser(): void {
     const userDto: UserModel = this.userFb.value;
-    this.userService.sendUser(userDto);
+    this.userService.createUser(userDto);
   }
 
 }
