@@ -12,7 +12,6 @@ import {ChatState} from './state/chat.state';
 import {ListenForUsers} from '../Profile/state/user.actions';
 import {ListenForMessages} from './state/chat.actions';
 
-
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
@@ -29,67 +28,17 @@ export class ChatComponent implements OnInit, OnDestroy
   allMessages$: Observable<ChatModel[]>;
   userTyping: UserModel[] = [];
   unsubscribe$ = new Subject();
-  users$: Observable<UserModel[]> | undefined;
   userModel: UserModel | undefined;
   error$: Observable<string> | undefined;
   constructor(private store: Store) {
   }
 
+  @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
+
   ngOnInit(): void {
     this.store.dispatch(new ListenForMessages());
-
-    /*
-    this.messageFc.valueChanges
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        debounceTime(500)
-      )
-      .subscribe((value) => this.chatService.sendTyping(value.length > 0));
-
-    //help
-    this.chatService.listenForMessages()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(message => {
-        this.messages.push(message)
-      });
-
-
-    this.chatService.listenForUserTyping()
-      .pipe(takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userModel) => {
-        if(userModel.typing && !this.userTyping.find((c) => c.id === userModel.id)) {
-          this.userTyping.push(userModel);
-        } else {
-          this.userTyping = this.userTyping.filter((c) => c.id !== userModel.id);
-        }
-      })
-
-     this.userService.listenForWelcome()
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe(messages => {
-        this.messages = messages;
-        this.userModel = this.userService.userModel = messages;
-      })
-
-    if(this.userService.userModel) {
-      this.userService.createUser(this.userService.userModel);
-    }
-
-    this.error$ = this.userService.listenForError().pipe(takeUntil(this.unsubscribe$));
-
-    this.allMessages$ = this.chatService.listenForMessages().pipe(
-      takeUntil(this.unsubscribe$));
-
-    this.chatService
-      .getAllMessages();
-     */
-
-  }
-
-  sendMessage(): void {
+    this.store.dispatch(new ListenForUsers());
+    
   }
 
   ngOnDestroy(): void {
@@ -97,4 +46,17 @@ export class ChatComponent implements OnInit, OnDestroy
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
+  sendMessage(): void {
+    console.log(this.messageFc.value);
+    this.chatService.createMessage(this.messageFc.value);
+    this.messageFc.patchValue('');
+  }
+
+  /*sendName(): void {
+    if (this.nameFC.value)
+    {
+      this.userService.createUser(this.nameFC.value);
+    }
+  }*/
 }
