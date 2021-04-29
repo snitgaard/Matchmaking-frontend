@@ -1,71 +1,58 @@
 import { Injectable } from '@angular/core';
-import {Action, Selector, State, StateContext} from '@ngxs/store';
+import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 
 import {Subscription} from 'rxjs';
 
 import {
-  CreateUser,
-  ListenForUsers,
-  UpdateUsers
-} from './user.actions';
-import {UserModel} from '../../shared/user.model';
-import {UserService} from '../../shared/user.service';
-import {tap} from 'rxjs/operators';
+  ListenForMessages,
+  UpdateMessages
+} from './chat.actions';
+
+import {ChatModel} from "../../shared/chat.model";
+import {ChatService} from "../../shared/chat.service";
 
 
-export interface UserStateModel {
-  Users: UserModel[];
-  RelevantUser: UserModel | undefined;
+export interface ChatStateModel {
+  Messages: ChatModel[];
+  RelevantMessage: ChatModel | undefined;
 }
 
-@State<UserStateModel>({
-  name: 'user',
+@State<ChatStateModel>({
+  name: 'message',
   defaults: {
-    Users: [],
-    RelevantUser: undefined,
+    Messages: [],
+    RelevantMessage: undefined,
   }
 })
 @Injectable()
-export class UserState {
-  private usersUnsub: Subscription | undefined;
+export class ChatState {
+  private messagesUnsub: Subscription | undefined;
 
-  constructor(private userService: UserService) {
+  constructor(private chatService: ChatService) {
   }
 
   @Selector()
-  static users(state: UserStateModel): UserModel[] {
-    return state.Users;
+  static messages(state: ChatStateModel): ChatModel[] {
+    return state.Messages;
   }
 
-  @Action(ListenForUsers)
-  getUsers(ctx: StateContext<UserStateModel>){
-    this.usersUnsub = this.userService.listenForUsers().subscribe(users => {
-      ctx.dispatch(new UpdateUsers(users));
+  @Action(ListenForMessages)
+  getMessages(ctx: StateContext<ChatStateModel>){
+    this.messagesUnsub = this.chatService.listenForMessages().subscribe(messages => {
+      ctx.dispatch(new UpdateMessages(messages));
     });
-    this.userService.getAllUsers();
+    this.chatService.getAllMessages();
   }
 
-  @Action(UpdateUsers)
-  updateUsers(ctx: StateContext<UserStateModel>, uc: UpdateUsers): void {
+  @Action(UpdateMessages)
+  updateMessages(ctx: StateContext<ChatStateModel>, uc: UpdateMessages): void {
     const state = ctx.getState();
-    const newState: UserStateModel = {
+    const newState: ChatStateModel = {
       ...state,
-      Users: uc.users
+      Messages: uc.users
     };
     ctx.setState(newState);
   }
-
-  /*
-  @Action(CreateUser)
-  createUser({getState, patchState}: StateContext<UserStateModel>, {payload}: CreateUser) {
-    return this.userService.createUser(payload).pipe(tap((result) => {
-      const state = getState();
-      patchState({
-        Users: [...state.Users, result]
-      });
-    }));
-  }
-   */
 
   /*
   @Selector()

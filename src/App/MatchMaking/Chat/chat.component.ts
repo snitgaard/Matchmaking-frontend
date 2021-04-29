@@ -8,8 +8,9 @@ import {debounceTime, takeUntil} from 'rxjs/operators';
 import {UserService} from '../shared/user.service';
 import {Select, Store} from '@ngxs/store';
 import {UserState} from '../Profile/state/user.state';
+import {ChatState} from './state/chat.state';
 import {ListenForUsers} from '../Profile/state/user.actions';
-
+import {ListenForMessages} from './state/chat.actions';
 
 @Component({
   selector: 'app-chat',
@@ -19,6 +20,8 @@ import {ListenForUsers} from '../Profile/state/user.actions';
 
 export class ChatComponent implements OnInit, OnDestroy
 {
+  @Select(ChatState.messages) messages$: Observable<ChatModel[]> | undefined;
+
   messageFc = new FormControl('');
   nameFC = new FormControl('');
   messages: ChatModel[] = [];
@@ -27,62 +30,15 @@ export class ChatComponent implements OnInit, OnDestroy
   unsubscribe$ = new Subject();
   userModel: UserModel | undefined;
   error$: Observable<string> | undefined;
-  constructor(private store: Store,
-              private chatService: ChatService) {
+  constructor(private store: Store) {
   }
 
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
 
   ngOnInit(): void {
-    /*this.messageFc.valueChanges
-      .pipe(
-        takeUntil(this.unsubscribe$),
-        debounceTime(500)
-      )
-      .subscribe((value) => this.chatService.sendTyping(value.length > 0));*/
-
+    this.store.dispatch(new ListenForMessages());
     this.store.dispatch(new ListenForUsers());
-/*
-    //help
-    this.chatService.listenForMessages()
-      .pipe(takeUntil(this.unsubscribe$))
-      .subscribe(message => {
-        this.messages.push(message)
-      });
-
-*/
-    /*this.chatService.listenForUserTyping()
-      .pipe(takeUntil(this.unsubscribe$)
-      )
-      .subscribe((userModel) => {
-        if (userModel.typing && !this.userTyping.find((c) => c.id === userModel.id)) {
-          this.userTyping.push(userModel);
-        } else {
-          this.userTyping = this.userTyping.filter((c) => c.id !== userModel.id);
-        }
-      });*/
-
-     /* this.userService.listenForWelcome()
-      .pipe(
-        takeUntil(this.unsubscribe$)
-      )
-      .subscribe(messages => {
-        this.messages = messages;
-        this.userModel = this.userService.userModel = messages;
-      })*/
-
-    /*if(this.userService.userModel) {
-      this.userService.createUser(this.userService.userModel);
-    }*/
-
-
-    /*this.error$ = this.userService.listenForError().pipe(takeUntil(this.unsubscribe$));*/
-
-    /*this.allMessages$ = this.chatService.listenForMessages().pipe(
-      takeUntil(this.unsubscribe$));*/
-
-    /*this.chatService
-      .getAllMessages();*/
+    
   }
 
   ngOnDestroy(): void {
