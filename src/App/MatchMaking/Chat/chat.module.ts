@@ -14,6 +14,7 @@ import {CommonModule} from '@angular/common';
 import {NgxsModule} from "@ngxs/store";
 import {ChatState} from "./state/chat.state";
 import {UserState} from "../Profile/state/user.state";
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 
@@ -33,7 +34,8 @@ import {UserState} from "../Profile/state/user.state";
     MatDividerModule,
     MatListModule,
     CommonModule,
-    NgxsModule.forFeature([ChatState, UserState])
+    NgxsModule.forFeature([ChatState, UserState]),
+    ReactiveFormsModule
   ]
 })
 export class ChatModule { }
