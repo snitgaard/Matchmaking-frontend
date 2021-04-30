@@ -16,11 +16,10 @@
       </mat-card-content>
     </mat-card>
   </div>
-
   <div fxLayout="column" fxFlex="80" *ngIf="messages$ | async as messages">
     <mat-card fxFlex fxLayout="column" class="example-card">
       <mat-card-header>
-        <h1 class="black" *ngFor="let message of messages$ | async"> Welcome {{message.user?.username}} </h1>
+        <h1 class="black"> Welcome [USERNAME] </h1>
       </mat-card-header>
       <mat-card-content fxFlex fxLayout="column">
         <mat-list fxFlex class="scroll">
@@ -28,7 +27,7 @@
             <mat-icon class="black" mat-list-icon>face</mat-icon>
             <div style="color: midnightblue" mat-line>{{message.user?.username}}</div>
             <div style="color: black" mat-line>{{message?.message}}</div>
-            <div style="color: black"> {{message.date | date: 'hh:mm'}} </div>
+            <div style="color: black"> {{message?.date | date: 'hh:mm'}} </div>
             <mat-divider></mat-divider>
           </mat-list-item>
         </mat-list>
@@ -36,9 +35,9 @@
       <mat-card-actions>
         <mat-form-field fxFlex>
           <mat-label class="black">Enter Message</mat-label>
-          <input matInput type="text">
+          <input matInput type="text" [formControl]="messageFc">
           <button mat-button matSuffix mat-icon-button aria-label="Clear">
-            <mat-icon style="font-size: 20px" class="black">send</mat-icon>
+            <mat-icon style="font-size: 20px" class="black" (click)="sendMessage()">send</mat-icon>
           </button>
         </mat-form-field>
       </mat-card-actions>

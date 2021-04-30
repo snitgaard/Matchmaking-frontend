@@ -4,13 +4,15 @@ import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 import {Subscription} from 'rxjs';
 
 import {
-  ListenForMessages, StopListeningForMessages,
+  ListenForMessages, SendMessage, StopListeningForMessages,
   UpdateMessages
 } from './chat.actions';
 
 import {ChatModel} from "../../shared/chat.model";
 import {ChatService} from "../../shared/chat.service";
-import {StopListeningForUsers} from '../../Profile/state/user.actions';
+import {CreateUser, StopListeningForUsers} from '../../Profile/state/user.actions';
+import {tap} from 'rxjs/operators';
+import {UserStateModel} from '../../Profile/state/user.state';
 
 
 export interface ChatStateModel {
@@ -45,6 +47,16 @@ export class ChatState {
     this.chatService.getAllMessages();
   }
 
+  @Action(SendMessage)
+  sendMessage({getState, patchState }: StateContext<ChatStateModel>, { payload }: SendMessage) {
+    return this.chatService.createMessage(payload).pipe(tap((result) => {
+      const state = getState();
+      patchState({
+        Messages: [...state.Messages, result]
+      });
+    }));
+  }
+
   @Action(UpdateMessages)
   updateMessages(ctx: StateContext<ChatStateModel>, um: UpdateMessages): void {
     const state = ctx.getState();
@@ -72,11 +84,6 @@ export class ChatState {
   static relevantUser(state: UserStateModel): UserModel |undefined {
     return state.RelevantUser;
   }
-
-
-
-
-
 
   @Action(UserLoggedIn)
   userLoggedIn(ctx: StateContext<UserStateModel>, userLoggedInAction: UserLoggedIn): void {
