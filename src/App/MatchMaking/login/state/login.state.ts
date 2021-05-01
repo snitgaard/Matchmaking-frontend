@@ -55,7 +55,21 @@ export class LoginState {
       loggedInUser: userLoggedInAction.user
     };
     console.log("Hello1")
-    ctx.setState(newState);
+    if (newState) {
+      this.loginService.login({
+        id: newState.loggedInUser.id,
+        username: newState.loggedInUser.username,
+        password: newState.loggedInUser.password,
+        rating: newState.loggedInUser.rating,
+        inGame: newState.loggedInUser.inGame,
+        inQueue: newState.loggedInUser.inQueue,
+        messages: newState.loggedInUser.messages,
+        matches: newState.loggedInUser.matches,
+        typing: newState.loggedInUser.typing
+      });
+      console.log(newState);
+      ctx.setState(newState);
+    }
   }
 
   @Action(LoadUserFromStorage)
