@@ -10,6 +10,7 @@ import {CreateUser, ListenForUsers} from '../Profile/state/user.actions';
 import {ListenForMessages, SendMessage, StopListeningForMessages} from './state/chat.actions';
 import {ChatDto} from '../shared/chat.dto';
 import {takeUntil} from 'rxjs/operators';
+import {LoginState} from '../login/state/login.state';
 
 @Component({
   selector: 'app-chat',
@@ -21,6 +22,7 @@ export class ChatComponent implements OnInit, OnDestroy
 {
   @Select(ChatState.messages) messages$: Observable<ChatModel[]> | undefined;
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
+  @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
 
   messageFc = new FormControl('');
   nameFC = new FormControl('');
@@ -28,6 +30,7 @@ export class ChatComponent implements OnInit, OnDestroy
   userTyping: UserModel[] = [];
   unsubscribe$ = new Subject();
   userModel: UserModel | undefined;
+  userName: string;
   error$: Observable<string> | undefined;
   constructor(private store: Store) {
   }
@@ -48,7 +51,7 @@ export class ChatComponent implements OnInit, OnDestroy
   sendMessage(): void {
     const dtoTest: ChatDto = {
       message: this.messageFc.value,
-      userId: '123e4567-e89b-12d3-a456-426614174200',
+      username: "fimfi"
     };
     console.log(dtoTest)
     this.store.dispatch(new SendMessage(dtoTest));

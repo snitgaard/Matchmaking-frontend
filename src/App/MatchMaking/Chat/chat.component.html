@@ -16,10 +16,10 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div fxLayout="column" fxFlex="80">
+  <div fxLayout="column" fxFlex="80"*ngIf="loggedInUser$ | async as user">
     <mat-card fxFlex fxLayout="column" class="example-card">
       <mat-card-header>
-        <h1 class="black"> Welcome [USERNAME] </h1>
+        <h1 class="black"> Welcome [{{user.username}}] </h1>
       </mat-card-header>
       <mat-card-content fxFlex fxLayout="column">
         <mat-list fxFlex class="scroll">
