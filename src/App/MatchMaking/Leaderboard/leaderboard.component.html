@@ -7,12 +7,13 @@
     </mat-card-header>
     <mat-card-content>
 
-      <div *ngIf="users$ | async as users"
+      <div
+        *ngIf="users$ | async as users"
            fxLayout="row"
            fxLayout.xs="column"
            fxFlexFill
            fxLayoutAlign="space-between center">
-        <div>
+        <div >
           <ul>
             <h1> Name</h1>
             <h3  *ngFor="let user of users">
@@ -34,3 +35,4 @@
   </mat-card>
 </div>
 </body>
+
