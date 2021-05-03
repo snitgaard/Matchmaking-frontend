@@ -3,11 +3,12 @@ import {Select, Store} from '@ngxs/store';
 import {LoginState} from './state/login.state';
 import {Observable, Subject} from 'rxjs';
 import {UserModel} from '../shared/user.model';
-import {LoadUserFromStorage, UserLoggedIn} from './state/login.actions';
+import {ListenForLogin, LoadUserFromStorage, UserLoggedIn} from './state/login.actions';
 import {LoginService} from '../shared/login.service';
 import {takeUntil} from 'rxjs/operators';
 import {FormBuilder} from '@angular/forms';
 import {CreateUser} from '../Profile/state/user.actions';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,10 +23,10 @@ export class LoginComponent implements OnInit {
     username: [''],
     password: [''],
   });
-  constructor(private store: Store, private loginService: LoginService, private fb: FormBuilder) { }
+  constructor(private store: Store, private loginService: LoginService, private fb: FormBuilder, private router: Router) { }
 
   ngOnInit(): void {
-    this.store.dispatch(new LoadUserFromStorage());
+    this.store.dispatch([new LoadUserFromStorage(), new ListenForLogin()]);
 
     this.loginService.listenForConnect()
       .pipe(
@@ -45,8 +46,8 @@ export class LoginComponent implements OnInit {
 
   login(): void {
     const userDto: UserModel = this.userFb.value;
-    console.log(userDto);
-    this.store.dispatch(new UserLoggedIn(userDto));
+    this.store.dispatch(new UserLoggedIn(userDto)).subscribe(success => {
+      this.router.navigateByUrl('/Profile');
+    });
   }
-
 }

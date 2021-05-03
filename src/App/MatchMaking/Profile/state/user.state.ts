@@ -15,14 +15,14 @@ import {tap} from 'rxjs/operators';
 
 export interface UserStateModel {
   Users: UserModel[];
-  RelevantUser: UserModel | undefined;
+  loggedInUser: UserModel | undefined;
 }
 
 @State<UserStateModel>({
   name: 'user',
   defaults: {
     Users: [],
-    RelevantUser: undefined,
+    loggedInUser: undefined,
   }
 })
 @Injectable()
@@ -44,7 +44,7 @@ export class UserState {
 
   @Selector()
   static relevantUser(state: UserStateModel): UserModel |undefined {
-    return state.RelevantUser;
+    return state.loggedInUser;
   }
 
   @Action(ListenForUsers)

@@ -4,14 +4,15 @@ import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {Subscription} from 'rxjs';
 import {UserModel} from '../../shared/user.model';
 import {UserService} from '../../shared/user.service';
-import {tap} from 'rxjs/operators';
 import {LoginService} from '../../shared/login.service';
-import {LoadUserFromStorage, UserLoggedIn} from './login.actions';
+import {ListenForLogin, LoadUserFromStorage, UserLoggedIn} from './login.actions';
+import {AuthUserModel} from '../../shared/auth-user.model';
+import {tap} from 'rxjs/operators';
 
 
 export interface UserStateModel {
   Users: UserModel[];
-  loggedInUser: UserModel | undefined;
+  loggedInUser: AuthUserModel | undefined;
 }
 
 @State<UserStateModel>({
@@ -39,38 +40,31 @@ export class LoginState {
   }
 
   @Selector()
-  static relevantUser(state: UserStateModel): UserModel |undefined {
-    return state.loggedInUser;
-  }
-  @Selector()
-  static loggedInUser(state: UserStateModel): UserModel | undefined {
+  static loggedInUser(state: UserStateModel): AuthUserModel | undefined {
     return state.loggedInUser;
   }
 
-  @Action(UserLoggedIn)
-  userLoggedIn(ctx: StateContext<UserStateModel>, userLoggedInAction: UserLoggedIn): void {
-    const state = ctx.getState();
-    const newState: UserStateModel = {
-      ...state,
-      loggedInUser: userLoggedInAction.user
-    };
-    console.log("Hello1")
-    if (newState) {
-      this.loginService.login({
-        id: newState.loggedInUser.id,
-        username: newState.loggedInUser.username,
-        password: newState.loggedInUser.password,
-        rating: newState.loggedInUser.rating,
-        inGame: newState.loggedInUser.inGame,
-        inQueue: newState.loggedInUser.inQueue,
-        messages: newState.loggedInUser.messages,
-        matches: newState.loggedInUser.matches,
-        typing: newState.loggedInUser.typing
-      });
-      console.log(newState);
-      ctx.setState(newState);
-    }
+  @Action(ListenForLogin)
+  listenForLogin(ctx: StateContext<UserStateModel>) {
+    return this.loginService.listenForLogin().pipe(
+      tap(userModel => {
+        const state = ctx.getState();
+        console.log(userModel)
+        const newState: UserStateModel = {
+          ...state,
+          loggedInUser: userModel
+        };
+        ctx.setState(newState);
+      })
+    );
   }
+
+  @Action(UserLoggedIn)
+  userLoggedIn(ctx: StateContext<UserStateModel>, userLoggedInAction: UserLoggedIn) {
+    return this.loginService.login({
+      username: userLoggedInAction.user.username,
+      password: userLoggedInAction.user.password})
+    }
 
   @Action(LoadUserFromStorage)
   loadUserFromStorage(ctx: StateContext<UserStateModel>): void {
@@ -78,15 +72,8 @@ export class LoginState {
     const user = state.loggedInUser;
     if (user) {
       this.loginService.login({
-        id: user.id,
         username: user.username,
-        password: user.password,
-        rating: user.rating,
-        inGame: user.inGame,
-        inQueue: user.inQueue,
-        messages: user.messages,
-        matches: user.matches,
-        typing: user.typing
+        password: user.password
       });
     }
   }
