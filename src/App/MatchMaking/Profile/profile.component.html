@@ -1,4 +1,3 @@
-
-<div *ngIf="loggedInUser$ === undefined">
-    <h1>gay</h1>
+<div *ngIf="!(loggedInUser$ | async)">
+  <h1>gay</h1>
 </div>
