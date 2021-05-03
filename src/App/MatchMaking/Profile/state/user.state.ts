@@ -15,14 +15,14 @@ import {tap} from 'rxjs/operators';
 
 export interface UserStateModel {
   Users: UserModel[];
-  RelevantUser: UserModel | undefined;
+  loggedInUser: UserModel | undefined;
 }
 
 @State<UserStateModel>({
   name: 'user',
   defaults: {
     Users: [],
-    RelevantUser: undefined,
+    loggedInUser: undefined,
   }
 })
 @Injectable()
@@ -35,6 +35,16 @@ export class UserState {
   @Selector()
   static users(state: UserStateModel): UserModel[] {
     return state.Users;
+  }
+
+  @Selector()
+  static userIds(state: UserStateModel): string[] {
+    return state.Users.map(c => c.id);
+  }
+
+  @Selector()
+  static relevantUser(state: UserStateModel): UserModel |undefined {
+    return state.loggedInUser;
   }
 
   @Action(ListenForUsers)
@@ -71,50 +81,4 @@ export class UserState {
     }));
   }
 
-
-  /*
-  @Selector()
-  static userIds(state: UserStateModel): string[] {
-    return state.Users.map(c => c.id);
-  }
-
-  @Selector()
-  static relevantUser(state: UserStateModel): UserModel |undefined {
-    return state.RelevantUser;
-  }
-
-
-
-
-
-
-  @Action(UserLoggedIn)
-  userLoggedIn(ctx: StateContext<UserStateModel>, userLoggedInAction: UserLoggedIn): void {
-    const state = ctx.getState();
-    const newState: UserStateModel = {
-      ...state,
-      RelevantUser: userLoggedInAction.user
-    };
-    ctx.setState(newState);
-  }
-
-  @Action(LoadUserFromStorage)
-  stockFromStorage(ctx: StateContext<UserStateModel>): void {
-    const state = ctx.getState();
-    const user = state.RelevantUser;
-    if (user) {
-      this.userService.joinUser({
-        id: user.id,
-        username: user.username,
-        password: user.password,
-        rating: user.rating,
-        inGame: user.inGame,
-        inQueue: user.inQueue,
-        messages: user.messages,
-        matches: user.matches,
-        typing: user.typing
-      });
-    }
-  }
-   */
 }

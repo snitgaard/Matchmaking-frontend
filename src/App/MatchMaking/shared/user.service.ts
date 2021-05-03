@@ -5,6 +5,7 @@ import {UserModel} from './user.model';
 import {SocketApp} from '../../app.module';
 import {ChatDto} from './chat.dto';
 import {ChatModel} from './chat.model';
+import {map} from 'rxjs/operators';
 
 
 

@@ -7,6 +7,10 @@ import {MatIconModule} from '@angular/material/icon';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {FlexModule} from '@angular/flex-layout';
+import {NgxsModule} from '@ngxs/store';
+import {UserState} from '../Profile/state/user.state';
+import {LoginState} from './state/login.state';
+import {ReactiveFormsModule} from '@angular/forms';
 
 
 
@@ -18,11 +22,13 @@ import {FlexModule} from '@angular/flex-layout';
   imports: [
     LoginRoutingModule,
     MatFormFieldModule,
+    NgxsModule.forFeature([LoginState]),
     MatCardModule,
     MatIconModule,
     MatButtonModule,
     MatInputModule,
-    FlexModule
+    FlexModule,
+    ReactiveFormsModule
   ]
 })
 export class LoginModule { }

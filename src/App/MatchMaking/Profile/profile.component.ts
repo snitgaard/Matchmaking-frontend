@@ -6,6 +6,7 @@ import {UserModel} from '../shared/user.model';
 import {UserService} from '../shared/user.service';
 import {ListenForUsers, StopListeningForUsers} from './state/user.actions';
 import {takeUntil} from 'rxjs/operators';
+import {LoginState} from '../login/state/login.state';
 
 
 @Component({
@@ -17,14 +18,14 @@ import {takeUntil} from 'rxjs/operators';
 export class ProfileComponent implements OnInit, OnDestroy
 {
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
+  @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
 
   unsubscribe$ = new Subject();
 
   constructor(private store: Store) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new ListenForUsers()).pipe(takeUntil(this.unsubscribe$))
-      .subscribe();
+    this.store.dispatch(new ListenForUsers());
   }
 
   ngOnDestroy(): void {
