@@ -4,12 +4,14 @@
     <li><a routerLink="/Chat">Chat</a></li>
     <li><a routerLink="/Login">Logout</a></li>
     <li><a routerLink="/CreateUser">Create User</a></li>
+    <li><a routerLink="/Leaderboard">Leaderboard</a></li>
   </ul>
 </div>
 <div *ngIf="!(loggedInUser$ | async)">
   <ul>
     <li><a routerLink="/Login">Login</a></li>
     <li><a routerLink="/CreateUser">Create User</a></li>
+    <li><a routerLink="/Leaderboard">Leaderboard</a></li>
   </ul>
 </div>
 <router-outlet></router-outlet>

@@ -1,0 +1,36 @@
+<body class="image" fxLayout="row" fxLayoutAlign="center center">
+
+<div fxLayout="column" fxFlex="40" style="padding: 20px" fxLayoutGap="10px">
+  <mat-card fxFlex class="example-card">
+    <mat-card-header>
+      <h1 class="black"> Leaderboard</h1>
+    </mat-card-header>
+    <mat-card-content>
+
+      <div *ngIf="users$ | async as users"
+           fxLayout="row"
+           fxLayout.xs="column"
+           fxFlexFill
+           fxLayoutAlign="space-between center">
+        <div>
+          <ul>
+            <h1> Name</h1>
+            <h3  *ngFor="let user of users">
+              {{user.username}}
+            </h3>
+          </ul>
+        </div>
+
+        <div>
+          <ul>
+            <h1> Rating</h1>
+            <h3 *ngFor="let user of users">
+              {{user.rating}}
+            </h3>
+          </ul>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+</body>
