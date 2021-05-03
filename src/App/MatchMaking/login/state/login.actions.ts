@@ -13,3 +13,6 @@ export class LoadUserFromStorage {
 export class ListenForLogin {
   static readonly type = '[User] Listen for login'
 }
+export class RemoveUserFromStorage {
+  static readonly type = '[User] Remove User From Storage'
+}

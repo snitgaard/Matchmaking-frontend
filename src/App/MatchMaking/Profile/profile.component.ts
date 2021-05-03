@@ -7,6 +7,7 @@ import {UserService} from '../shared/user.service';
 import {ListenForUsers, StopListeningForUsers} from './state/user.actions';
 import {takeUntil} from 'rxjs/operators';
 import {LoginState} from '../login/state/login.state';
+import {RemoveUserFromStorage} from '../login/state/login.actions';
 
 
 @Component({
@@ -33,5 +34,9 @@ export class ProfileComponent implements OnInit, OnDestroy
     this.store.dispatch(new StopListeningForUsers())
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
+  }
+
+  logout(): void {
+    this.store.dispatch(new RemoveUserFromStorage)
   }
 }

@@ -3,7 +3,7 @@ import {Select, Store} from '@ngxs/store';
 import {LoginState} from './state/login.state';
 import {Observable, Subject} from 'rxjs';
 import {UserModel} from '../shared/user.model';
-import {ListenForLogin, LoadUserFromStorage, UserLoggedIn} from './state/login.actions';
+import {ListenForLogin, LoadUserFromStorage, RemoveUserFromStorage, UserLoggedIn} from './state/login.actions';
 import {LoginService} from '../shared/login.service';
 import {takeUntil} from 'rxjs/operators';
 import {FormBuilder} from '@angular/forms';

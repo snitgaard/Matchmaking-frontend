@@ -5,9 +5,10 @@ import {Subscription} from 'rxjs';
 import {UserModel} from '../../shared/user.model';
 import {UserService} from '../../shared/user.service';
 import {LoginService} from '../../shared/login.service';
-import {ListenForLogin, LoadUserFromStorage, UserLoggedIn} from './login.actions';
+import {ListenForLogin, LoadUserFromStorage, RemoveUserFromStorage, UserLoggedIn} from './login.actions';
 import {AuthUserModel} from '../../shared/auth-user.model';
 import {tap} from 'rxjs/operators';
+import {patch, removeItem} from '@ngxs/store/operators';
 
 
 export interface UserStateModel {
@@ -42,6 +43,11 @@ export class LoginState {
   @Selector()
   static loggedInUser(state: UserStateModel): AuthUserModel | undefined {
     return state.loggedInUser;
+  }
+
+  @Action(RemoveUserFromStorage)
+  removeUserFromStorage(ctx: StateContext<UserStateModel>) {
+    ctx.setState({Users: [], loggedInUser: undefined})
   }
 
   @Action(ListenForLogin)
