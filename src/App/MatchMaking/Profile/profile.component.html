@@ -4,5 +4,5 @@
 
 <div *ngIf="loggedInUser$ | async as user">
   {{user.username}}
-  <button (click)="logout">Logout</button>
+  <button (click)="logout(user.username)">Logout</button>
 </div>
