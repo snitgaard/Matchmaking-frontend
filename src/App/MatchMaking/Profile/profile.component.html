@@ -1,8 +1,8 @@
 <div *ngIf="!(loggedInUser$ | async)">
-  gaysexual
+  Not Logged In
 </div>
 
 <div *ngIf="loggedInUser$ | async as user">
   {{user.username}}
-  <button (click)="logout(user.username)">Logout</button>
+  <button (click)="logout">Logout</button>
 </div>

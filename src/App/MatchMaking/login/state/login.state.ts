@@ -42,6 +42,7 @@ export class LoginState {
 
   @Selector()
   static loggedInUser(state: UserStateModel): AuthUserModel | undefined {
+    console.log('user', state.loggedInUser)
     return state.loggedInUser;
   }
 

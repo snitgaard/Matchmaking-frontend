@@ -4,7 +4,7 @@ import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 import {Subscription} from 'rxjs';
 
 import {
-  ListenForMessages, SendMessage, StopListeningForMessages,
+  ListenForMessages, NewMessage, SendMessage, StopListeningForMessages,
   UpdateMessages
 } from './chat.actions';
 
@@ -30,6 +30,7 @@ export interface ChatStateModel {
 @Injectable()
 export class ChatState {
   private messagesUnsub: Subscription | undefined;
+  private unsubscribeNewMessage: Subscription | undefined;
 
   constructor(private chatService: ChatService) {
   }
@@ -47,14 +48,26 @@ export class ChatState {
     this.chatService.getAllMessages();
   }
 
-  @Action(SendMessage)
-  sendMessage({getState, patchState }: StateContext<ChatStateModel>, { payload }: SendMessage) {
-    return this.chatService.createMessage(payload).pipe(tap((result) => {
-      const state = getState();
-      patchState({
-        Messages: [...state.Messages, result]
+  @Action(NewMessage)
+  newMessage(ctx: StateContext<ChatStateModel>) {
+    console.log('init')
+    this.unsubscribeNewMessage = this.chatService.listenForNewMessage().subscribe(message => {
+      const state = ctx.getState();
+      const newMessages = [...state.Messages]
+      newMessages.push(message)
+      ctx.setState({
+        ...state,
+        Messages: newMessages
       });
-    }));
+    });
+  }
+
+  @Action(SendMessage)
+  sendMessage(ctx: StateContext<ChatStateModel>, sendMessage: SendMessage) {
+    return this.chatService.createMessage({
+      message: sendMessage.payload.message,
+      userId: sendMessage.payload.userId
+    });
   }
 
   @Action(UpdateMessages)
@@ -70,6 +83,9 @@ export class ChatState {
   stopListeningForMessages(ctx: StateContext<ChatStateModel>): void {
     if (this.messagesUnsub) {
       this.messagesUnsub.unsubscribe();
+    }
+    if (this.unsubscribeNewMessage) {
+      this.unsubscribeNewMessage.unsubscribe();
     }
   }
 

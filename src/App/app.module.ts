@@ -48,7 +48,7 @@ export class SocketApp extends Socket {
     MatIconModule,
     MatInputModule,
     MatButtonModule,
-    NgxsModule.forRoot([], {
+    NgxsModule.forRoot([LoginState], {
       developmentMode: !environment.production
     }),
     NgxsLoggerPluginModule.forRoot(),
