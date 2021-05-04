@@ -11,6 +11,7 @@ export class StopListeningForMessages {
   static readonly type = '[Chat] Stop Listening For Messages';
 }
 
+
 export class UpdateMessages {
   constructor(public messages: ChatModel[]) {}
 
@@ -21,8 +22,11 @@ export class SendMessage {
   static readonly type = '[Chat] Send Message';
 
   constructor(public payload: ChatDto) {
-
   }
+}
+
+export class NewMessage {
+  static readonly type = '[Chat] New Message'
 }
 
 /*

@@ -19,6 +19,11 @@ export class ChatService {
   getAllMessages(): void {
     this.socketApp.emit('getAllMessages');
   }
+
+  listenForNewMessage(): Observable<ChatModel> {
+    return this.socketApp.fromEvent<ChatModel>('new-message')
+  }
+
   listenForMessages(): Observable<ChatModel[]>{
     return this.socketApp.fromEvent<ChatModel[]>('messages');
   }

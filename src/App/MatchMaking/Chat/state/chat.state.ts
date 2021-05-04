@@ -4,7 +4,7 @@ import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 import {Subscription} from 'rxjs';
 
 import {
-  ListenForMessages, SendMessage, StopListeningForMessages,
+  ListenForMessages, NewMessage, SendMessage, StopListeningForMessages,
   UpdateMessages
 } from './chat.actions';
 
@@ -30,6 +30,7 @@ export interface ChatStateModel {
 @Injectable()
 export class ChatState {
   private messagesUnsub: Subscription | undefined;
+  private unsubscribeNewMessage: Subscription | undefined;
 
   constructor(private chatService: ChatService) {
   }
@@ -45,6 +46,20 @@ export class ChatState {
       ctx.dispatch(new UpdateMessages(messages));
     });
     this.chatService.getAllMessages();
+  }
+
+  @Action(NewMessage)
+  newMessage(ctx: StateContext<ChatStateModel>) {
+    console.log('init')
+    this.unsubscribeNewMessage = this.chatService.listenForNewMessage().subscribe(message => {
+      const state = ctx.getState();
+      const newMessages = [...state.Messages]
+      newMessages.push(message)
+      ctx.setState({
+        ...state,
+        Messages: newMessages
+      });
+    });
   }
 
   @Action(SendMessage)
@@ -68,6 +83,9 @@ export class ChatState {
   stopListeningForMessages(ctx: StateContext<ChatStateModel>): void {
     if (this.messagesUnsub) {
       this.messagesUnsub.unsubscribe();
+    }
+    if (this.unsubscribeNewMessage) {
+      this.unsubscribeNewMessage.unsubscribe();
     }
   }
 
