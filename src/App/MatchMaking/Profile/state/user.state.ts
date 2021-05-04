@@ -38,6 +38,12 @@ export class UserState {
   }
 
   @Selector()
+  static sortUsersByRating(state: UserStateModel): UserModel[] {
+    return state.Users.sort((u1, u2) => u2.rating - u1.rating);
+  }
+
+
+  @Selector()
   static userIds(state: UserStateModel): string[] {
     return state.Users.map(c => c.id);
   }
