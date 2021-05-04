@@ -13,6 +13,7 @@ import {map, tap} from "rxjs/operators";
 })
 export class LeaderboardComponent implements OnInit {
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
+  @Select(UserState.sortUsersByRating) sortUsers$: Observable<UserModel[]> | undefined;
 
 
   constructor(private store: Store) {
@@ -20,15 +21,7 @@ export class LeaderboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.store.dispatch(new ListenForUsers());
-    this.sort();
-  }
-  sort() {
 
-    this.users$ = this.users$.pipe(tap((data) => {
-      data.sort((a, b) => {
-        return a.rating < b.rating ? -1 : 1;
-      });
-      return data;
-    }))
   }
+
 }

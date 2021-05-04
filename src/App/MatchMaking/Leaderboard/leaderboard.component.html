@@ -8,11 +8,12 @@
     <mat-card-content>
 
       <div
-        *ngIf="users$ | async as users"
+        *ngIf="sortUsers$ | async as users"
            fxLayout="row"
            fxLayout.xs="column"
            fxFlexFill
            fxLayoutAlign="space-between center">
+
         <div >
           <ul>
             <h1> Name</h1>
@@ -21,7 +22,6 @@
             </h3>
           </ul>
         </div>
-
         <div>
           <ul>
             <h1> Rating</h1>
