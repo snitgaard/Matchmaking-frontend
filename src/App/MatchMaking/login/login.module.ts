@@ -23,7 +23,7 @@ import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
   imports: [
     LoginRoutingModule,
     MatFormFieldModule,
-    NgxsModule.forFeature([LoginState]),
+    // NgxsModule.forFeature([LoginState]),
     MatCardModule,
     MatIconModule,
     MatButtonModule,
