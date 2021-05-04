@@ -12,16 +12,15 @@ import {map, tap} from "rxjs/operators";
   styleUrls: ['./leaderboard.component.css']
 })
 export class LeaderboardComponent implements OnInit {
-  @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
   @Select(UserState.sortUsersByRating) sortUsers$: Observable<UserModel[]> | undefined;
+  @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
 
 
   constructor(private store: Store) {
   }
 
   ngOnInit(): void {
-    this.store.dispatch(new ListenForUsers());
-
+    // this.store.dispatch(new ListenForUsers());
   }
 
 }

@@ -10,6 +10,8 @@ import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {LeaderboardRoutingModule} from './leaderboard-routing.module';
 import {CommonModule} from "@angular/common";
+import {NgxsModule} from "@ngxs/store";
+import {UserState} from "../Profile/state/user.state";
 
 
 
@@ -28,6 +30,7 @@ import {CommonModule} from "@angular/common";
     MatListModule,
     MatButtonModule,
     MatInputModule,
+    NgxsModule.forFeature([UserState]),
     CommonModule
   ]
 })
