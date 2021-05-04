@@ -1,8 +1,8 @@
-<div *ngIf="!loggedInUser">
+<div *ngIf="!(loggedInUser$ | async)">
   Not Logged In
 </div>
 
-<div *ngIf="loggedInUser as user">
+<div *ngIf="loggedInUser$ | async as user">
   {{user.username}}
   <button (click)="logout">Logout</button>
 </div>
