@@ -5,9 +5,10 @@ import {Subscription} from 'rxjs';
 import {UserModel} from '../../shared/user.model';
 import {UserService} from '../../shared/user.service';
 import {LoginService} from '../../shared/login.service';
-import {ListenForLogin, LoadUserFromStorage, UserLoggedIn} from './login.actions';
+import {ListenForLogin, LoadUserFromStorage, RemoveUserFromStorage, UserLoggedIn} from './login.actions';
 import {AuthUserModel} from '../../shared/auth-user.model';
 import {tap} from 'rxjs/operators';
+import {patch, removeItem} from '@ngxs/store/operators';
 
 
 export interface UserStateModel {
@@ -44,12 +45,16 @@ export class LoginState {
     return state.loggedInUser;
   }
 
+  @Action(RemoveUserFromStorage)
+  removeUserFromStorage(ctx: StateContext<UserStateModel>) {
+    ctx.setState({Users: [], loggedInUser: undefined})
+  }
+
   @Action(ListenForLogin)
   listenForLogin(ctx: StateContext<UserStateModel>) {
     return this.loginService.listenForLogin().pipe(
       tap(userModel => {
         const state = ctx.getState();
-        console.log(userModel)
         const newState: UserStateModel = {
           ...state,
           loggedInUser: userModel
@@ -62,6 +67,7 @@ export class LoginState {
   @Action(UserLoggedIn)
   userLoggedIn(ctx: StateContext<UserStateModel>, userLoggedInAction: UserLoggedIn) {
     return this.loginService.login({
+      id: userLoggedInAction.user.id,
       username: userLoggedInAction.user.username,
       password: userLoggedInAction.user.password})
     }
@@ -72,6 +78,7 @@ export class LoginState {
     const user = state.loggedInUser;
     if (user) {
       this.loginService.login({
+        id: user.id,
         username: user.username,
         password: user.password
       });
