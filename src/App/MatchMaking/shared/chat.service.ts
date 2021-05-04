@@ -13,8 +13,8 @@ import {UserModel} from "./user.model";
 })
 export class ChatService {
   constructor(private socketApp: SocketApp) { }
-  createMessage(message: ChatDto): Observable<ChatModel> {
-    return this.socketApp.emit('create-message', message)
+  createMessage(message: ChatDto) {
+    this.socketApp.emit('create-message', message)
   }
   getAllMessages(): void {
     this.socketApp.emit('getAllMessages');

@@ -11,6 +11,7 @@ import {NgxsModule} from '@ngxs/store';
 import {UserState} from '../Profile/state/user.state';
 import {LoginState} from './state/login.state';
 import {ReactiveFormsModule} from '@angular/forms';
+import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 
 
 

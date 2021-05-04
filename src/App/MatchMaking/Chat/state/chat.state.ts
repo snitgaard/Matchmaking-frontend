@@ -48,13 +48,11 @@ export class ChatState {
   }
 
   @Action(SendMessage)
-  sendMessage({getState, patchState }: StateContext<ChatStateModel>, { payload }: SendMessage) {
-    return this.chatService.createMessage(payload).pipe(tap((result) => {
-      const state = getState();
-      patchState({
-        Messages: [...state.Messages, result]
-      });
-    }));
+  sendMessage(ctx: StateContext<ChatStateModel>, sendMessage: SendMessage) {
+    return this.chatService.createMessage({
+      message: sendMessage.payload.message,
+      userId: sendMessage.payload.userId
+    });
   }
 
   @Action(UpdateMessages)

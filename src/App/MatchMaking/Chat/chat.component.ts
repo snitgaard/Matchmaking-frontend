@@ -62,10 +62,6 @@ export class ChatComponent implements OnInit, OnDestroy
       message: this.messageFc.value,
       userId: this.userId
     };
-
-
-
-
     this.store.dispatch(new SendMessage(dtoTest));
     this.messageFc.patchValue('');
   }
