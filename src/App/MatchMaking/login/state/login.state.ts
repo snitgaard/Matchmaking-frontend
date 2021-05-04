@@ -55,7 +55,6 @@ export class LoginState {
     return this.loginService.listenForLogin().pipe(
       tap(userModel => {
         const state = ctx.getState();
-        console.log(userModel)
         const newState: UserStateModel = {
           ...state,
           loggedInUser: userModel
@@ -68,6 +67,7 @@ export class LoginState {
   @Action(UserLoggedIn)
   userLoggedIn(ctx: StateContext<UserStateModel>, userLoggedInAction: UserLoggedIn) {
     return this.loginService.login({
+      id: userLoggedInAction.user.id,
       username: userLoggedInAction.user.username,
       password: userLoggedInAction.user.password})
     }
@@ -78,6 +78,7 @@ export class LoginState {
     const user = state.loggedInUser;
     if (user) {
       this.loginService.login({
+        id: user.id,
         username: user.username,
         password: user.password
       });
