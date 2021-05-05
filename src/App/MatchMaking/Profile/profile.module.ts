@@ -19,8 +19,7 @@ import {FlexModule} from '@angular/flex-layout';
         ProfileRoutingModule,
         CommonModule,
       ReactiveFormsModule,
-      FlexModule,
-      NgxsModule.forFeature([UserState])
+      FlexModule
     ]
 })
 export class ProfileModule { }
