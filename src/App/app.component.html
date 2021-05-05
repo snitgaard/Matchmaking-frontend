@@ -2,9 +2,8 @@
   <ul>
     <li><a routerLink="/Profile">Profile</a></li>
     <li><a routerLink="/Chat">Chat</a></li>
-    <li><a routerLink="/Login">Logout</a></li>
-    <li><a routerLink="/CreateUser">Create User</a></li>
     <li><a routerLink="/Leaderboard">Leaderboard</a></li>
+    <li><a (click)="logout()" routerLink="/Login">Logout</a></li>
   </ul>
 </div>
 <div *ngIf="!(loggedInUser$ | async)">

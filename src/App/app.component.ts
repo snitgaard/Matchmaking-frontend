@@ -1,8 +1,9 @@
 import {Component} from '@angular/core';
-import {Select} from '@ngxs/store';
+import {Select, Store} from '@ngxs/store';
 import {LoginState} from './MatchMaking/login/state/login.state';
 import {Observable} from 'rxjs';
 import {UserModel} from './MatchMaking/shared/user.model';
+import {RemoveUserFromStorage} from './MatchMaking/login/state/login.actions';
 
 @Component({
 
@@ -13,4 +14,10 @@ import {UserModel} from './MatchMaking/shared/user.model';
 export class AppComponent {
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
   title = 'matchmaking-frontend';
+
+  constructor(private store: Store) {}
+
+  logout(): void {
+    this.store.dispatch(new RemoveUserFromStorage)
+  }
 }
