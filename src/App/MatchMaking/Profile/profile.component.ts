@@ -24,6 +24,7 @@ export class ProfileComponent implements OnInit, OnDestroy
   // loggedInUser: AuthUserModel;
 
   unsubscribe$ = new Subject();
+  queuedUsers: UserModel[] = [];
 
   constructor(private store: Store) {}
 
@@ -34,15 +35,28 @@ export class ProfileComponent implements OnInit, OnDestroy
 
   ngOnDestroy(): void {
     console.log('Destroyed');
-    this.store.dispatch(new StopListeningForUsers())
+    this.store.dispatch(new StopListeningForUsers());
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
   queueUp(): void {
-    let user = {...this.store.selectSnapshot(LoginState.loggedInUser)};
+    const user = {...this.store.selectSnapshot(LoginState.loggedInUser)};
     user.inQueue = !user.inQueue;
     this.store.dispatch(new UpdateUser(user));
+    this.users$.subscribe((users) => {
+      users.forEach(queuedUser => {
+        if (queuedUser.id === user.id)
+        {
+          return;
+        }
+        if (queuedUser.inQueue === true)
+        {
+          this.queuedUsers.push(queuedUser);
+          console.log(queuedUser);
+        }
+      });
+    });
   }
 
 }
