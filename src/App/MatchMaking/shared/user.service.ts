@@ -20,6 +20,9 @@ export class UserService {
   listenForUsers(): Observable<UserModel[]>{
     return this.socketApp.fromEvent<UserModel[]>('users');
   }
+  listenForNewUser(): Observable<UserModel> {
+    return this.socketApp.fromEvent<UserModel>('new-user');
+  }
   getAllUsers(): void{
     this.socketApp.emit('getAllUsers');
   }

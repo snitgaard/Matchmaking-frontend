@@ -5,7 +5,7 @@ import {Subscription} from 'rxjs';
 
 import {
   CreateUser,
-  ListenForUsers, StopListeningForUsers, UpdateUser,
+  ListenForUsers, NewUser, StopListeningForUsers, UpdateUser,
   UpdateUsers
 } from './user.actions';
 import {UserModel} from '../../shared/user.model';
@@ -14,6 +14,8 @@ import {tap} from 'rxjs/operators';
 import {patch, updateItem} from '@ngxs/store/operators';
 import {LoginState} from '../../login/state/login.state';
 import {LoggedInUserUpdate} from '../../login/state/login.actions';
+import {NewMessage} from "../../Chat/state/chat.actions";
+import {ChatStateModel} from "../../Chat/state/chat.state";
 
 
 export interface UserStateModel {
@@ -32,6 +34,7 @@ export interface UserStateModel {
 export class UserState {
   private usersUnsub: Subscription | undefined;
   private updatedUser: Subscription | undefined;
+  private unsubscribeNewUser: Subscription | undefined;
 
   constructor(private userService: UserService, private store: Store) {
   }
@@ -104,6 +107,19 @@ export class UserState {
         Users: [...state.Users, result]
       });
     }));
+  }
+
+  @Action(NewUser)
+  newUser(ctx: StateContext<UserStateModel>) {
+    this.unsubscribeNewUser = this.userService.listenForNewUser().subscribe(user => {
+      const state = ctx.getState();
+      const newUsers = [...state.Users]
+      newUsers.push(user);
+      ctx.setState({
+        ...state,
+        Users: newUsers
+      });
+    });
   }
 
 }

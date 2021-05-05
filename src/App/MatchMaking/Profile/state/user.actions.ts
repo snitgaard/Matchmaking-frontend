@@ -16,6 +16,10 @@ export class CreateUser {
   }
 }
 
+export class NewUser {
+  static readonly type = '[User] New User';
+}
+
 export class UpdateUser {
   static readonly type = '[User] Updated User';
   constructor(public updatedUser: UserModel) {
