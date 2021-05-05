@@ -1,16 +1,19 @@
 import { Injectable } from '@angular/core';
-import {Action, Selector, State, StateContext} from '@ngxs/store';
+import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 
 import {Subscription} from 'rxjs';
 
 import {
   CreateUser,
-  ListenForUsers, StopListeningForUsers,
+  ListenForUsers, StopListeningForUsers, UpdateUser,
   UpdateUsers
 } from './user.actions';
 import {UserModel} from '../../shared/user.model';
 import {UserService} from '../../shared/user.service';
 import {tap} from 'rxjs/operators';
+import {patch, updateItem} from '@ngxs/store/operators';
+import {LoginState} from '../../login/state/login.state';
+import {LoggedInUserUpdate} from '../../login/state/login.actions';
 
 
 export interface UserStateModel {
@@ -28,8 +31,9 @@ export interface UserStateModel {
 @Injectable()
 export class UserState {
   private usersUnsub: Subscription | undefined;
+  private updatedUser: Subscription | undefined;
 
-  constructor(private userService: UserService) {
+  constructor(private userService: UserService, private store: Store) {
   }
 
   @Selector()
@@ -49,17 +53,30 @@ export class UserState {
   }
 
   @Selector()
-  static relevantUser(state: UserStateModel): UserModel |undefined {
+  static relevantUser(state: UserStateModel): UserModel | undefined {
     return state.loggedInUser;
   }
 
   @Action(ListenForUsers)
-  getUsers(ctx: StateContext<UserStateModel>){
+  getUsers(ctx: StateContext<UserStateModel>) {
     this.usersUnsub = this.userService.listenForUsers().subscribe(users => {
       ctx.dispatch(new UpdateUsers(users));
+      const loggedInId = this.store.selectSnapshot(LoginState.loggedInUser).id
+      users.forEach(user => {
+        if(user.id === loggedInId)
+        {
+          ctx.dispatch(new LoggedInUserUpdate(user))
+        }
+      })
     });
     this.userService.getAllUsers();
   }
+
+  @Action(UpdateUser)
+  updateUser(ctx: StateContext<UserStateModel>, updateUser: UpdateUser) {
+    this.userService.updateUser(updateUser.updatedUser.id, updateUser.updatedUser);
+  }
+
 
   @Action(UpdateUsers)
   updateUsers(ctx: StateContext<UserStateModel>, uc: UpdateUsers): void {
@@ -70,6 +87,8 @@ export class UserState {
     };
     ctx.setState(newState);
   }
+
+
   @Action(StopListeningForUsers)
   stopListeningForClients(ctx: StateContext<UserStateModel>): void {
     if (this.usersUnsub) {

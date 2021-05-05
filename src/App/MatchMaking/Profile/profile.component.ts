@@ -4,7 +4,7 @@ import {UserState} from './state/user.state';
 import {Observable, Subject} from 'rxjs';
 import {UserModel} from '../shared/user.model';
 import {UserService} from '../shared/user.service';
-import {ListenForUsers, StopListeningForUsers} from './state/user.actions';
+import {ListenForUsers, StopListeningForUsers, UpdateUser, UpdateUsers} from './state/user.actions';
 import {takeUntil} from 'rxjs/operators';
 import {LoginState} from '../login/state/login.state';
 import {LoadUserFromStorage, RemoveUserFromStorage} from '../login/state/login.actions';
@@ -20,7 +20,7 @@ import {AuthUserModel} from '../shared/auth-user.model';
 export class ProfileComponent implements OnInit, OnDestroy
 {
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
-  @Select(LoginState.loggedInUser) loggedInUser$: Observable<AuthUserModel> | undefined;
+  @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
   // loggedInUser: AuthUserModel;
 
   unsubscribe$ = new Subject();
@@ -39,7 +39,10 @@ export class ProfileComponent implements OnInit, OnDestroy
     this.unsubscribe$.complete();
   }
 
-  logout(): void {
-    this.store.dispatch(new RemoveUserFromStorage)
+  queueUp(): void {
+    let user = {...this.store.selectSnapshot(LoginState.loggedInUser)};
+    user.inQueue = !user.inQueue;
+    this.store.dispatch(new UpdateUser(user));
   }
+
 }

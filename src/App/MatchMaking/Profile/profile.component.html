@@ -4,4 +4,9 @@
 
 <div *ngIf="loggedInUser$ | async as user">
   <h1> Logged in as: {{user.username}}</h1>
+  <h1> Your rating is: {{user.rating}}</h1>
+  <h1> In queue: {{user.inQueue}}</h1>
 </div>
+
+<button (click)="queueUp()">Ready for queue</button>
+
