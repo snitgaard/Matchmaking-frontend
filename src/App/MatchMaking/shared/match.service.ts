@@ -11,6 +11,7 @@ import {MatchDto} from './match.dto';
 })
 export class MatchService {
   constructor(private socketApp: SocketApp) { }
+
   /*
   sendMatch(match: MatchDto): void {
     this.socketApp.emit('match', match)
