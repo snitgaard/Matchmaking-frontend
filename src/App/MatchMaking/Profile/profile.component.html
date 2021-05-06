@@ -3,5 +3,11 @@
 </div>
 
 <div *ngIf="loggedInUser$ | async as user">
+
   <h1> Logged in as: {{user.username}}</h1>
+</div>
+<div *ngIf="matches$ | async as matches">
+<div *ngFor="let match of matches">
+  <h1>test: {{match.id}}</h1>
+</div>
 </div>
