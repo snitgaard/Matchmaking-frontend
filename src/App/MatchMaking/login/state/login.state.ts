@@ -15,6 +15,7 @@ import {
 import {AuthUserModel} from '../../shared/auth-user.model';
 import {tap} from 'rxjs/operators';
 import {patch, removeItem} from '@ngxs/store/operators';
+import {log} from 'util';
 
 
 export interface UserStateModel {
@@ -75,6 +76,7 @@ export class LoginState {
   loggedInUserUpdate(ctx: StateContext<UserStateModel>, loggedInUserUpdate: LoggedInUserUpdate) {
     const user = {...ctx.getState().loggedInUser};
     user.inQueue = loggedInUserUpdate.user.inQueue;
+    user.isActive = loggedInUserUpdate.user.isActive;
     ctx.setState({
       ...ctx.getState(),
       loggedInUser: user
@@ -89,7 +91,8 @@ export class LoginState {
       password: userLoggedInAction.user.password,
       rating: userLoggedInAction.user.rating,
       inGame: userLoggedInAction.user.inGame,
-      inQueue: userLoggedInAction.user.inQueue
+      inQueue: userLoggedInAction.user.inQueue,
+      isActive: userLoggedInAction.user.isActive,
     });
     }
 
@@ -104,7 +107,8 @@ export class LoginState {
         password: user.password,
         rating: user.rating,
         inGame: user.inGame,
-        inQueue: user.inQueue
+        inQueue: user.inQueue,
+        isActive: user.isActive
       });
     }
   }
