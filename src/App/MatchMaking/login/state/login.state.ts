@@ -42,13 +42,13 @@ export class LoginState {
 
   @Selector()
   static loggedInUser(state: UserStateModel): AuthUserModel | undefined {
-    console.log('user', state.loggedInUser)
+    console.log('user', state.loggedInUser);
     return state.loggedInUser;
   }
 
   @Action(RemoveUserFromStorage)
   removeUserFromStorage(ctx: StateContext<UserStateModel>) {
-    ctx.setState({Users: [], loggedInUser: undefined})
+    ctx.setState({Users: [], loggedInUser: undefined});
   }
 
   @Action(ListenForLogin)
@@ -70,7 +70,7 @@ export class LoginState {
     return this.loginService.login({
       id: userLoggedInAction.user.id,
       username: userLoggedInAction.user.username,
-      password: userLoggedInAction.user.password})
+      password: userLoggedInAction.user.password});
     }
 
   @Action(LoadUserFromStorage)

@@ -34,12 +34,12 @@ export class ProfileComponent implements OnInit, OnDestroy
 
   ngOnDestroy(): void {
     console.log('Destroyed');
-    this.store.dispatch(new StopListeningForUsers())
+    this.store.dispatch(new StopListeningForUsers());
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
 
   logout(): void {
-    this.store.dispatch(new RemoveUserFromStorage)
+    this.store.dispatch(new RemoveUserFromStorage);
   }
 }
