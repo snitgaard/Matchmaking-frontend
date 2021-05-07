@@ -25,6 +25,8 @@ export class ProfileComponent implements OnInit, OnDestroy
 
   unsubscribe$ = new Subject();
   queuedUsers: UserModel[] = [];
+  matchFound: boolean;
+  testUser: UserModel[] = [];
 
   constructor(private store: Store) {}
 
@@ -44,20 +46,26 @@ export class ProfileComponent implements OnInit, OnDestroy
     const user = {...this.store.selectSnapshot(LoginState.loggedInUser)};
     user.inQueue = !user.inQueue;
     this.store.dispatch(new UpdateUser(user));
-    this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
+    this.users$.subscribe((users) => {
       users.forEach(queuedUser => {
-        const index = this.queuedUsers.findIndex(user => user.inQueue === queuedUser.inQueue)
         if (queuedUser.id === user.id)
         {
           return;
         }
-        if (queuedUser.inQueue === true && index === -1)
+        if (queuedUser.inQueue === true)
         {
           this.queuedUsers.push(queuedUser);
           console.log(queuedUser);
         }
       });
     });
-    console.log("Queued users", this.queuedUsers)
+    console.log(this.queuedUsers);
+    if(this.queuedUsers.length > 0)
+    {
+      const firstUser = this.queuedUsers[0];
+      this.testUser.push(firstUser);
+      this.matchFound = true;
+      console.log(this.testUser);
+    }
   }
 }
