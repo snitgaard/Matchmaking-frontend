@@ -20,6 +20,7 @@ import {ChatStateModel} from "../../Chat/state/chat.state";
 
 export interface UserStateModel {
   Users: UserModel[];
+  sortedUsers: UserModel[];
   loggedInUser: UserModel | undefined;
 }
 
@@ -27,6 +28,7 @@ export interface UserStateModel {
   name: 'user',
   defaults: {
     Users: [],
+    sortedUsers: [],
     loggedInUser: undefined,
   }
 })
@@ -46,7 +48,7 @@ export class UserState {
 
   @Selector()
   static sortUsersByRating(state: UserStateModel): UserModel[] {
-    return state.Users.sort((u1, u2) => u2.rating - u1.rating);
+    return state.sortedUsers;
   }
 
 
@@ -86,7 +88,8 @@ export class UserState {
     const state = ctx.getState();
     const newState: UserStateModel = {
       ...state,
-      Users: uc.users
+      Users: uc.users,
+      sortedUsers: uc.users.sort((u1, u2) => u2.rating - u1.rating)
     };
     ctx.setState(newState);
   }

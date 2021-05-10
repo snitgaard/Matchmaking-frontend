@@ -5,10 +5,9 @@
     <mat-card-header>
       <h1 class="black"> Leaderboard</h1>
     </mat-card-header>
-    <mat-card-content>
+    <mat-card-content *ngIf="sortUsers$ | async as users">
 
-      <div
-        *ngIf="sortUsers$ | async as users"
+      <div *ngFor="let user of users"
            fxLayout="row"
            fxLayout.xs="column"
            fxFlexFill
@@ -16,17 +15,17 @@
 
         <div >
           <ul>
-            <h1> Name</h1>
-            <h3  *ngFor="let user of users">
+            <h3>
+              Name:&nbsp;&nbsp;
               {{user.username}}
             </h3>
           </ul>
         </div>
         <div>
           <ul>
-            <h1> Rating</h1>
-            <h3 *ngFor="let user of users">
-              {{user.rating}}
+            <h3>
+              Rating:&nbsp;&nbsp;
+              {{user.rating.toFixed()}}
             </h3>
           </ul>
         </div>

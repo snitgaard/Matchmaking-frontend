@@ -12,6 +12,7 @@ import {LeaderboardRoutingModule} from './leaderboard-routing.module';
 import {CommonModule} from "@angular/common";
 import {NgxsModule} from "@ngxs/store";
 import {UserState} from "../Profile/state/user.state";
+import {ProfileModule} from "../Profile/profile.module";
 
 
 
@@ -30,8 +31,7 @@ import {UserState} from "../Profile/state/user.state";
     MatListModule,
     MatButtonModule,
     MatInputModule,
-    NgxsModule.forFeature([UserState]),
-    CommonModule
+    CommonModule,
   ]
 })
 export class LeaderboardModule { }

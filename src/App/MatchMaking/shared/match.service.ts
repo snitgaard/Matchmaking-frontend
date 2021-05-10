@@ -2,7 +2,8 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {SocketApp} from '../../app.module';
 import {MatchModel} from './match.model';
-import {MatchDto} from './match.dto';
+import {UserModel} from "./user.model";
+
 
 
 
@@ -10,6 +11,7 @@ import {MatchDto} from './match.dto';
   providedIn: 'root'
 })
 export class MatchService {
+  matchModel: MatchModel | undefined;
   constructor(private socketApp: SocketApp) { }
 
   sendMatch(match: MatchDto): void {
@@ -27,11 +29,8 @@ export class MatchService {
   listenForMatches(): Observable<MatchModel[]>{
     return this.socketApp.fromEvent<MatchModel[]>('matches');
   }
-  listenForMatchList(): void{
-    this.socketApp.emit('welcomeMatches');
-  }
-  joinMatch(dto: MatchModel): void{
-    this.socketApp.emit('joinMatch', dto);
+  getAllMatches(): void{
+    this.socketApp.emit('getAllMatches');
   }
 
 }
