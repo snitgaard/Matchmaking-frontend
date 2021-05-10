@@ -24,7 +24,7 @@ export class ProfileComponent implements OnInit, OnDestroy
 {
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
   @Select(MatchState.matches) matches$: Observable<MatchModel[]> | undefined;
-  @Select(LoginState.loggedInUser) loggedInUser$: Observable<AuthUserModel> | undefined;
+  @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
   // loggedInUser: AuthUserModel;
 
   unsubscribe$ = new Subject();
@@ -53,25 +53,23 @@ export class ProfileComponent implements OnInit, OnDestroy
     this.store.dispatch(new UpdateUser(user));
     this.users$.subscribe((users) => {
       users.forEach(queuedUser => {
-        if (queuedUser.id === user.id)
-        {
+        if (queuedUser.id === user.id) {
           return;
         }
-        if (queuedUser.inQueue === true)
-        {
+        if (queuedUser.inQueue === true) {
           this.queuedUsers.push(queuedUser);
           console.log(queuedUser);
         }
       });
     });
     console.log(this.queuedUsers);
-    if(this.queuedUsers.length > 0)
-    {
+    if (this.queuedUsers.length > 0) {
       const firstUser = this.queuedUsers[0];
       this.testUser.push(firstUser);
       this.matchFound = true;
       console.log(this.testUser);
     }
+  }
   logout(): void {
     this.store.dispatch(new RemoveUserFromStorage);
   }

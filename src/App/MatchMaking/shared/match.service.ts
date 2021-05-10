@@ -3,6 +3,7 @@ import {Observable} from 'rxjs';
 import {SocketApp} from '../../app.module';
 import {MatchModel} from './match.model';
 import {UserModel} from "./user.model";
+import {MatchDto} from "./match.dto";
 
 
 
