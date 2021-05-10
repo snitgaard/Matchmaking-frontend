@@ -13,12 +13,12 @@ export class LoginService {
 
   constructor(private socketApp: SocketApp) { }
 
-  login(user: AuthUserModel): void {
+  login(user: UserModel): void {
     this.socketApp.emit('connect-user', user);
   }
 
-  listenForLogin(): Observable<AuthUserModel> {
-    return this.socketApp.fromEvent<AuthUserModel>("iamconnected")
+  listenForLogin(): Observable<UserModel> {
+    return this.socketApp.fromEvent<UserModel>("iamconnected")
   }
 
   listenForConnect(): Observable<string> {

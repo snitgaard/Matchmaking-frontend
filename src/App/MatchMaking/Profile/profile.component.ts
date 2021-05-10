@@ -4,7 +4,7 @@ import {UserState} from './state/user.state';
 import {Observable, Subject} from 'rxjs';
 import {UserModel} from '../shared/user.model';
 import {UserService} from '../shared/user.service';
-import {ListenForUsers, StopListeningForUsers} from './state/user.actions';
+import {ListenForUsers, StopListeningForUsers, UpdateUser, UpdateUsers} from './state/user.actions';
 import {takeUntil} from 'rxjs/operators';
 import {LoginState} from '../login/state/login.state';
 import {LoadUserFromStorage, RemoveUserFromStorage} from '../login/state/login.actions';
@@ -28,6 +28,9 @@ export class ProfileComponent implements OnInit, OnDestroy
   // loggedInUser: AuthUserModel;
 
   unsubscribe$ = new Subject();
+  queuedUsers: UserModel[] = [];
+  matchFound: boolean;
+  testUser: UserModel[] = [];
 
   constructor(private store: Store) {}
 
@@ -44,6 +47,31 @@ export class ProfileComponent implements OnInit, OnDestroy
     this.unsubscribe$.complete();
   }
 
+  queueUp(): void {
+    const user = {...this.store.selectSnapshot(LoginState.loggedInUser)};
+    user.inQueue = !user.inQueue;
+    this.store.dispatch(new UpdateUser(user));
+    this.users$.subscribe((users) => {
+      users.forEach(queuedUser => {
+        if (queuedUser.id === user.id)
+        {
+          return;
+        }
+        if (queuedUser.inQueue === true)
+        {
+          this.queuedUsers.push(queuedUser);
+          console.log(queuedUser);
+        }
+      });
+    });
+    console.log(this.queuedUsers);
+    if(this.queuedUsers.length > 0)
+    {
+      const firstUser = this.queuedUsers[0];
+      this.testUser.push(firstUser);
+      this.matchFound = true;
+      console.log(this.testUser);
+    }
   logout(): void {
     this.store.dispatch(new RemoveUserFromStorage);
   }

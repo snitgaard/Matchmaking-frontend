@@ -7,8 +7,6 @@ import {ChatDto} from './chat.dto';
 import {ChatModel} from './chat.model';
 import {map} from 'rxjs/operators';
 
-
-
 @Injectable({
   providedIn: 'root'
 })
@@ -22,9 +20,20 @@ export class UserService {
   listenForUsers(): Observable<UserModel[]>{
     return this.socketApp.fromEvent<UserModel[]>('users');
   }
+  listenForNewUser(): Observable<UserModel> {
+    return this.socketApp.fromEvent<UserModel>('new-user');
+  }
   getAllUsers(): void{
     this.socketApp.emit('getAllUsers');
   }
+  updateUser(id: string, updateUser: UserModel): void  {
+    this.socketApp.emit('updateUser', updateUser);
+  }
+
+  listenForQueue(): Observable<UserModel> {
+    return this.socketApp.fromEvent<UserModel>('in-queue');
+  }
+
   listenForError(): Observable<string> {
     return this.socketApp
       .fromEvent<string>("error");

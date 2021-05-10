@@ -2,7 +2,7 @@ import {UserModel} from '../../shared/user.model';
 import {AuthUserModel} from '../../shared/auth-user.model';
 
 export class UserLoggedIn {
-  constructor(public user: AuthUserModel) {}
+  constructor(public user: UserModel) {}
 
   static readonly type = '[User] New User Logged In';
 }
@@ -15,4 +15,9 @@ export class ListenForLogin {
 }
 export class RemoveUserFromStorage {
   static readonly type = '[User] Remove User From Storage'
+}
+
+export class LoggedInUserUpdate {
+  constructor(public user: UserModel){}
+  static readonly type = '[User] Updating logged in user'
 }

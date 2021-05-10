@@ -5,15 +5,22 @@ import {Subscription} from 'rxjs';
 import {UserModel} from '../../shared/user.model';
 import {UserService} from '../../shared/user.service';
 import {LoginService} from '../../shared/login.service';
-import {ListenForLogin, LoadUserFromStorage, RemoveUserFromStorage, UserLoggedIn} from './login.actions';
+import {
+  ListenForLogin,
+  LoadUserFromStorage,
+  LoggedInUserUpdate,
+  RemoveUserFromStorage,
+  UserLoggedIn
+} from './login.actions';
 import {AuthUserModel} from '../../shared/auth-user.model';
 import {tap} from 'rxjs/operators';
 import {patch, removeItem} from '@ngxs/store/operators';
+import {log} from 'util';
 
 
 export interface UserStateModel {
   Users: UserModel[];
-  loggedInUser: AuthUserModel | undefined;
+  loggedInUser: UserModel | undefined;
 }
 
 @State<UserStateModel>({
@@ -41,8 +48,8 @@ export class LoginState {
   }
 
   @Selector()
-  static loggedInUser(state: UserStateModel): AuthUserModel | undefined {
-    console.log('user', state.loggedInUser);
+  static loggedInUser(state: UserStateModel): UserModel | undefined {
+    console.log('user', state.loggedInUser)
     return state.loggedInUser;
   }
 
@@ -65,12 +72,28 @@ export class LoginState {
     );
   }
 
+  @Action(LoggedInUserUpdate)
+  loggedInUserUpdate(ctx: StateContext<UserStateModel>, loggedInUserUpdate: LoggedInUserUpdate) {
+    const user = {...ctx.getState().loggedInUser};
+    user.inQueue = loggedInUserUpdate.user.inQueue;
+    user.isActive = loggedInUserUpdate.user.isActive;
+    ctx.setState({
+      ...ctx.getState(),
+      loggedInUser: user
+    })
+  }
+
   @Action(UserLoggedIn)
   userLoggedIn(ctx: StateContext<UserStateModel>, userLoggedInAction: UserLoggedIn) {
     return this.loginService.login({
       id: userLoggedInAction.user.id,
       username: userLoggedInAction.user.username,
-      password: userLoggedInAction.user.password});
+      password: userLoggedInAction.user.password,
+      rating: userLoggedInAction.user.rating,
+      inGame: userLoggedInAction.user.inGame,
+      inQueue: userLoggedInAction.user.inQueue,
+      isActive: userLoggedInAction.user.isActive,
+    });
     }
 
   @Action(LoadUserFromStorage)
@@ -81,7 +104,11 @@ export class LoginState {
       this.loginService.login({
         id: user.id,
         username: user.username,
-        password: user.password
+        password: user.password,
+        rating: user.rating,
+        inGame: user.inGame,
+        inQueue: user.inQueue,
+        isActive: user.isActive
       });
     }
   }

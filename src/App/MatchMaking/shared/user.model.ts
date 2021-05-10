@@ -6,9 +6,10 @@ export interface UserModel {
   username: string;
   password: string;
   rating: number;
-  inGame?: boolean;
-  inQueue?: boolean;
+  inGame: boolean;
+  inQueue: boolean;
   matches?: MatchModel[];
   messages?: ChatModel[];
   typing?: boolean;
+  isActive?: boolean;
 }

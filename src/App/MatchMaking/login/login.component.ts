@@ -7,7 +7,7 @@ import {ListenForLogin, LoadUserFromStorage, RemoveUserFromStorage, UserLoggedIn
 import {LoginService} from '../shared/login.service';
 import {takeUntil} from 'rxjs/operators';
 import {FormBuilder} from '@angular/forms';
-import {CreateUser} from '../Profile/state/user.actions';
+import {CreateUser, UpdateUser} from '../Profile/state/user.actions';
 import {Router} from '@angular/router';
 
 @Component({
@@ -48,6 +48,6 @@ export class LoginComponent implements OnInit {
     const userDto: UserModel = this.userFb.value;
     this.store.dispatch(new UserLoggedIn(userDto)).subscribe(success => {
       this.router.navigateByUrl('/Profile');
-    });
+    })
   }
 }
