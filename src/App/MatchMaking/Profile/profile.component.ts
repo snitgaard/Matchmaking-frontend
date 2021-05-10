@@ -9,6 +9,9 @@ import {takeUntil} from 'rxjs/operators';
 import {LoginState} from '../login/state/login.state';
 import {LoadUserFromStorage, RemoveUserFromStorage} from '../login/state/login.actions';
 import {AuthUserModel} from '../shared/auth-user.model';
+import {ListenForMatches} from "../Lobby/state/match.actions";
+import {MatchModel} from "../shared/match.model";
+import {MatchState} from "../Lobby/state/match.state";
 
 
 @Component({
@@ -20,7 +23,8 @@ import {AuthUserModel} from '../shared/auth-user.model';
 export class ProfileComponent implements OnInit, OnDestroy
 {
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
-  @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
+  @Select(MatchState.matches) matches$: Observable<MatchModel[]> | undefined;
+  @Select(LoginState.loggedInUser) loggedInUser$: Observable<AuthUserModel> | undefined;
   // loggedInUser: AuthUserModel;
 
   unsubscribe$ = new Subject();
@@ -32,6 +36,7 @@ export class ProfileComponent implements OnInit, OnDestroy
 
   ngOnInit(): void {
     this.store.dispatch(new ListenForUsers());
+    this.store.dispatch(new ListenForMatches());
     // this.store.dispatch(new LoadUserFromStorage());
   }
 
@@ -67,5 +72,7 @@ export class ProfileComponent implements OnInit, OnDestroy
       this.matchFound = true;
       console.log(this.testUser);
     }
+  logout(): void {
+    this.store.dispatch(new RemoveUserFromStorage);
   }
 }

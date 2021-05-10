@@ -55,7 +55,7 @@ export class LoginState {
 
   @Action(RemoveUserFromStorage)
   removeUserFromStorage(ctx: StateContext<UserStateModel>) {
-    ctx.setState({Users: [], loggedInUser: undefined})
+    ctx.setState({Users: [], loggedInUser: undefined});
   }
 
   @Action(ListenForLogin)
