@@ -7,10 +7,6 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {NgxsModule} from '@ngxs/store';
 import {UserState} from './state/user.state';
 import {FlexModule} from '@angular/flex-layout';
-import {MatCardModule} from '@angular/material/card';
-import {MatListModule} from '@angular/material/list';
-import {MatButtonModule} from '@angular/material/button';
-import {MatFormFieldModule} from '@angular/material/form-field';
 
 
 @NgModule({
@@ -19,16 +15,12 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   ],
 
 
-  imports: [
-    ProfileRoutingModule,
-    CommonModule,
-    ReactiveFormsModule,
-    FlexModule,
-    NgxsModule.forFeature([UserState]),
-    MatCardModule,
-    MatListModule,
-    MatButtonModule,
-    MatFormFieldModule
-  ]
+    imports: [
+        ProfileRoutingModule,
+        CommonModule,
+      ReactiveFormsModule,
+      FlexModule,
+      NgxsModule.forFeature([UserState])
+    ]
 })
 export class ProfileModule { }
