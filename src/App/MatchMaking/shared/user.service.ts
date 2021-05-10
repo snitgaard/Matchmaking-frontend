@@ -27,7 +27,11 @@ export class UserService {
     this.socketApp.emit('getAllUsers');
   }
   updateUser(id: string, updateUser: UserModel): void  {
-    this.socketApp.emit('updateUser', updateUser)
+    this.socketApp.emit('updateUser', updateUser);
+  }
+
+  listenForQueue(): Observable<UserModel> {
+    return this.socketApp.fromEvent<UserModel>('in-queue');
   }
 
   listenForError(): Observable<string> {
