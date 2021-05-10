@@ -1,18 +1,45 @@
-<div *ngIf="!(loggedInUser$ | async)">
-  Not Logged In
-</div>
+<body>
 
-<div *ngIf="loggedInUser$ | async as user">
-  <h1> Logged in as: {{user.username}}</h1>
-  <h1> Your rating is: {{user.rating}}</h1>
-  <h1> In queue: {{user.inQueue}}</h1>
-</div>
+<div class="image" fxLayout="column" fxFlex>
 
-<div *ngIf="testUser as users">
-  <div *ngFor="let user of users">
-  <h1>{{user.username}}</h1>
+  <div style="padding: 30px" fxLayout="column" fxFlex *ngIf="loggedInUser$ | async as user">
+    <mat-card fxFlex class="example-card-transparent">
+      <mat-card-header style="padding: 30px" fxLayoutAlign="center center">
+        <h1 style="color: green; font-size: 50px" > Welcome {{user.username}}</h1>
+      </mat-card-header>
+      <mat-card-content fxLayoutAlign="center center">
+        <div>
+          <h1 style="color: white"> Your Current Rating</h1>
+          <h1 class="styleBox" fxLayoutAlign="center center"> {{user.rating}}</h1>
+        </div>
+      </mat-card-content>
+      <mat-card-footer style="padding: 30px" fxLayoutAlign="center center">
+        <button class="styleBox" (click)="queueUp()" mat-button matSuffix> PLAY NOW</button>
+      </mat-card-footer>
+    </mat-card>
+  </div>
+
+  <div fxLayoutAlign="end" fxLayout="column" fxFlex="45" style="padding: 20px" fxLayoutGap="10px">
+    <mat-card fxFlex class="example-card">
+      <mat-card-header fxLayoutAlign="center center">
+        <h1 style="font-size: 20px" class="black"> Match History</h1>
+      </mat-card-header>
+      <mat-card-content>
+        <div   fxLayoutAlign="space-between center center">
+          <h3 class="black"> Name </h3>
+          <h3 class="black"> Rating </h3>
+          <h3 class="black"> Win/Lose </h3>
+        </div>
+      </mat-card-content>
+      <mat-card-footer *ngIf="loggedInUser$ | async as user">
+        <mat-list style="margin: 30px" fxLayoutAlign="space-between center center" class="scroll">
+          <div class="black"> {{user.username}} </div>
+          <div class="black"> {{user.rating}} </div>
+          <div class="black"> {{user.username}} </div>
+        </mat-list>
+      </mat-card-footer>
+    </mat-card>
   </div>
 </div>
-
-<button (click)="queueUp()">Ready for queue</button>
+</body>
 
