@@ -2,8 +2,13 @@ import {MatchModel} from "../../shared/match.model";
 import {Action, Selector, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {Subscription} from "rxjs";
-import {ListenForMatches, UpdateMatches} from "./match.actions";
+import {CreateMatch, ListenForMatches, NewMatch, UpdateMatches} from "./match.actions";
 import {MatchService} from "../../shared/match.service";
+import {CreateUser} from "../../Profile/state/user.actions";
+import {tap} from "rxjs/operators";
+import {UserStateModel} from "../../Profile/state/user.state";
+import {NewMessage, SendMessage} from "../../Chat/state/chat.actions";
+import {ChatStateModel} from "../../Chat/state/chat.state";
 
 
 
@@ -24,6 +29,7 @@ export interface MatchStateModel {
 @Injectable()
 export class MatchState {
   private matchesUnsub: Subscription | undefined;
+  private unsubscribeNewMatch: Subscription | undefined;
 
   constructor(private matchService: MatchService) {
   }
@@ -40,7 +46,7 @@ export class MatchState {
 
   @Action(ListenForMatches)
   getMatches(ctx: StateContext<MatchStateModel>){
-    if(this.matchesUnsub)
+    if (this.matchesUnsub)
     {
       this.matchesUnsub.unsubscribe();
     }
@@ -57,5 +63,29 @@ export class MatchState {
       matches: uc.matches,
     };
     ctx.setState(newState);
+  }
+
+  @Action(NewMatch)
+  newMatch(ctx: StateContext<MatchStateModel>) {
+    console.log('init')
+    this.unsubscribeNewMatch = this.matchService.listenForNewMatch().subscribe(match => {
+      const state = ctx.getState();
+      const newMatches = [...state.matches];
+      newMatches.push(match);
+      ctx.setState({
+        ...state,
+        matches: newMatches
+      });
+    });
+  }
+
+  @Action(CreateMatch)
+  createMatch(ctx: StateContext<MatchStateModel>, createMatch: CreateMatch) {
+    return this.matchService.createMatch({
+      id: createMatch.payload.id,
+      score: createMatch.payload.score,
+      winner: createMatch.payload.winner,
+      loser: createMatch.payload.loser,
+    });
   }
 }

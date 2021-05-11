@@ -4,5 +4,5 @@ export interface MatchModel {
   id: string;
   winner?: UserModel;
   loser?: UserModel;
-  score: string;
+  score?: string;
 }

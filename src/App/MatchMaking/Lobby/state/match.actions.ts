@@ -3,6 +3,17 @@ import {UserModel} from "../../shared/user.model";
 
 
 
+export class CreateMatch {
+  static readonly type = '[Match] Create Match';
+
+  constructor(public payload: MatchModel) {
+  }
+}
+
+export class NewMatch {
+  static readonly type = '[Match] New Match';
+}
+
 export class LoadMatchFromStorage {
   static readonly type = '[Match] Load Match From Storage';
 }

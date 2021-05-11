@@ -4,6 +4,7 @@ import {SocketApp} from '../../app.module';
 import {MatchModel} from './match.model';
 import {UserModel} from "./user.model";
 import {MatchDto} from "./match.dto";
+import {ChatModel} from "./chat.model";
 
 
 
@@ -15,8 +16,11 @@ export class MatchService {
   matchModel: MatchModel | undefined;
   constructor(private socketApp: SocketApp) { }
 
-  sendMatch(match: MatchDto): void {
-    this.socketApp.emit('match', match);
+  createMatch(match: MatchModel) {
+    this.socketApp.emit('create-match', match);
+  }
+  listenForNewMatch(): Observable<MatchModel> {
+    return this.socketApp.fromEvent<MatchModel>('new-match');
   }
   updateMatch(id: string, match: MatchModel): void {
     this.socketApp.emit('updateMatch', match);

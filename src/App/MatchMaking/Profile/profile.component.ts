@@ -9,9 +9,12 @@ import {takeUntil} from 'rxjs/operators';
 import {LoginState} from '../login/state/login.state';
 import {LoadUserFromStorage, RemoveUserFromStorage} from '../login/state/login.actions';
 import {AuthUserModel} from '../shared/auth-user.model';
-import {ListenForMatches} from "../Lobby/state/match.actions";
-import {MatchModel} from "../shared/match.model";
-import {MatchState} from "../Lobby/state/match.state";
+import {CreateMatch, ListenForMatches, NewMatch} from '../Lobby/state/match.actions';
+import {MatchModel} from '../shared/match.model';
+import {MatchState} from '../Lobby/state/match.state';
+import {FormBuilder} from "@angular/forms";
+import {MatchDto} from "../shared/match.dto";
+import {NewMessage} from "../Chat/state/chat.actions";
 
 
 @Component({
@@ -29,13 +32,20 @@ export class ProfileComponent implements OnInit, OnDestroy
 
   unsubscribe$ = new Subject();
   queuedUsers: UserModel[] = [];
+  activeMatches: MatchModel[] = [];
   matchFound: boolean;
   testUser: UserModel[] = [];
+  matchFb = this.fb.group({
+    score: [''],
+    winner: [''],
+    loser: ['']
+  });
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private fb: FormBuilder) {}
 
   ngOnInit(): void {
     this.store.dispatch(new ListenForUsers());
+    this.store.dispatch(new NewMatch());
     this.store.dispatch(new ListenForMatches());
     // this.store.dispatch(new LoadUserFromStorage());
   }
@@ -48,7 +58,10 @@ export class ProfileComponent implements OnInit, OnDestroy
   }
 
   queueUp(): void {
-    const user = {...this.store.selectSnapshot(LoginState.loggedInUser)};
+    console.log({...this.store.selectSnapshot(MatchState.matches)});
+    console.log({...this.store.selectSnapshot(UserState.users)});
+    // this.createMatch();
+    /*const user = {...this.store.selectSnapshot(LoginState.loggedInUser)};
     user.inQueue = !user.inQueue;
     this.store.dispatch(new UpdateUser(user));
     this.users$.subscribe((users) => {
@@ -61,15 +74,50 @@ export class ProfileComponent implements OnInit, OnDestroy
           console.log(queuedUser);
         }
       });
-    });
-    console.log(this.queuedUsers);
+    });*/
+
+    this.findActiveMatches();
+
+    if (this.activeMatches.length > 0)
+    {
+      console.log('I AM JOINING THE MATCH MOTHERFUCKER');
+    } else
+    {
+      this.createMatch();
+    }
+
+    /*console.log(this.queuedUsers);
     if (this.queuedUsers.length > 0) {
       const firstUser = this.queuedUsers[0];
       this.testUser.push(firstUser);
       this.matchFound = true;
       console.log(this.testUser);
-    }
+    }*/
   }
+
+  findActiveMatches(): void {
+    this.matches$.subscribe((matches) => {
+      matches.forEach(activeMatch => {
+        if (activeMatch.winner !== null && activeMatch.loser === null)
+        {
+          this.activeMatches.push(activeMatch);
+        }
+      });
+    });
+  }
+
+  createMatch(): void {
+    const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
+    this.matchFb.patchValue({
+      score: '0-0',
+      winner: loggedInUser,
+      loser: ''
+    });
+    console.log(this.matchFb.value);
+    const matchDto: MatchModel = this.matchFb.value;
+    this.store.dispatch(new CreateMatch(matchDto));
+  }
+
   logout(): void {
     this.store.dispatch(new RemoveUserFromStorage);
   }

@@ -1,8 +1,6 @@
-
-
+import {MatchModel} from "./match.model";
 
 export interface MatchDto {
-  id: string;
-  winnerId: string;
-
+  matches: MatchModel[];
+  match: MatchModel;
 }
