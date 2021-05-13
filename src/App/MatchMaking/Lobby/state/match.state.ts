@@ -83,9 +83,8 @@ export class MatchState {
   createMatch(ctx: StateContext<MatchStateModel>, createMatch: CreateMatch) {
     return this.matchService.createMatch({
       id: createMatch.payload.id,
-      score: createMatch.payload.score,
-      winner: createMatch.payload.winner,
-      loser: createMatch.payload.loser,
+      matchResults: createMatch.payload.matchResults,
+      score: createMatch.payload.score
     });
   }
 }

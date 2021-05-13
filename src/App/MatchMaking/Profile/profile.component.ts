@@ -15,6 +15,7 @@ import {MatchState} from '../Lobby/state/match.state';
 import {FormBuilder} from "@angular/forms";
 import {MatchDto} from "../shared/match.dto";
 import {NewMessage} from "../Chat/state/chat.actions";
+import {MatchResultsModel} from '../shared/match-results.model';
 
 
 @Component({
@@ -36,9 +37,7 @@ export class ProfileComponent implements OnInit, OnDestroy
   matchFound: boolean;
   testUser: UserModel[] = [];
   matchFb = this.fb.group({
-    score: [''],
-    winner: [''],
-    loser: ['']
+    score: ['']
   });
 
   constructor(private store: Store, private fb: FormBuilder) {}
@@ -98,7 +97,7 @@ export class ProfileComponent implements OnInit, OnDestroy
   findActiveMatches(): void {
     this.matches$.subscribe((matches) => {
       matches.forEach(activeMatch => {
-        if (activeMatch.winner !== null && activeMatch.loser === null)
+        if (activeMatch.matchResults.length == 0 || activeMatch.matchResults.length == 1)
         {
           this.activeMatches.push(activeMatch);
         }
@@ -109,13 +108,18 @@ export class ProfileComponent implements OnInit, OnDestroy
   createMatch(): void {
     const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
     this.matchFb.patchValue({
-      score: '0-0',
-      winner: loggedInUser,
-      loser: ''
+      score: '0-0'
     });
-    console.log(this.matchFb.value);
     const matchDto: MatchModel = this.matchFb.value;
     this.store.dispatch(new CreateMatch(matchDto));
+    const matchResult: MatchResultsModel = {
+      id: 'test',
+      result: true,
+      match: matchDto,
+      user: loggedInUser
+    }
+    console.log(matchResult);
+    matchDto.matchResults.push(matchResult);
   }
 
   logout(): void {
