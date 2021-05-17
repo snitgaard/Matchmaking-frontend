@@ -9,13 +9,21 @@ import {takeUntil} from 'rxjs/operators';
 import {LoginState} from '../login/state/login.state';
 import {LoadUserFromStorage, RemoveUserFromStorage} from '../login/state/login.actions';
 import {AuthUserModel} from '../shared/auth-user.model';
-import {CreateMatch, CreateMatchResult, ListenForMatches, NewMatch} from '../Lobby/state/match.actions';
+import {
+  CreateMatch,
+  CreateMatchResult,
+  ListenForMatches,
+  NewMatch,
+  UpdateMatch,
+  UpdateMatches
+} from '../Lobby/state/match.actions';
 import {MatchModel} from '../shared/match.model';
 import {MatchState} from '../Lobby/state/match.state';
 import {FormBuilder} from '@angular/forms';
 import {MatchDto} from '../shared/match.dto';
 import {NewMessage} from '../Chat/state/chat.actions';
 import {MatchResultsModel} from '../shared/match-results.model';
+import {insertItem} from "@ngxs/store/operators";
 
 
 @Component({
@@ -64,21 +72,6 @@ export class ProfileComponent implements OnInit, OnDestroy
   queueUp(): void {
     console.log({...this.store.selectSnapshot(MatchState.matches)});
     console.log({...this.store.selectSnapshot(UserState.users)});
-    // this.createMatch();
-    /*const user = {...this.store.selectSnapshot(LoginState.loggedInUser)};
-    user.inQueue = !user.inQueue;
-    this.store.dispatch(new UpdateUser(user));
-    this.users$.subscribe((users) => {
-      users.forEach(queuedUser => {
-        if (queuedUser.id === user.id) {
-          return;
-        }
-        if (queuedUser.inQueue === true) {
-          this.queuedUsers.push(queuedUser);
-          console.log(queuedUser);
-        }
-      });
-    });*/
 
     this.findActiveMatches();
 
@@ -89,14 +82,6 @@ export class ProfileComponent implements OnInit, OnDestroy
     {
       this.createMatch();
     }
-
-    /*console.log(this.queuedUsers);
-    if (this.queuedUsers.length > 0) {
-      const firstUser = this.queuedUsers[0];
-      this.testUser.push(firstUser);
-      this.matchFound = true;
-      console.log(this.testUser);
-    }*/
   }
 
   findActiveMatches(): void {
@@ -105,6 +90,13 @@ export class ProfileComponent implements OnInit, OnDestroy
         if (activeMatch.matchResults.length === 0 || activeMatch.matchResults.length === 1)
         {
           this.activeMatches.push(activeMatch);
+          this.matchResultFb.patchValue({
+            result: false,
+            match: activeMatch,
+            user: this.loggedInUser$
+          });
+          const matchResultDto: MatchResultsModel = this.matchResultFb.value;
+          this.store.dispatch(new CreateMatchResult(matchResultDto));
         }
       });
     });

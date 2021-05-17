@@ -40,3 +40,9 @@ export class UpdateMatches {
 
   static readonly type = '[Match] Update Matches';
 }
+
+export class UpdateMatch {
+  static readonly type = '[Match] Updated Match';
+  constructor(public updatedMatch: MatchModel) {
+  }
+}

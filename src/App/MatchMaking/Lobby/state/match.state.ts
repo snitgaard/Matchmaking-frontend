@@ -7,11 +7,11 @@ import {
   CreateMatchResult,
   ListenForMatches,
   NewMatch,
-  NewMatchResult,
+  NewMatchResult, UpdateMatch,
   UpdateMatches
 } from "./match.actions";
 import {MatchService} from "../../shared/match.service";
-import {CreateUser} from "../../Profile/state/user.actions";
+import {CreateUser, UpdateUser} from "../../Profile/state/user.actions";
 import {tap} from "rxjs/operators";
 import {UserStateModel} from "../../Profile/state/user.state";
 import {NewMessage, SendMessage} from "../../Chat/state/chat.actions";
@@ -77,6 +77,11 @@ export class MatchState {
       matches: uc.matches,
     };
     ctx.setState(newState);
+  }
+
+  @Action(UpdateMatch)
+  updateMatch(ctx: StateContext<MatchStateModel>, updateMatch: UpdateMatch) {
+    this.matchService.updateMatch(updateMatch.updatedMatch.id, updateMatch.updatedMatch);
   }
 
   @Action(NewMatch)
