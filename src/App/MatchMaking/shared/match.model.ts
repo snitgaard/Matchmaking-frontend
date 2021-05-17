@@ -3,6 +3,6 @@ import {MatchResultsModel} from './match-results.model';
 
 export interface MatchModel {
   id: string;
-  matchResults: MatchResultsModel[];
+  matchResults?: MatchResultsModel[];
   score?: string;
 }

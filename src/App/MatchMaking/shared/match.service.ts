@@ -5,6 +5,7 @@ import {MatchModel} from './match.model';
 import {UserModel} from "./user.model";
 import {MatchDto} from "./match.dto";
 import {ChatModel} from "./chat.model";
+import {MatchResultsModel} from "./match-results.model";
 
 
 
@@ -14,13 +15,20 @@ import {ChatModel} from "./chat.model";
 })
 export class MatchService {
   matchModel: MatchModel | undefined;
+  matchResultModel: MatchResultsModel | undefined;
   constructor(private socketApp: SocketApp) { }
 
   createMatch(match: MatchModel) {
     this.socketApp.emit('create-match', match);
   }
+  createMatchResult(matchResult: MatchResultsModel) {
+    this.socketApp.emit('create-matchresult', matchResult);
+  }
   listenForNewMatch(): Observable<MatchModel> {
     return this.socketApp.fromEvent<MatchModel>('new-match');
+  }
+  listenForNewMatchResult(): Observable<MatchResultsModel> {
+    return this.socketApp.fromEvent<MatchResultsModel>('new-matchresult');
   }
   updateMatch(id: string, match: MatchModel): void {
     this.socketApp.emit('updateMatch', match);

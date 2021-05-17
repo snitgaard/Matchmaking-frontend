@@ -9,12 +9,12 @@ import {takeUntil} from 'rxjs/operators';
 import {LoginState} from '../login/state/login.state';
 import {LoadUserFromStorage, RemoveUserFromStorage} from '../login/state/login.actions';
 import {AuthUserModel} from '../shared/auth-user.model';
-import {CreateMatch, ListenForMatches, NewMatch} from '../Lobby/state/match.actions';
+import {CreateMatch, CreateMatchResult, ListenForMatches, NewMatch} from '../Lobby/state/match.actions';
 import {MatchModel} from '../shared/match.model';
 import {MatchState} from '../Lobby/state/match.state';
-import {FormBuilder} from "@angular/forms";
-import {MatchDto} from "../shared/match.dto";
-import {NewMessage} from "../Chat/state/chat.actions";
+import {FormBuilder} from '@angular/forms';
+import {MatchDto} from '../shared/match.dto';
+import {NewMessage} from '../Chat/state/chat.actions';
 import {MatchResultsModel} from '../shared/match-results.model';
 
 
@@ -38,6 +38,11 @@ export class ProfileComponent implements OnInit, OnDestroy
   testUser: UserModel[] = [];
   matchFb = this.fb.group({
     score: ['']
+  });
+  matchResultFb = this.fb.group({
+    result: [''],
+    match: [''],
+    user: [''],
   });
 
   constructor(private store: Store, private fb: FormBuilder) {}
@@ -97,7 +102,7 @@ export class ProfileComponent implements OnInit, OnDestroy
   findActiveMatches(): void {
     this.matches$.subscribe((matches) => {
       matches.forEach(activeMatch => {
-        if (activeMatch.matchResults.length == 0 || activeMatch.matchResults.length == 1)
+        if (activeMatch.matchResults.length === 0 || activeMatch.matchResults.length === 1)
         {
           this.activeMatches.push(activeMatch);
         }
@@ -106,20 +111,12 @@ export class ProfileComponent implements OnInit, OnDestroy
   }
 
   createMatch(): void {
-    const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
     this.matchFb.patchValue({
       score: '0-0'
     });
     const matchDto: MatchModel = this.matchFb.value;
     this.store.dispatch(new CreateMatch(matchDto));
-    const matchResult: MatchResultsModel = {
-      id: 'test',
-      result: true,
-      match: matchDto,
-      user: loggedInUser
-    }
-    console.log(matchResult);
-    matchDto.matchResults.push(matchResult);
+    console.log(matchDto);
   }
 
   logout(): void {

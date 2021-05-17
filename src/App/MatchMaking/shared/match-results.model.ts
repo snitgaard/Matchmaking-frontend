@@ -4,6 +4,6 @@ import {UserModel} from './user.model';
 export interface MatchResultsModel {
   id: string;
   result: boolean;
-  match: MatchModel;
+  match?: MatchModel;
   user: UserModel;
 }

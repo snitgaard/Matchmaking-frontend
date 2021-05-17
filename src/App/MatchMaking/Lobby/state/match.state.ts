@@ -2,13 +2,21 @@ import {MatchModel} from "../../shared/match.model";
 import {Action, Selector, State, StateContext} from "@ngxs/store";
 import {Injectable} from "@angular/core";
 import {Subscription} from "rxjs";
-import {CreateMatch, ListenForMatches, NewMatch, UpdateMatches} from "./match.actions";
+import {
+  CreateMatch,
+  CreateMatchResult,
+  ListenForMatches,
+  NewMatch,
+  NewMatchResult,
+  UpdateMatches
+} from "./match.actions";
 import {MatchService} from "../../shared/match.service";
 import {CreateUser} from "../../Profile/state/user.actions";
 import {tap} from "rxjs/operators";
 import {UserStateModel} from "../../Profile/state/user.state";
 import {NewMessage, SendMessage} from "../../Chat/state/chat.actions";
 import {ChatStateModel} from "../../Chat/state/chat.state";
+import {MatchResultsModel} from "../../shared/match-results.model";
 
 
 
@@ -16,6 +24,11 @@ export interface MatchStateModel {
   matches: MatchModel[];
   relevantMatch: MatchModel | undefined;
 
+}
+
+export interface MatchResultStateModel {
+  matchResults: MatchResultsModel[];
+  relevantResult: MatchResultsModel | undefined;
 }
 
 @State<MatchStateModel>({
@@ -26,6 +39,7 @@ export interface MatchStateModel {
 
   }
 })
+
 @Injectable()
 export class MatchState {
   private matchesUnsub: Subscription | undefined;
@@ -85,6 +99,16 @@ export class MatchState {
       id: createMatch.payload.id,
       matchResults: createMatch.payload.matchResults,
       score: createMatch.payload.score
+    });
+  }
+
+  @Action(CreateMatchResult)
+  createMatchResult(ctx: StateContext<MatchResultStateModel>, createMatchResult: CreateMatchResult) {
+    return this.matchService.createMatchResult({
+      id: createMatchResult.resultPayload.id,
+      result: createMatchResult.resultPayload.result,
+      match: createMatchResult.resultPayload.match,
+      user: createMatchResult.resultPayload.user
     });
   }
 }
