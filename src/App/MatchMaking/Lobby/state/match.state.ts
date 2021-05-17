@@ -7,11 +7,11 @@ import {
   CreateMatchResult,
   ListenForMatches,
   NewMatch,
-  NewMatchResult, UpdateMatch,
+  NewMatchResult, StopListeningForMatches, UpdateMatch,
   UpdateMatches
 } from "./match.actions";
 import {MatchService} from "../../shared/match.service";
-import {CreateUser, UpdateUser} from "../../Profile/state/user.actions";
+import {CreateUser, StopListeningForUsers, UpdateUser} from "../../Profile/state/user.actions";
 import {tap} from "rxjs/operators";
 import {UserStateModel} from "../../Profile/state/user.state";
 import {NewMessage, SendMessage} from "../../Chat/state/chat.actions";
@@ -96,6 +96,13 @@ export class MatchState {
         matches: newMatches
       });
     });
+  }
+
+  @Action(StopListeningForMatches)
+  stopListeningForClients(ctx: StateContext<MatchStateModel>): void {
+    if (this.matchesUnsub) {
+      this.matchesUnsub.unsubscribe();
+    }
   }
 
   @Action(CreateMatch)

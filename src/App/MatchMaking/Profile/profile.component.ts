@@ -7,13 +7,13 @@ import {UserService} from '../shared/user.service';
 import {ListenForUsers, StopListeningForUsers, UpdateUser, UpdateUsers} from './state/user.actions';
 import {takeUntil} from 'rxjs/operators';
 import {LoginState} from '../login/state/login.state';
-import {LoadUserFromStorage, RemoveUserFromStorage} from '../login/state/login.actions';
+import {LoadUserFromStorage, RemoveUserFromStorage, UserLoggedIn} from '../login/state/login.actions';
 import {AuthUserModel} from '../shared/auth-user.model';
 import {
   CreateMatch,
   CreateMatchResult,
   ListenForMatches,
-  NewMatch,
+  NewMatch, StopListeningForMatches,
   UpdateMatch,
   UpdateMatches
 } from '../Lobby/state/match.actions';
@@ -24,6 +24,7 @@ import {MatchDto} from '../shared/match.dto';
 import {NewMessage} from '../Chat/state/chat.actions';
 import {MatchResultsModel} from '../shared/match-results.model';
 import {insertItem} from "@ngxs/store/operators";
+import {Router} from "@angular/router";
 
 
 @Component({
@@ -37,12 +38,14 @@ export class ProfileComponent implements OnInit, OnDestroy
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
   @Select(MatchState.matches) matches$: Observable<MatchModel[]> | undefined;
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
+
   // loggedInUser: AuthUserModel;
 
   unsubscribe$ = new Subject();
   queuedUsers: UserModel[] = [];
   activeMatches: MatchModel[] = [];
   matchFound: boolean;
+  activeMatch: MatchModel;
   testUser: UserModel[] = [];
   matchFb = this.fb.group({
     score: ['']
@@ -52,13 +55,15 @@ export class ProfileComponent implements OnInit, OnDestroy
     match: [''],
     user: [''],
   });
+  loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
 
-  constructor(private store: Store, private fb: FormBuilder) {}
+  constructor(private store: Store, private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
     this.store.dispatch(new ListenForUsers());
     this.store.dispatch(new NewMatch());
     this.store.dispatch(new ListenForMatches());
+
     // this.store.dispatch(new LoadUserFromStorage());
   }
 
@@ -77,26 +82,35 @@ export class ProfileComponent implements OnInit, OnDestroy
 
     if (this.activeMatches.length > 0)
     {
-      console.log('I AM JOINING THE MATCH MOTHERFUCKER');
+      // redirect til match
     } else
     {
       this.createMatch();
+      this.findActiveMatches();
     }
   }
 
   findActiveMatches(): void {
-    this.matches$.subscribe((matches) => {
+    this.matches$.pipe(takeUntil(this.unsubscribe$)).subscribe((matches) => {
       matches.forEach(activeMatch => {
+        if (activeMatch.matchResults === undefined)
+        {
+          return;
+        }
         if (activeMatch.matchResults.length === 0 || activeMatch.matchResults.length === 1)
         {
           this.activeMatches.push(activeMatch);
           this.matchResultFb.patchValue({
             result: false,
             match: activeMatch,
-            user: this.loggedInUser$
+            user: this.loggedInUser
           });
           const matchResultDto: MatchResultsModel = this.matchResultFb.value;
           this.store.dispatch(new CreateMatchResult(matchResultDto));
+          this.unsubscribe$.next();
+          this.unsubscribe$.complete();
+          this.activeMatch = activeMatch;
+          this.router.navigateByUrl('/Lobby/' + this.activeMatch.id);
         }
       });
     });
@@ -108,6 +122,7 @@ export class ProfileComponent implements OnInit, OnDestroy
     });
     const matchDto: MatchModel = this.matchFb.value;
     this.store.dispatch(new CreateMatch(matchDto));
+    this.store.dispatch(new ListenForMatches());
     console.log(matchDto);
   }
 

@@ -46,3 +46,7 @@ export class UpdateMatch {
   constructor(public updatedMatch: MatchModel) {
   }
 }
+
+export class StopListeningForMatches {
+  static readonly type = '[Match] Stop Listening For Matches';
+}
