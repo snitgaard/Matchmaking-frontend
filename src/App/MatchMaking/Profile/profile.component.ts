@@ -38,6 +38,7 @@ export class ProfileComponent implements OnInit, OnDestroy
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
   @Select(MatchState.matches) matches$: Observable<MatchModel[]> | undefined;
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
+  @Select(MatchState.activeMatch) activeMatch$: Observable<MatchModel> | undefined;
 
   // loggedInUser: AuthUserModel;
 
@@ -84,6 +85,7 @@ export class ProfileComponent implements OnInit, OnDestroy
     {
       this.createMatch();
       this.findActiveMatches();
+      console.log("gay", this.activeMatch)
     }
   }
 
@@ -108,6 +110,7 @@ export class ProfileComponent implements OnInit, OnDestroy
           this.unsubscribe$.next();
           this.unsubscribe$.complete();
           this.activeMatch = activeMatch;
+          this.activeMatch = {...this.store.selectSnapshot(MatchState.activeMatch)};
           this.router.navigateByUrl('/Lobby/' + this.activeMatch.id);
         }
       });

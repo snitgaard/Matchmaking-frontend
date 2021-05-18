@@ -22,7 +22,7 @@ import {MatchResultsModel} from "../../shared/match-results.model";
 
 export interface MatchStateModel {
   matches: MatchModel[];
-  relevantMatch: MatchModel | undefined;
+  activeMatch: MatchModel | undefined;
 
 }
 
@@ -35,7 +35,7 @@ export interface MatchResultStateModel {
   name: 'match',
   defaults: {
     matches: [],
-    relevantMatch: undefined,
+    activeMatch: undefined,
 
   }
 })
@@ -56,6 +56,10 @@ export class MatchState {
   @Selector()
   static matchIds(state: MatchStateModel): string[] {
     return state.matches.map(c => c.id);
+  }
+  @Selector()
+  static activeMatch(state: MatchStateModel): MatchModel {
+    return state.activeMatch;
   }
 
   @Action(ListenForMatches)
@@ -89,11 +93,13 @@ export class MatchState {
     console.log('init')
     this.unsubscribeNewMatch = this.matchService.listenForNewMatch().subscribe(match => {
       const state = ctx.getState();
+      const newActiveMatch = {...ctx.getState().activeMatch};
       const newMatches = [...state.matches];
       newMatches.push(match);
       ctx.setState({
         ...state,
-        matches: newMatches
+        matches: newMatches,
+        activeMatch: newActiveMatch
       });
     });
   }
