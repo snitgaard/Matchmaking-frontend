@@ -23,8 +23,8 @@ import {FormBuilder} from '@angular/forms';
 import {MatchDto} from '../shared/match.dto';
 import {NewMessage} from '../Chat/state/chat.actions';
 import {MatchResultsModel} from '../shared/match-results.model';
-import {insertItem} from "@ngxs/store/operators";
-import {Router} from "@angular/router";
+import {insertItem} from '@ngxs/store/operators';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -80,10 +80,7 @@ export class ProfileComponent implements OnInit, OnDestroy
 
     this.findActiveMatches();
 
-    if (this.activeMatches.length > 0)
-    {
-      // redirect til match
-    } else
+    if (this.activeMatches.length <= 0)
     {
       this.createMatch();
       this.findActiveMatches();
@@ -99,6 +96,7 @@ export class ProfileComponent implements OnInit, OnDestroy
         }
         if (activeMatch.matchResults.length === 0 || activeMatch.matchResults.length === 1)
         {
+          console.log('kommer den herind?');
           this.activeMatches.push(activeMatch);
           this.matchResultFb.patchValue({
             result: false,
