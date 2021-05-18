@@ -143,4 +143,5 @@ export class ProfileComponent implements OnInit, OnDestroy
   logout(): void {
     this.store.dispatch(new RemoveUserFromStorage);
   }
+
 }

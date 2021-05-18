@@ -37,7 +37,7 @@
         <mat-list *ngFor="let result of results" style="margin: 30px" fxLayoutAlign="space-between center center" class="scroll">
           <div class="black"> {{result.user.username}} </div>
           <div class="black"> {{result.user.rating}} </div>
-          <div class="black"> {{result.result}} </div>
+          <div class="black"> {{result.result && 'Won' || 'Lost'}} </div>
         </mat-list>
         </div>
       </mat-card-footer>
