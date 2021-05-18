@@ -32,6 +32,9 @@ export class LoadMatchFromStorage {
 export class ListenForMatches {
   static readonly type = '[Match] Listen for Matches';
 }
+export class ListenForMatchResults {
+  static readonly type = '[MatchResult] Listen for MatchResults';
+}
 export class RemoveMatchesFromStorage {
   static readonly type = '[Match] Remove User From Storage';
 }
@@ -39,6 +42,12 @@ export class UpdateMatches {
   constructor(public matches: MatchModel[]) {}
 
   static readonly type = '[Match] Update Matches';
+}
+
+export class UpdateMatchResults {
+  constructor(public matchResults: MatchResultsModel[]) {}
+
+  static readonly type = '[MatchResult] Update MatchResults';
 }
 
 export class UpdateMatch {
@@ -49,4 +58,8 @@ export class UpdateMatch {
 
 export class StopListeningForMatches {
   static readonly type = '[Match] Stop Listening For Matches';
+}
+
+export class StopListeningForMatchResults {
+  static readonly type = '[MatchResult] Stop Listening For MatchResults';
 }

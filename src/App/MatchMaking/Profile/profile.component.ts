@@ -12,7 +12,7 @@ import {AuthUserModel} from '../shared/auth-user.model';
 import {
   CreateMatch,
   CreateMatchResult,
-  ListenForMatches,
+  ListenForMatches, ListenForMatchResults,
   NewMatch, StopListeningForMatches,
   UpdateMatch,
   UpdateMatches
@@ -39,13 +39,13 @@ export class ProfileComponent implements OnInit, OnDestroy
   @Select(MatchState.matches) matches$: Observable<MatchModel[]> | undefined;
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
   @Select(MatchState.activeMatch) activeMatch$: Observable<MatchModel> | undefined;
+  @Select(MatchState.matchResults) matchResults$: Observable<MatchResultsModel[]> | undefined;
 
   // loggedInUser: AuthUserModel;
 
   unsubscribe$ = new Subject();
-  queuedUsers: UserModel[] = [];
   activeMatches: MatchModel[] = [];
-  matchFound: boolean;
+  relevantResults: MatchResultsModel[] = [];
   activeMatch: MatchModel;
   testUser: UserModel[] = [];
   matchFb = this.fb.group({
@@ -64,7 +64,8 @@ export class ProfileComponent implements OnInit, OnDestroy
     this.store.dispatch(new ListenForUsers());
     this.store.dispatch(new NewMatch());
     this.store.dispatch(new ListenForMatches());
-
+    this.store.dispatch(new ListenForMatchResults());
+    this.getMatchHistory();
     // this.store.dispatch(new LoadUserFromStorage());
   }
 
@@ -98,7 +99,6 @@ export class ProfileComponent implements OnInit, OnDestroy
         }
         if (activeMatch.matchResults.length === 0 || activeMatch.matchResults.length === 1)
         {
-          console.log('kommer den herind?');
           this.activeMatches.push(activeMatch);
           this.matchResultFb.patchValue({
             result: false,
@@ -125,6 +125,19 @@ export class ProfileComponent implements OnInit, OnDestroy
     this.store.dispatch(new CreateMatch(matchDto));
     this.store.dispatch(new ListenForMatches());
     console.log(matchDto);
+  }
+
+  getMatchHistory(): void {
+    const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
+    this.matchResults$.pipe(takeUntil(this.unsubscribe$)).subscribe((matchResults) => {
+      matchResults.forEach(relevantResult => {
+        const index = this.relevantResults.findIndex(result => result.id === relevantResult.id);
+        if (relevantResult.user.id === loggedInUser.id && index === -1)
+        {
+          this.relevantResults.push(relevantResult);
+        }
+      });
+    });
   }
 
   logout(): void {

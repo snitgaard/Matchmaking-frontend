@@ -42,8 +42,14 @@ export class MatchService {
   listenForMatches(): Observable<MatchModel[]>{
     return this.socketApp.fromEvent<MatchModel[]>('matches');
   }
+  listenForMatchResults(): Observable<MatchResultsModel[]>{
+    return this.socketApp.fromEvent<MatchResultsModel[]>('matchResults');
+  }
   getAllMatches(): void{
     this.socketApp.emit('getAllMatches');
+  }
+  getAllMatchResults(): void {
+    this.socketApp.emit('getAllMatchResults');
   }
 
 }
