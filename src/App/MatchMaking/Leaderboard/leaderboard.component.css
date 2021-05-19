@@ -6,6 +6,10 @@
 
 .image {
   background-image: url('https://wallpapermemory.com/uploads/375/dark-grey-background-hd-1920x1200-64780.jpg');
+  position: absolute;
+  top: 40px;
+  bottom: 0px;
+  width: 100%;
 }
 
 .black {
