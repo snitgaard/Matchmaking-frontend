@@ -4,12 +4,12 @@
       <mat-card-header>
         <h5 style="font-size: 20px" class="black"> Team 1</h5>
       </mat-card-header>
-      <mat-card-content *ngFor="let result of results" >
+      <mat-card-content>
         <div>
           <ul>
             <li>
               <h1>
-                {{result.user.username}}
+                {{results[0].user.username}}
               </h1>
             </li>
           </ul>
@@ -32,6 +32,9 @@
         <div>
           <ul>
             <li>
+              <h1>
+              {{results[1].user.username}}
+              </h1>
             </li>
           </ul>
         </div>
