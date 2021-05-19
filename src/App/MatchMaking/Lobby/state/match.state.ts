@@ -128,7 +128,7 @@ export class MatchState {
       ctx.setState({
         ...state,
         matches: newMatches,
-        activeMatch: newActiveMatch
+        activeMatch: match,
       });
     });
   }

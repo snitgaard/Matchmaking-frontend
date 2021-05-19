@@ -86,7 +86,6 @@ export class ProfileComponent implements OnInit, OnDestroy
     {
       this.createMatch();
       this.findActiveMatches();
-      console.log("gay", this.activeMatch)
     }
   }
 
@@ -110,7 +109,6 @@ export class ProfileComponent implements OnInit, OnDestroy
           this.unsubscribe$.next();
           this.unsubscribe$.complete();
           this.activeMatch = activeMatch;
-          this.activeMatch = {...this.store.selectSnapshot(MatchState.activeMatch)};
           this.router.navigateByUrl('/Lobby/' + this.activeMatch.id);
         }
       });

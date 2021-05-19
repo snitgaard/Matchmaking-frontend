@@ -9,6 +9,7 @@ import {MatDividerModule} from '@angular/material/divider';
 import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
+import {CommonModule} from '@angular/common';
 
 
 
@@ -17,16 +18,17 @@ import {MatInputModule} from '@angular/material/input';
     LobbyComponent,
   ],
 
-  imports: [
-    LobbyRoutingModule,
-    FlexModule,
-    MatCardModule,
-    MatIconModule,
-    MatFormFieldModule,
-    MatDividerModule,
-    MatListModule,
-    MatButtonModule,
-    MatInputModule
-  ]
+    imports: [
+        LobbyRoutingModule,
+        FlexModule,
+        MatCardModule,
+        MatIconModule,
+        MatFormFieldModule,
+        MatDividerModule,
+        MatListModule,
+        MatButtonModule,
+        MatInputModule,
+        CommonModule
+    ]
 })
 export class LobbyModule { }

@@ -17,11 +17,8 @@ import {Observable} from 'rxjs';
 export class LobbyComponent implements OnInit
 {
   @Select(MatchState.activeMatch) activeMatch$: Observable<MatchModel> | undefined;
-  activeMatch: MatchModel;
   constructor(private store: Store) {}
   ngOnInit(): void {
-    this.activeMatch =  {...this.store.selectSnapshot(MatchState.activeMatch)};
-    console.log("gay", this.activeMatch);
   }
 
 }
