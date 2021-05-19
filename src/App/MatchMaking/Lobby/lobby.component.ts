@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {FormBuilder} from '@angular/forms';
-import {Router} from '@angular/router';
+import {ActivatedRoute, Params, Router} from '@angular/router';
 import {ProfileComponent} from '../Profile/profile.component';
 import {MatchModel} from '../shared/match.model';
 import {MatchState} from './state/match.state';
@@ -27,9 +27,10 @@ export class LobbyComponent implements OnInit, OnDestroy
   unsubscribe$ = new Subject();
   relevantResults: MatchResultsModel[] = [];
   relevantUsers: UserModel[] = [];
-  constructor(private store: Store) {}
+  constructor(private store: Store, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
+
     this.store.dispatch(new ListenForMatchResults());
     this.store.dispatch(new NewMatch());
     this.store.dispatch(new NewMatchResult());
@@ -47,7 +48,6 @@ export class LobbyComponent implements OnInit, OnDestroy
           this.relevantResults.push(relevantResult);
           this.relevantUsers.push(relevantResult.user);
         }
-        this.store.dispatch(new ListenForUsers());
       });
     });
   }
