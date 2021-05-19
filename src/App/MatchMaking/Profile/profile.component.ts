@@ -49,7 +49,8 @@ export class ProfileComponent implements OnInit, OnDestroy
   activeMatch: MatchModel;
   testUser: UserModel[] = [];
   matchFb = this.fb.group({
-    score: ['']
+    score: [''],
+    matchResults: ['']
   });
   matchResultFb = this.fb.group({
     result: [''],
@@ -98,6 +99,7 @@ export class ProfileComponent implements OnInit, OnDestroy
         }
         if (activeMatch.matchResults.length === 0 || activeMatch.matchResults.length === 1)
         {
+          console.log(activeMatch, 'idk whats happenin');
           this.activeMatches.push(activeMatch);
           this.matchResultFb.patchValue({
             result: false,
@@ -117,11 +119,11 @@ export class ProfileComponent implements OnInit, OnDestroy
 
   createMatch(): void {
     this.matchFb.patchValue({
-      score: '0-0'
+      score: '0-0',
+      matchResults: []
     });
     const matchDto: MatchModel = this.matchFb.value;
     this.store.dispatch(new CreateMatch(matchDto));
-    this.store.dispatch(new ListenForMatches());
     console.log(matchDto);
   }
 
