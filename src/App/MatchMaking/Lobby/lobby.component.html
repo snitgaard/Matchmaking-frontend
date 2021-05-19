@@ -1,16 +1,16 @@
-{{activeMatch$ | async | json}}
-
-<div class="box image" fxLayout="row" fxFlex>
-
+<div *ngIf= "relevantResults as results" class="box image" fxLayout="row" fxFlex>
   <div fxFlex="20" style="padding: 50px" fxLayoutGap="10px">
     <mat-card fxFlex class="example-card">
       <mat-card-header>
         <h5 style="font-size: 20px" class="black"> Team 1</h5>
       </mat-card-header>
-      <mat-card-content>
+      <mat-card-content *ngFor="let result of results" >
         <div>
           <ul>
             <li>
+              <h1>
+                {{result.user.username}}
+              </h1>
             </li>
           </ul>
         </div>
@@ -18,9 +18,10 @@
     </mat-card>
   </div>
 
-<div fxFlexAlign="center center" >
-  <h1> hreths</h1>
-</div>
+  <div fxFlexAlign="center center">
+    <h1> {{activeMatch$ | async | json}}</h1>
+    <h1>{{relevantResults}}</h1>
+  </div>
 
   <div class="push" fxFlex="20" style="padding: 50px" fxLayoutGap="10px">
     <mat-card fxFlex class="example-card">
