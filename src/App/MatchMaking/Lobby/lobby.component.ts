@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {FormBuilder} from '@angular/forms';
 import {Router} from '@angular/router';
@@ -9,7 +9,9 @@ import {Observable, Subject} from 'rxjs';
 import {LoginState} from '../login/state/login.state';
 import {takeUntil} from 'rxjs/operators';
 import {MatchResultsModel} from '../shared/match-results.model';
-import {ListenForMatchResults, NewMatch} from './state/match.actions';
+import {ListenForMatchResults, NewMatch, NewMatchResult} from './state/match.actions';
+import {ListenForUsers} from '../Profile/state/user.actions';
+import {UserModel} from '../shared/user.model';
 
 
 @Component({
@@ -18,17 +20,20 @@ import {ListenForMatchResults, NewMatch} from './state/match.actions';
   styleUrls: ['./lobby.component.css']
 })
 
-export class LobbyComponent implements OnInit
+export class LobbyComponent implements OnInit, OnDestroy
 {
   @Select(MatchState.activeMatch) activeMatch$: Observable<MatchModel> | undefined;
   @Select(MatchState.matchResults) matchResults$: Observable<MatchResultsModel[]> | undefined;
   unsubscribe$ = new Subject();
   relevantResults: MatchResultsModel[] = [];
+  relevantUsers: UserModel[] = [];
   constructor(private store: Store) {}
 
   ngOnInit(): void {
     this.store.dispatch(new ListenForMatchResults());
     this.store.dispatch(new NewMatch());
+    this.store.dispatch(new NewMatchResult());
+    //this.store.dispatch(new ListenForUsers());
     this.getUsersOnMatch();
   }
 
@@ -40,9 +45,16 @@ export class LobbyComponent implements OnInit
         if (relevantResult.match.id === activeMatch.id && index === -1)
         {
           this.relevantResults.push(relevantResult);
+          this.relevantUsers.push(relevantResult.user);
         }
+        this.store.dispatch(new ListenForUsers());
       });
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
 }

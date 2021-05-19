@@ -30,7 +30,13 @@ export interface MatchResultStateModel {
   matchResults: MatchResultsModel[];
   relevantResult: MatchResultsModel | undefined;
 }
-
+@State<MatchResultStateModel>({
+  name: 'matchResults',
+  defaults: {
+    matchResults: [],
+    relevantResult: undefined
+  }
+})
 @State<MatchStateModel>({
   name: 'match',
   defaults: {
@@ -44,6 +50,7 @@ export interface MatchResultStateModel {
 export class MatchState {
   private matchesUnsub: Subscription | undefined;
   private unsubscribeNewMatch: Subscription | undefined;
+  private unsubscribeNewMatchResult: Subscription | undefined;
   private matchResultsUnsub: Subscription | undefined;
 
   constructor(private matchService: MatchService) {
@@ -117,12 +124,24 @@ export class MatchState {
     this.matchService.updateMatch(updateMatch.updatedMatch.id, updateMatch.updatedMatch);
   }
 
+  @Action(NewMatchResult)
+  newMatchResult(ctx: StateContext<MatchResultStateModel>) {
+    this.unsubscribeNewMatchResult = this.matchService.listenForNewMatchResult().subscribe(matchResult => {
+      const state = ctx.getState();
+      const newMatchResults = [...state.matchResults];
+      newMatchResults.push(matchResult);
+      ctx.setState({
+        ...state,
+        matchResults: newMatchResults
+      })
+    });
+  }
+
   @Action(NewMatch)
   newMatch(ctx: StateContext<MatchStateModel>) {
     console.log('init');
     this.unsubscribeNewMatch = this.matchService.listenForNewMatch().subscribe(match => {
       const state = ctx.getState();
-      const newActiveMatch = {...ctx.getState().activeMatch};
       const newMatches = [...state.matches];
       newMatches.push(match);
       ctx.setState({
