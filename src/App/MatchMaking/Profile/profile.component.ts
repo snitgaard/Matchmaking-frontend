@@ -11,9 +11,9 @@ import {LoadUserFromStorage, RemoveUserFromStorage, UserLoggedIn} from '../login
 import {AuthUserModel} from '../shared/auth-user.model';
 import {
   CreateMatch,
-  CreateMatchResult,
-  ListenForMatches, ListenForMatchResults,
-  NewMatch, StopListeningForMatches,
+  CreateMatchResult, JoinLobby, ListenForJoinedMatch,
+  ListenForMatches, ListenForMatchFound, ListenForMatchResults, ListenForNewMatchCreated,
+  NewMatch, NewMatchResult, QueUp, StopListeningForMatches,
   UpdateMatch,
   UpdateMatches
 } from '../Lobby/state/match.actions';
@@ -59,13 +59,10 @@ export class ProfileComponent implements OnInit, OnDestroy
   });
   loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
 
-  constructor(private store: Store, private fb: FormBuilder, private router: Router) {}
+  constructor(private store: Store, private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new ListenForUsers());
-    this.store.dispatch(new NewMatch());
-    this.store.dispatch(new ListenForMatches());
-    this.store.dispatch(new ListenForMatchResults());
+    this.store.dispatch([new ListenForUsers(), new ListenForMatches(), new ListenForNewMatchCreated(), new ListenForJoinedMatch(), new ListenForMatchFound()])//, new NewMatch(), new NewMatchResult(), new ListenForMatches(), new ListenForMatchResults()]);
     this.getMatchHistory();
     // this.store.dispatch(new LoadUserFromStorage());
   }
@@ -78,7 +75,8 @@ export class ProfileComponent implements OnInit, OnDestroy
   }
 
   queueUp(): void {
-    console.log({...this.store.selectSnapshot(MatchState.matches)});
+    this.store.dispatch(new JoinLobby(this.store.selectSnapshot(LoginState.loggedInUser)))
+    /*console.log({...this.store.selectSnapshot(MatchState.matches)});
     console.log({...this.store.selectSnapshot(UserState.users)});
 
     this.findActiveMatches();
@@ -87,7 +85,7 @@ export class ProfileComponent implements OnInit, OnDestroy
     {
       this.createMatch();
       this.findActiveMatches();
-    }
+    }*/
   }
 
   findActiveMatches(): void {
@@ -110,7 +108,7 @@ export class ProfileComponent implements OnInit, OnDestroy
           this.unsubscribe$.next();
           this.unsubscribe$.complete();
           this.activeMatch = activeMatch;
-          this.router.navigateByUrl('/Lobby/' + this.activeMatch.id);
+          // this.router.navigateByUrl('/Lobby/' + this.activeMatch.id);
         }
       });
     });

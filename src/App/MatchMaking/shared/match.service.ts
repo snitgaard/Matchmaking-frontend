@@ -18,6 +18,25 @@ export class MatchService {
   matchResultModel: MatchResultsModel | undefined;
   constructor(private socketApp: SocketApp) { }
 
+  //New Stuff
+  joinLobby(user: UserModel) {
+    this.socketApp.emit('joinLobby', user);
+  }
+
+  listenForNewMatchCreated(): Observable<MatchModel> {
+    return this.socketApp.fromEvent<MatchModel>('NewMatchCreatedForMe');
+  }
+
+  listenForMatchFound(): Observable<MatchModel> {
+    return this.socketApp.fromEvent<MatchModel>('MatchFoundForMe');
+  }
+
+  listenForJoinedMatch(): Observable<MatchModel> {
+    return this.socketApp.fromEvent<MatchModel>('SomeoneJoinedMatch');
+  }
+
+  //New Stuff End
+
   createMatch(match: MatchModel) {
     this.socketApp.emit('create-match', match);
   }

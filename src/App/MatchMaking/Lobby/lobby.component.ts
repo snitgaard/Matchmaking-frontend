@@ -9,7 +9,7 @@ import {Observable, Subject} from 'rxjs';
 import {LoginState} from '../login/state/login.state';
 import {takeUntil} from 'rxjs/operators';
 import {MatchResultsModel} from '../shared/match-results.model';
-import {ListenForMatchResults, NewMatch, NewMatchResult} from './state/match.actions';
+import {GetUsersOnMatch, ListenForMatchResults, NewMatch, NewMatchResult} from './state/match.actions';
 import {ListenForUsers} from '../Profile/state/user.actions';
 import {UserModel} from '../shared/user.model';
 
@@ -20,25 +20,23 @@ import {UserModel} from '../shared/user.model';
   styleUrls: ['./lobby.component.css']
 })
 
-export class LobbyComponent implements OnInit, OnDestroy
+export class LobbyComponent implements OnInit
 {
-  @Select(MatchState.activeMatch) activeMatch$: Observable<MatchModel> | undefined;
-  @Select(MatchState.matchResults) matchResults$: Observable<MatchResultsModel[]> | undefined;
-  unsubscribe$ = new Subject();
-  relevantResults: MatchResultsModel[] = [];
-  relevantUsers: UserModel[] = [];
+  // @Select(MatchState.activeMatch) activeMatch$: Observable<MatchModel> | undefined;
+  // @Select(MatchState.matchResults) matchResults$: Observable<MatchResultsModel[]> | undefined;
+  @Select(MatchState.currentMatch) currentMatch$: Observable<MatchModel> | undefined;
+  // unsubscribe$ = new Subject();
+  // relevantResults: MatchResultsModel[] = [];
   constructor(private store: Store, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
 
-    this.store.dispatch(new ListenForMatchResults());
-    this.store.dispatch(new NewMatch());
-    this.store.dispatch(new NewMatchResult());
+    this.store.dispatch([new ListenForMatchResults(), new NewMatch(), new NewMatchResult(), new GetUsersOnMatch()]);
     //this.store.dispatch(new ListenForUsers());
-    this.getUsersOnMatch();
+    // this.getUsersOnMatch();
   }
 
-  getUsersOnMatch(): void {
+  /* getUsersOnMatch(): void {
     const activeMatch = {...this.store.selectSnapshot(MatchState.activeMatch)};
     this.matchResults$.pipe(takeUntil(this.unsubscribe$)).subscribe((matchResults) => {
       matchResults.forEach(relevantResult => {
@@ -46,15 +44,14 @@ export class LobbyComponent implements OnInit, OnDestroy
         if (relevantResult.match.id === activeMatch.id && index === -1)
         {
           this.relevantResults.push(relevantResult);
-          this.relevantUsers.push(relevantResult.user);
         }
       });
     });
-  }
+  }*/
 
-  ngOnDestroy(): void {
+  /*ngOnDestroy(): void {
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
-  }
+  }*/
 
 }
