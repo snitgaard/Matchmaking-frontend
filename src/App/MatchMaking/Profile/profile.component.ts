@@ -36,10 +36,14 @@ import {Router} from '@angular/router';
 export class ProfileComponent implements OnInit, OnDestroy
 {
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
+  /*
   @Select(MatchState.matches) matches$: Observable<MatchModel[]> | undefined;
-  @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
   @Select(MatchState.activeMatch) activeMatch$: Observable<MatchModel> | undefined;
+
+   */
   @Select(MatchState.matchResults) matchResults$: Observable<MatchResultsModel[]> | undefined;
+
+  @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
 
   // loggedInUser: AuthUserModel;
 
@@ -88,6 +92,7 @@ export class ProfileComponent implements OnInit, OnDestroy
     }*/
   }
 
+  /*
   findActiveMatches(): void {
     this.matches$.pipe(takeUntil(this.unsubscribe$)).subscribe((matches) => {
       matches.forEach(activeMatch => {
@@ -123,6 +128,8 @@ export class ProfileComponent implements OnInit, OnDestroy
     this.store.dispatch(new CreateMatch(matchDto));
     console.log(matchDto);
   }
+
+   */
 
   getMatchHistory(): void {
     const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};

@@ -29,6 +29,10 @@ import {MatchResultsModel} from '../../shared/match-results.model';
 import {Router} from '@angular/router';
 import {LoginState} from '../../login/state/login.state';
 import {tap} from 'rxjs/operators';
+import {LoggedInUserUpdate} from '../../login/state/login.actions';
+import {UserModel} from '../../shared/user.model';
+import {UpdateUser} from '../../Profile/state/user.actions';
+import {UserStateModel} from '../../Profile/state/user.state';
 
 
 export interface MatchStateModel {
@@ -73,6 +77,12 @@ export class MatchState {
   @Selector()
   static currentMatch(state: MatchStateModel): MatchModel {
     return state.currentMatch;
+  }
+
+
+  @Selector()
+  static matchResults(state: MatchStateModel): MatchResultsModel[] {
+    return state.matchResults;
   }
 
   @Action(JoinLobby)
@@ -125,6 +135,15 @@ export class MatchState {
           ...ctx.getState(),
           currentMatch: action.match
         })
+        //connectUserDto.lobbyLeader = true;
+        //await this.userService.updateUser(connectUserDto.id, connectUserDto);
+        /// console.log("QueerIT", connectUserDto.username + connectUserDto.lobbyLeader)
+
+
+        const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
+        loggedInUser.lobbyLeader = true;
+        this.store.dispatch(new LoggedInUserUpdate(loggedInUser));
+        this.store.dispatch(new UpdateUser(loggedInUser));
         break;
       }
       case MatchUpdateType.Joined: {
@@ -140,9 +159,36 @@ export class MatchState {
     }
     this.router.navigateByUrl('/Lobby/' + ctx.getState().currentMatch.id);
   }
+  @Action(UpdateMatchResult)
+  updateMatchResult(ctx: StateContext<MatchStateModel>, updateMatchResult: UpdateMatchResult) {
+    this.matchService.updateMatchResult(updateMatchResult.matchResult.id, updateMatchResult.matchResult);
+  }
+
+
   //New Stuff END
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /*
   @Selector()
   static relevantResults(state: MatchStateModel): MatchResultsModel[] {
     return state.relevantResults;
@@ -160,11 +206,6 @@ export class MatchState {
   @Selector()
   static activeMatch(state: MatchStateModel): MatchModel {
     return state.activeMatch;
-  }
-
-  @Selector()
-  static matchResults(state: MatchStateModel): MatchResultsModel[] {
-    return state.matchResults;
   }
 
   @Action(ListenForMatches)
@@ -337,5 +378,5 @@ export class MatchState {
       ctx.dispatch(new CreateMatchResult(matchResultDto));
     }
   }
-
+*/
 }

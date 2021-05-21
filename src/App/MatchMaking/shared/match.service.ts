@@ -35,6 +35,10 @@ export class MatchService {
     return this.socketApp.fromEvent<MatchModel>('SomeoneJoinedMatch');
   }
 
+  updateMatchResult(id: string, matchResult: MatchResultsModel): void {
+    this.socketApp.emit('updateMatchResult', matchResult);
+  }
+
   //New Stuff End
 
   createMatch(match: MatchModel) {

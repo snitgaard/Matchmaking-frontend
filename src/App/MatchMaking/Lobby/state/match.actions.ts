@@ -16,6 +16,12 @@ export class JoinLobby {
   }
 }
 
+export class UpdateMatchResult {
+  constructor(public matchResult: MatchResultsModel) {}
+
+  static readonly type = '[MatchResult] Update MatchResult';
+}
+
 export class ListenForNewMatchCreated {
   static readonly type = '[Match] Listen For new Match Created';
 
@@ -99,12 +105,6 @@ export class UpdateMatchResults {
   constructor(public matchResults: MatchResultsModel[]) {}
 
   static readonly type = '[MatchResult] Update MatchResults';
-}
-
-export class UpdateMatchResult {
-  constructor(public matchResult: MatchResultsModel) {}
-
-  static readonly type = '[MatchResult] Update MatchResult';
 }
 
 export class UpdateMatch {

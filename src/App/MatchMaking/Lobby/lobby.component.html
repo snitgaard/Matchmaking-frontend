@@ -1,4 +1,4 @@
-<div *ngIf= "currentMatch$ | async as match" class="box image" fxLayout="row" fxFlex>
+<div *ngIf="currentMatch$ | async as match" class="box image" fxLayout="row" fxFlex>
   <div fxFlex="20" style="padding: 50px" fxLayoutGap="10px">
     <mat-card fxFlex class="example-card">
       <mat-card-header>
@@ -17,6 +17,11 @@
       </mat-card-content>
     </mat-card>
   </div>
+  <div class="center" *ngIf="loggedInUser$ | async as user">
+    <div *ngIf="user.lobbyLeader == true">
+      <button class="styleBox" mat-button matSuffix (click)="endMatch()">End Match</button>
+    </div>
+  </div>
 
   <div class="push" fxFlex="20" style="padding: 50px" fxLayoutGap="10px">
     <mat-card fxFlex class="example-card">
@@ -28,7 +33,7 @@
           <ul>
             <li>
               <h1>
-              {{match.matchResults[1]?.user?.username}}
+                {{match.matchResults[1]?.user?.username}}
               </h1>
             </li>
           </ul>

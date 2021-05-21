@@ -12,6 +12,7 @@ import {MatchResultsModel} from '../shared/match-results.model';
 import {GetUsersOnMatch, ListenForMatchResults, NewMatch, NewMatchResult} from './state/match.actions';
 import {ListenForUsers} from '../Profile/state/user.actions';
 import {UserModel} from '../shared/user.model';
+import {LoggedInUserUpdate} from '../login/state/login.actions';
 
 
 @Component({
@@ -22,36 +23,28 @@ import {UserModel} from '../shared/user.model';
 
 export class LobbyComponent implements OnInit
 {
-  // @Select(MatchState.activeMatch) activeMatch$: Observable<MatchModel> | undefined;
-  // @Select(MatchState.matchResults) matchResults$: Observable<MatchResultsModel[]> | undefined;
   @Select(MatchState.currentMatch) currentMatch$: Observable<MatchModel> | undefined;
-  // unsubscribe$ = new Subject();
-  // relevantResults: MatchResultsModel[] = [];
-  constructor(private store: Store, private route: ActivatedRoute) {}
+  @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
+
+  winOrLoseFb = this.fb.group({
+    player1: [''],
+    player2: [''],
+  });
+
+  constructor(private store: Store, private route: ActivatedRoute, private fb: FormBuilder) {}
 
   ngOnInit(): void {
 
     this.store.dispatch([new ListenForMatchResults(), new NewMatch(), new NewMatchResult(), new GetUsersOnMatch()]);
-    //this.store.dispatch(new ListenForUsers());
-    // this.getUsersOnMatch();
   }
 
-  /* getUsersOnMatch(): void {
-    const activeMatch = {...this.store.selectSnapshot(MatchState.activeMatch)};
-    this.matchResults$.pipe(takeUntil(this.unsubscribe$)).subscribe((matchResults) => {
-      matchResults.forEach(relevantResult => {
-        const index = this.relevantResults.findIndex(result => result.id === relevantResult.id);
-        if (relevantResult.match.id === activeMatch.id && index === -1)
-        {
-          this.relevantResults.push(relevantResult);
-        }
-      });
-    });
-  }*/
+  winOrLose(): void {
+    const player1Value = this.winOrLoseFb.value.player1;
+    const player2Value = this.winOrLoseFb.value.player2;
 
-  /*ngOnDestroy(): void {
-    this.unsubscribe$.next();
-    this.unsubscribe$.complete();
-  }*/
+  }
 
+  endMatch() {
+    
+  }
 }

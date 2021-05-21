@@ -77,6 +77,7 @@ export class LoginState {
     const user = {...ctx.getState().loggedInUser};
     user.inQueue = loggedInUserUpdate.user.inQueue;
     user.isActive = loggedInUserUpdate.user.isActive;
+    user.lobbyLeader = loggedInUserUpdate.user.lobbyLeader;
     ctx.setState({
       ...ctx.getState(),
       loggedInUser: user
