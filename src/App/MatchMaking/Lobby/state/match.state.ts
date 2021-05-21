@@ -85,6 +85,11 @@ export class MatchState {
     return state.matchResults;
   }
 
+  @Selector()
+  static currentMatchResults(state: MatchStateModel): MatchResultsModel[] {
+    return state.currentMatch.matchResults;
+  }
+
   @Action(JoinLobby)
   joinLobby(ctx: StateContext<MatchStateModel>, action: JoinLobby){
     this.matchService.joinLobby(action.user);

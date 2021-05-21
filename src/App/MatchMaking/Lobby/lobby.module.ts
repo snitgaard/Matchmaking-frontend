@@ -10,7 +10,8 @@ import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {CommonModule} from '@angular/common';
-
+import {MatOptionModule} from '@angular/material/core';
+import {MatSelectModule} from '@angular/material/select';
 
 
 @NgModule({
@@ -18,17 +19,19 @@ import {CommonModule} from '@angular/common';
     LobbyComponent,
   ],
 
-    imports: [
-        LobbyRoutingModule,
-        FlexModule,
-        MatCardModule,
-        MatIconModule,
-        MatFormFieldModule,
-        MatDividerModule,
-        MatListModule,
-        MatButtonModule,
-        MatInputModule,
-        CommonModule
-    ]
+  imports: [
+    LobbyRoutingModule,
+    FlexModule,
+    MatCardModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatDividerModule,
+    MatListModule,
+    MatButtonModule,
+    MatInputModule,
+    CommonModule,
+    MatOptionModule,
+    MatSelectModule,
+  ]
 })
 export class LobbyModule { }

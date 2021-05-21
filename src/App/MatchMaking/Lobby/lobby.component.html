@@ -18,8 +18,21 @@
     </mat-card>
   </div>
   <div class="center" *ngIf="loggedInUser$ | async as user">
-    <div *ngIf="user.lobbyLeader == true">
-      <button class="styleBox" mat-button matSuffix (click)="endMatch()">End Match</button>
+    <div *ngIf="user.lobbyLeader == true && match.matchResults.length == 2">
+      <h1 class="text-color" >
+        Select your result
+      </h1>
+      <div *ngIf="currentMatchResults$ | async as results">
+      <mat-form-field  appearance="fill">
+        <mat-label class="text-color" >Winning user</mat-label>
+        <mat-select [(value)]="selectedResult">
+          <mat-option *ngFor="let result of results" [value]="result">
+            {{result.user.username}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+        <button (click)="endMatch()">Select Winner</button>
+      </div>
     </div>
   </div>
 
