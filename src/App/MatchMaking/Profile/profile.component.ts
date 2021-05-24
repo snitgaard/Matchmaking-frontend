@@ -66,9 +66,12 @@ export class ProfileComponent implements OnInit, OnDestroy
   constructor(private store: Store, private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.store.dispatch([new ListenForUsers(), new ListenForMatches(), new ListenForNewMatchCreated(), new ListenForJoinedMatch(), new ListenForMatchFound()])//, new NewMatch(), new NewMatchResult(), new ListenForMatches(), new ListenForMatchResults()]);
+    this.store.dispatch([new ListenForUsers(), new ListenForMatches(),
+      new ListenForNewMatchCreated(), new ListenForJoinedMatch(), new ListenForMatchFound(), new ListenForMatchResults()]);
+    this.store.dispatch(new LoadUserFromStorage());
     this.getMatchHistory();
-    // this.store.dispatch(new LoadUserFromStorage());
+    console.log(this.getMatchHistory(), 'nice meme');
+
   }
 
   ngOnDestroy(): void {
@@ -79,7 +82,7 @@ export class ProfileComponent implements OnInit, OnDestroy
   }
 
   queueUp(): void {
-    this.store.dispatch(new JoinLobby(this.store.selectSnapshot(LoginState.loggedInUser)))
+    this.store.dispatch(new JoinLobby(this.store.selectSnapshot(LoginState.loggedInUser)));
     /*console.log({...this.store.selectSnapshot(MatchState.matches)});
     console.log({...this.store.selectSnapshot(UserState.users)});
 
@@ -133,12 +136,14 @@ export class ProfileComponent implements OnInit, OnDestroy
 
   getMatchHistory(): void {
     const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
+    console.log(this.matchResults$, 'danklordweed');
     this.matchResults$.pipe(takeUntil(this.unsubscribe$)).subscribe((matchResults) => {
       matchResults.forEach(relevantResult => {
         const index = this.relevantResults.findIndex(result => result.id === relevantResult.id);
         if (relevantResult.user.id === loggedInUser.id && index === -1)
         {
           this.relevantResults.push(relevantResult);
+          console.log(relevantResult, 'gaylordweed');
         }
       });
     });

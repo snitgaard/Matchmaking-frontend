@@ -31,7 +31,7 @@ export class LobbyComponent implements OnInit
 {
   @Select(MatchState.currentMatch) currentMatch$: Observable<MatchModel> | undefined;
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
-  @Select(MatchState.currentMatchResults) currentMatchResults$: Observable<MatchResultsModel> | undefined;
+  @Select(MatchState.currentMatchResults) currentMatchResults$: Observable<MatchResultsModel[]> | undefined;
 
   winOrLoseFb = this.fb.group({
     player1: [''],
@@ -39,13 +39,15 @@ export class LobbyComponent implements OnInit
   });
 
   selectedResult: MatchResultsModel;
+  unsubscribe$ = new Subject();
 
-  constructor(private store: Store, private route: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(private store: Store, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
 
     this.store.dispatch([new ListenForMatchResults(), new NewMatch(), new NewMatchResult(), new GetUsersOnMatch()]);
   }
+
 
   winOrLose(): void {
     const player1Value = this.winOrLoseFb.value.player1;
@@ -54,7 +56,7 @@ export class LobbyComponent implements OnInit
   }
 
   endMatch(): void {
-    console.log(this.selectedResult.result, ":(");
+    console.log(this.selectedResult.result, ':(');
     this.store.dispatch(new UpdateMatchResult(this.selectedResult));
   }
 }
