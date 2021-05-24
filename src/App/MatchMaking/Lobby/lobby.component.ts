@@ -31,7 +31,7 @@ export class LobbyComponent implements OnInit
 {
   @Select(MatchState.currentMatch) currentMatch$: Observable<MatchModel> | undefined;
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
-  @Select(MatchState.currentMatchResults) currentMatchResults$: Observable<MatchResultsModel> | undefined;
+  @Select(MatchState.currentMatchResults) currentMatchResults$: Observable<MatchResultsModel[]> | undefined;
 
   winOrLoseFb = this.fb.group({
     player1: [''],
@@ -41,6 +41,7 @@ export class LobbyComponent implements OnInit
   endMatchBoolean: boolean;
 
   selectedResult: MatchResultsModel;
+  unsubscribe$ = new Subject();
 
   constructor(private store: Store, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {}
 

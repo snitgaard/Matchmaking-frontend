@@ -90,6 +90,11 @@ export class MatchState {
     return state.currentMatch.matchResults;
   }
 
+  @Selector()
+  static relevantResults(state: MatchStateModel): MatchResultsModel[] {
+    return state.relevantResults;
+  }
+
   @Action(JoinLobby)
   joinLobby(ctx: StateContext<MatchStateModel>, action: JoinLobby){
     this.matchService.joinLobby(action.user);
@@ -193,7 +198,33 @@ export class MatchState {
       ...ctx.getState(),
       currentMatch: match
     })
+
   }
+
+  @Action(ListenForMatchResults)
+  getMatchResults(ctx: StateContext<MatchStateModel>) {
+    if (this.matchResultsUnsub)
+    {
+      this.matchResultsUnsub.unsubscribe();
+    }
+    this.matchResultsUnsub = this.matchService.listenForMatchResults().subscribe(matchResults => {
+      ctx.dispatch(new UpdateMatchResults(matchResults));
+    });
+    this.matchService.getAllMatchResults();
+  }
+
+  @Action(UpdateMatchResults)
+  updateMatchResults(ctx: StateContext<MatchStateModel>, um: UpdateMatchResults): void {
+    const state = ctx.getState();
+    const newState: MatchStateModel = {
+      ...state,
+      matchResults: um.matchResults,
+    };
+    ctx.setState(newState);
+
+  }
+
+
 
   // New Stuff END
 
@@ -250,17 +281,7 @@ export class MatchState {
     this.matchService.getAllMatches();
   }
 
-  @Action(ListenForMatchResults)
-  getMatchResults(ctx: StateContext<MatchStateModel>) {
-    if (this.matchResultsUnsub)
-    {
-      this.matchResultsUnsub.unsubscribe();
-    }
-    this.matchResultsUnsub = this.matchService.listenForMatchResults().subscribe(matchResults => {
-      ctx.dispatch(new UpdateMatchResults(matchResults));
-    });
-    this.matchService.getAllMatchResults();
-  }
+
 
   @Action(UpdateMatches)
   updateMatches(ctx: StateContext<MatchStateModel>, uc: UpdateMatches): void {
@@ -272,16 +293,7 @@ export class MatchState {
     ctx.setState(newState);
   }
 
-  @Action(UpdateMatchResults)
-  updateMatchResults(ctx: StateContext<MatchStateModel>, um: UpdateMatchResults): void {
-    const state = ctx.getState();
-    const newState: MatchStateModel = {
-      ...state,
-      matchResults: um.matchResults,
-    };
-    ctx.setState(newState);
 
-  }
 
   @Action(GetUsersOnMatch)
   getUsersOnMatch(ctx: StateContext<MatchStateModel>) {
