@@ -78,6 +78,7 @@ export class LoginState {
     user.inQueue = loggedInUserUpdate.user.inQueue;
     user.isActive = loggedInUserUpdate.user.isActive;
     user.lobbyLeader = loggedInUserUpdate.user.lobbyLeader;
+    user.rating = loggedInUserUpdate.user.rating;
     ctx.setState({
       ...ctx.getState(),
       loggedInUser: user

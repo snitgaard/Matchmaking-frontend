@@ -36,9 +36,9 @@ import {UserStateModel} from '../../Profile/state/user.state';
 
 
 export interface MatchStateModel {
-  ///This is new
+  /// This is new
   currentMatch: MatchModel;
-  //End new stuff
+  // End new stuff
   matches: MatchModel[];
   activeMatch: MatchModel | undefined;
   relevantResults: MatchResultsModel[];
@@ -50,9 +50,9 @@ export interface MatchStateModel {
 @State<MatchStateModel>({
   name: 'match',
   defaults: {
-    ///This is new
+    /// This is new
     currentMatch: undefined,
-    //End new stuff
+    // End new stuff
 
     matches: [],
     activeMatch: undefined,
@@ -73,7 +73,7 @@ export class MatchState {
   constructor(private matchService: MatchService, private router: Router, private store: Store) {
   }
 
-  //New Stuff
+  // New Stuff
   @Selector()
   static currentMatch(state: MatchStateModel): MatchModel {
     return state.currentMatch;
@@ -132,32 +132,35 @@ export class MatchState {
         ctx.setState({
           ...ctx.getState(),
           currentMatch: action.match
-        })
+        });
         break;
       }
       case MatchUpdateType.New: {
         ctx.setState({
           ...ctx.getState(),
           currentMatch: action.match
-        })
-        //connectUserDto.lobbyLeader = true;
-        //await this.userService.updateUser(connectUserDto.id, connectUserDto);
+        });
+        this.store.dispatch(new LoggedInUserUpdate(action.match.matchResults[0].user));
+        // connectUserDto.lobbyLeader = true;
+        // await this.userService.updateUser(connectUserDto.id, connectUserDto);
         /// console.log("QueerIT", connectUserDto.username + connectUserDto.lobbyLeader)
 
 
-        const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
+        /*const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
+        console.log(loggedInUser, 'homo sapiens');
         loggedInUser.lobbyLeader = true;
         this.store.dispatch(new LoggedInUserUpdate(loggedInUser));
         this.store.dispatch(new UpdateUser(loggedInUser));
+         */
         break;
       }
       case MatchUpdateType.Joined: {
         const state = ctx.getState();
-        if(state.currentMatch.id === action.match.id) {
+        if (state.currentMatch.id === action.match.id) {
           ctx.setState({
             ...ctx.getState(),
             currentMatch: action.match
-          })
+          });
         }
         break;
       }
@@ -181,7 +184,7 @@ export class MatchState {
     this.matchService.updateMatchResult(updateMatchResult.matchResult.id, updateMatchResult.matchResult);
   }
 
-  //New Stuff END
+  // New Stuff END
 
 
 
