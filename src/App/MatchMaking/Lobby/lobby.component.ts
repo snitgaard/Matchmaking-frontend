@@ -37,23 +37,25 @@ export class LobbyComponent implements OnInit
     player1: [''],
     player2: [''],
   });
+  endMatchText: string;
+  endMatchBoolean: boolean;
 
   selectedResult: MatchResultsModel;
 
-  constructor(private store: Store, private route: ActivatedRoute, private fb: FormBuilder) {}
+  constructor(private store: Store, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {}
 
   ngOnInit(): void {
 
     this.store.dispatch([new ListenForMatchResults(), new NewMatch(), new NewMatchResult(), new GetUsersOnMatch()]);
   }
 
-  winOrLose(): void {
-    const player1Value = this.winOrLoseFb.value.player1;
-    const player2Value = this.winOrLoseFb.value.player2;
-
+  redirect(): void {
+    this.router.navigateByUrl('/Profile');
   }
 
   endMatch(): void {
+    this.endMatchText = "Match has ended. Winner was: " + this.selectedResult;
+    this.endMatchBoolean = true;
     console.log(this.selectedResult.result, ":(");
     this.store.dispatch(new UpdateMatchResult(this.selectedResult));
   }

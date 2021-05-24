@@ -141,6 +141,7 @@ export class MatchState {
           currentMatch: action.match
         });
         this.store.dispatch(new LoggedInUserUpdate(action.match.matchResults[0].user));
+        this.store.dispatch(new UpdateMatch(action.match));
         // connectUserDto.lobbyLeader = true;
         // await this.userService.updateUser(connectUserDto.id, connectUserDto);
         /// console.log("QueerIT", connectUserDto.username + connectUserDto.lobbyLeader)
@@ -182,6 +183,16 @@ export class MatchState {
     });
       */
     this.matchService.updateMatchResult(updateMatchResult.matchResult.id, updateMatchResult.matchResult);
+    }
+
+  @Action(UpdateMatch)
+  updateMatch(ctx: StateContext<MatchStateModel>, updateMatch: UpdateMatch) {
+    const match = {...ctx.getState().currentMatch};
+    match.hasEnded = updateMatch.updatedMatch.hasEnded;
+    ctx.setState({
+      ...ctx.getState(),
+      currentMatch: match
+    })
   }
 
   // New Stuff END
@@ -270,11 +281,6 @@ export class MatchState {
     };
     ctx.setState(newState);
 
-  }
-
-  @Action(UpdateMatch)
-  updateMatch(ctx: StateContext<MatchStateModel>, updateMatch: UpdateMatch) {
-    this.matchService.updateMatch(updateMatch.updatedMatch.id, updateMatch.updatedMatch);
   }
 
   @Action(GetUsersOnMatch)

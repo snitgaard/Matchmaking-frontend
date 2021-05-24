@@ -17,25 +17,27 @@
       </mat-card-content>
     </mat-card>
   </div>
+  <div *ngIf="match.hasEnded == true">
+    <h1> Hej :) </h1>
+  </div>
   <div class="center" *ngIf="loggedInUser$ | async as user">
     <div *ngIf="user.id == match.matchResults[0].user.id && match.matchResults.length == 2">
-      <h1 class="text-color" >
+      <h1 class="text-color">
         Select your result
       </h1>
       <div *ngIf="currentMatchResults$ | async as results">
-      <mat-form-field  appearance="fill">
-        <mat-label class="text-color" >Winning user</mat-label>
-        <mat-select [(value)]="selectedResult">
-          <mat-option *ngFor="let result of results" [value]="result">
-            {{result.user.username}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
+        <mat-form-field appearance="fill">
+          <mat-label class="text-color">Winning user</mat-label>
+          <mat-select [(value)]="selectedResult">
+            <mat-option *ngFor="let result of results" [value]="result">
+              {{result.user.username}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
         <button (click)="endMatch()">Select Winner</button>
       </div>
     </div>
   </div>
-
   <div class="push" fxFlex="20" style="padding: 50px" fxLayoutGap="10px">
     <mat-card fxFlex class="example-card">
       <mat-card-header>
