@@ -54,19 +54,7 @@ export class LobbyComponent implements OnInit
   }
 
   endMatch(): void {
-    const resultToUpdate = this.selectedResult;
-    resultToUpdate.result = true;
-    this.store.dispatch(new UpdateMatchResult(resultToUpdate));
-    /*const winnerToUpdate = this.selectedResult.user;
-    const currentMatch = {...this.store.selectSnapshot(MatchState.currentMatch)};
-    const matchResults = currentMatch.matchResults;
-    matchResults.forEach(result => {
-      if (result.user !== winnerToUpdate) {
-        result.user.rating = result.user.rating - 10;
-      } else {
-        result.user.rating = result.user.rating + 10;
-      }
-      this.store.dispatch(new UpdateUser(result.user));
-    });*/
+    console.log(this.selectedResult.result, ":(");
+    this.store.dispatch(new UpdateMatchResult(this.selectedResult));
   }
 }

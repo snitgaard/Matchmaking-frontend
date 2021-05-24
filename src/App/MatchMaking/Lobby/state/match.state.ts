@@ -166,9 +166,20 @@ export class MatchState {
   }
   @Action(UpdateMatchResult)
   updateMatchResult(ctx: StateContext<MatchStateModel>, updateMatchResult: UpdateMatchResult) {
+     /*const currentMatch = {...ctx.getState().currentMatch};
+    currentMatch.matchResults.forEach(result => {
+      if(updateMatchResult.matchResult == result && updateMatchResult.matchResult)
+      {
+        result.result = updateMatchResult.matchResult.result;
+      }
+    })
+    ctx.setState({
+      ...ctx.getState(),
+      currentMatch: currentMatch
+    });
+      */
     this.matchService.updateMatchResult(updateMatchResult.matchResult.id, updateMatchResult.matchResult);
   }
-
 
   //New Stuff END
 
