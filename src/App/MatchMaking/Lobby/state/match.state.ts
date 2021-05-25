@@ -147,7 +147,6 @@ export class MatchState {
         });
         this.store.dispatch(new LoggedInUserUpdate(action.match.matchResults[0].user));
         this.store.dispatch(new UpdateMatch(action.match));
-        console.log('this is gaysexual', ctx.getState().currentMatch);
         // connectUserDto.lobbyLeader = true;
         // await this.userService.updateUser(connectUserDto.id, connectUserDto);
         /// console.log("QueerIT", connectUserDto.username + connectUserDto.lobbyLeader)
@@ -172,7 +171,11 @@ export class MatchState {
         break;
       }
     }
-    this.router.navigateByUrl('/Lobby/' + ctx.getState().currentMatch.id);
+    if (ctx.getState().currentMatch !== null && ctx.getState().currentMatch.matchResults.length > 0)
+    {
+      console.log('RAMMMMMM', ctx.getState().currentMatch);
+      this.router.navigateByUrl('/Lobby/' + ctx.getState().currentMatch.id);
+    }
   }
   @Action(UpdateMatchResult)
   updateMatchResult(ctx: StateContext<MatchStateModel>, updateMatchResult: UpdateMatchResult) {
@@ -218,7 +221,7 @@ export class MatchState {
   updateMatchResults(ctx: StateContext<MatchStateModel>, um: UpdateMatchResults): void {
     const state = ctx.getState();
     const newMatch = {...state.currentMatch};
-    newMatch.matchResults = um.matchResults;
+    // newMatch.matchResults = um.matchResults;
     console.log('hej', newMatch);
     const newState: MatchStateModel = {
       ...state,
@@ -232,7 +235,7 @@ export class MatchState {
         const endState: MatchStateModel = {
           ...state,
           matchResults: um.matchResults,
-          currentMatch: undefined,
+          currentMatch: null,
         };
         ctx.setState(endState);
         this.router.navigateByUrl('/Profile');
