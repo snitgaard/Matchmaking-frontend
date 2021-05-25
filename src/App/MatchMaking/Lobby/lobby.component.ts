@@ -27,7 +27,7 @@ import {LoggedInUserUpdate} from '../login/state/login.actions';
   styleUrls: ['./lobby.component.css']
 })
 
-export class LobbyComponent implements OnInit
+export class LobbyComponent implements OnInit, OnDestroy
 {
   @Select(MatchState.currentMatch) currentMatch$: Observable<MatchModel> | undefined;
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
@@ -50,6 +50,11 @@ export class LobbyComponent implements OnInit
     this.store.dispatch([new ListenForMatchResults(), new NewMatch(), new NewMatchResult(), new GetUsersOnMatch()]);
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
+  }
+
   redirect(): void {
     this.router.navigateByUrl('/Profile');
   }
@@ -60,4 +65,6 @@ export class LobbyComponent implements OnInit
     console.log(this.selectedResult.result, ":(");
     this.store.dispatch(new UpdateMatchResult(this.selectedResult));
   }
+
+
 }

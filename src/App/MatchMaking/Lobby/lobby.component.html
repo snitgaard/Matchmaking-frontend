@@ -21,7 +21,7 @@
     <h1> Hej :) </h1>
   </div>
   <div class="center" *ngIf="loggedInUser$ | async as user">
-    <div *ngIf="user.id == match.matchResults[0].user.id && match.matchResults.length == 2">
+    <div *ngIf="match?.matchResults?.length == 2 && user.id == match?.matchResults[0]?.user.id">
       <h1 class="text-color">
         Select your result
       </h1>
