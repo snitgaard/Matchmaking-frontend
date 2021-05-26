@@ -28,11 +28,6 @@ export class LobbyComponent implements OnInit, OnDestroy {
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
   @Select(MatchState.currentMatchResults) currentMatchResults$: Observable<MatchResultsModel[]> | undefined;
 
-  winOrLoseFb = this.fb.group({
-    player1: [''],
-    player2: [''],
-  });
-
   selectedResult: MatchResultsModel;
   unsubscribe$ = new Subject();
 
