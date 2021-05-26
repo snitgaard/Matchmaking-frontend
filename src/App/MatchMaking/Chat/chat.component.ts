@@ -25,13 +25,11 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   messageFc = new FormControl('');
   nameFC = new FormControl('');
-  allMessages$: Observable<ChatModel[]>;
   userTyping: UserModel[] = [];
   unsubscribe$ = new Subject();
   userModel: UserModel | undefined;
   userId: string;
   username: string;
-  error$: Observable<string> | undefined;
   activeUsers: UserModel[] = [];
 
   constructor(private store: Store) {
@@ -51,7 +49,7 @@ export class ChatComponent implements OnInit, OnDestroy {
     this.store.dispatch(new UpdateUser(loggedInUser));
     this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
       users.forEach(activeUser => {
-        const index = this.activeUsers.findIndex(user => user.id === activeUser.id)
+        const index = this.activeUsers.findIndex(user => user.id === activeUser.id);
         if (activeUser.isActive === true && index === -1) {
           this.activeUsers.push(activeUser);
         }

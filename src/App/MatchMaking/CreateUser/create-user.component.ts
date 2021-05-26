@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {Select, Store} from '@ngxs/store';
 import {CreateUser} from '../Profile/state/user.actions';
@@ -15,7 +15,7 @@ import {Router} from '@angular/router';
   templateUrl: './create-user.component.html',
   styleUrls: ['./create-user.component.css']
 })
-export class CreateUserComponent implements OnInit {
+export class CreateUserComponent implements OnInit, OnDestroy {
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
   unsubscribe$ = new Subject();
 
@@ -38,5 +38,10 @@ export class CreateUserComponent implements OnInit {
     const userDto: UserModel = this.userFb.value;
     this.store.dispatch(new CreateUser(userDto));
     this.router.navigateByUrl('/Login');
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }

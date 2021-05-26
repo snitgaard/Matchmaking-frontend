@@ -12,7 +12,7 @@ import {
   ListenForMatchResults,
   NewMatch,
   NewMatchResult,
-  UpdateMatchResult
+  UpdateMatchResult, UpdateMatchResults
 } from './state/match.actions';
 import {UserModel} from '../shared/user.model';
 
@@ -36,7 +36,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
   selectedResult: MatchResultsModel;
   unsubscribe$ = new Subject();
 
-  constructor(private store: Store, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {
+  constructor(private store: Store, private route: ActivatedRoute, private fb: FormBuilder) {
   }
 
   ngOnInit(): void {

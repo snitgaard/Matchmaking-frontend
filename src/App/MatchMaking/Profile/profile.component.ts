@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit, OnDestroy {
   unsubscribe$ = new Subject();
   relevantResults: MatchResultsModel[] = [];
 
-  constructor(private store: Store, private fb: FormBuilder) {
+  constructor(private store: Store) {
   }
 
   ngOnInit(): void {

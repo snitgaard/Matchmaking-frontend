@@ -63,11 +63,6 @@ export class NewMatchResult {
   static readonly type = '[MatchResult] New MatchResult';
 }
 
-
-export class QueUp {
-  static readonly type = '[MatchResult] Que Up';
-}
-
 export class NewMatch {
   static readonly type = '[Match] New Match';
 

@@ -36,10 +36,7 @@ export interface MatchStateModel {
 @State<MatchStateModel>({
   name: 'match',
   defaults: {
-    /// This is new
     currentMatch: undefined,
-    // End new stuff
-
     matches: [],
     activeMatch: undefined,
     relevantResults: [],
@@ -51,15 +48,11 @@ export interface MatchStateModel {
 
 @Injectable()
 export class MatchState {
-  private matchesUnsub: Subscription | undefined;
-  private unsubscribeNewMatch: Subscription | undefined;
-  private unsubscribeNewMatchResult: Subscription | undefined;
   private matchResultsUnsub: Subscription | undefined;
 
   constructor(private matchService: MatchService, private router: Router, private store: Store) {
   }
 
-  // New Stuff
   @Selector()
   static currentMatch(state: MatchStateModel): MatchModel {
     return state.currentMatch;
@@ -147,7 +140,6 @@ export class MatchState {
       }
     }
     if (ctx.getState().currentMatch !== null && ctx.getState().currentMatch.matchResults.length > 0) {
-      console.log('RAMMMMMM', ctx.getState().currentMatch);
       this.router.navigateByUrl('/Lobby/' + ctx.getState().currentMatch.id);
     }
   }

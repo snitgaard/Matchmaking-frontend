@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {LoginState} from './state/login.state';
 import {Observable, Subject} from 'rxjs';
@@ -14,7 +14,7 @@ import {Router} from '@angular/router';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit {
+export class LoginComponent implements OnInit, OnDestroy {
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
   unsubscribe$ = new Subject();
   socketId: string | undefined;
@@ -50,5 +50,10 @@ export class LoginComponent implements OnInit {
     this.store.dispatch(new UserLoggedIn(userDto)).subscribe(success => {
       this.router.navigateByUrl('/Profile');
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 }
