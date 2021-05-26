@@ -1,16 +1,16 @@
 <div *ngIf="(loggedInUser$ | async)">
   <ul>
-    <li><a routerLink="/Profile">Profile</a></li>
-    <li><a routerLink="/Chat">Chat</a></li>
-    <li><a routerLink="/Leaderboard">Leaderboard</a></li>
-    <li><a (click)="logout()" routerLink="/Login">Logout</a></li>
+    <li><a routerLink="/profile">Profile</a></li>
+    <li><a routerLink="/chat">Chat</a></li>
+    <li><a routerLink="/leaderboard">Leaderboard</a></li>
+    <li><a (click)="logout()" routerLink="/login">Logout</a></li>
   </ul>
 </div>
 <div *ngIf="!(loggedInUser$ | async)">
   <ul>
-    <li><a routerLink="/Login">Login</a></li>
-    <li><a routerLink="/CreateUser">Create User</a></li>
-    <li><a routerLink="/Leaderboard">Leaderboard</a></li>
+    <li><a routerLink="/login">Login</a></li>
+    <li><a routerLink="/createUser">Create User</a></li>
+    <li><a routerLink="/leaderboard">Leaderboard</a></li>
   </ul>
 </div>
 <router-outlet></router-outlet>

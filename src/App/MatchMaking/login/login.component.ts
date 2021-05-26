@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit, OnDestroy {
   login(): void {
     const userDto: UserModel = this.userFb.value;
     this.store.dispatch(new UserLoggedIn(userDto)).subscribe(success => {
-      this.router.navigateByUrl('/Profile');
+      this.router.navigateByUrl('/profile');
     });
   }
 

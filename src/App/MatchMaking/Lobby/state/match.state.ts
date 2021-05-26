@@ -140,7 +140,7 @@ export class MatchState {
       }
     }
     if (ctx.getState().currentMatch !== null && ctx.getState().currentMatch.matchResults.length > 0) {
-      this.router.navigateByUrl('/Lobby/' + ctx.getState().currentMatch.id);
+      this.router.navigateByUrl('/lobby/' + ctx.getState().currentMatch.id);
     }
   }
 
@@ -189,7 +189,7 @@ export class MatchState {
           currentMatch: null,
         };
         ctx.setState(endState);
-        this.router.navigateByUrl('/Profile');
+        this.router.navigateByUrl('/profile');
       }
     });
   }

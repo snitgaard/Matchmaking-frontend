@@ -37,7 +37,7 @@ export class CreateUserComponent implements OnInit, OnDestroy {
   createUser(): void {
     const userDto: UserModel = this.userFb.value;
     this.store.dispatch(new CreateUser(userDto));
-    this.router.navigateByUrl('/Login');
+    this.router.navigateByUrl('/login');
   }
 
   ngOnDestroy(): void {

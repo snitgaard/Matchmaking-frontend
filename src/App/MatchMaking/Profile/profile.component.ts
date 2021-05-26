@@ -15,7 +15,6 @@ import {
   ListenForNewMatchCreated,
 } from '../Lobby/state/match.actions';
 import {MatchState} from '../Lobby/state/match.state';
-import {FormBuilder} from '@angular/forms';
 import {MatchResultsModel} from '../shared/match-results.model';
 import {UserModel} from '../shared/user.model';
 
@@ -69,5 +68,4 @@ export class ProfileComponent implements OnInit, OnDestroy {
   logout(): void {
     this.store.dispatch(new RemoveUserFromStorage);
   }
-
 }
