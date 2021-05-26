@@ -6,6 +6,10 @@
 
 .image {
   background-image: url('https://wallpapermemory.com/uploads/375/dark-grey-background-hd-1920x1200-64780.jpg');
+  position: absolute;
+  top: 40px;
+  bottom: 0px;
+  width: 100%;
 }
 
 .black {
@@ -30,4 +34,24 @@
 }
 .push {
   margin-left: auto;
+}
+
+.center {
+  width:50%;
+  margin-left:25%;
+  margin-right:25%;
+  margin-top: 25%;
+  margin-bottom: 25%;
+}
+
+.styleBox {
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.text-color {
+  color: white;
+}
+
+.white {
+  background: white;
 }

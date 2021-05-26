@@ -7,11 +7,24 @@ import {UserService} from '../shared/user.service';
 import {ListenForUsers, StopListeningForUsers, UpdateUser, UpdateUsers} from './state/user.actions';
 import {takeUntil} from 'rxjs/operators';
 import {LoginState} from '../login/state/login.state';
-import {LoadUserFromStorage, RemoveUserFromStorage} from '../login/state/login.actions';
+import {LoadUserFromStorage, RemoveUserFromStorage, UserLoggedIn} from '../login/state/login.actions';
 import {AuthUserModel} from '../shared/auth-user.model';
-import {ListenForMatches} from "../Lobby/state/match.actions";
-import {MatchModel} from "../shared/match.model";
-import {MatchState} from "../Lobby/state/match.state";
+import {
+  CreateMatch,
+  CreateMatchResult, JoinLobby, ListenForJoinedMatch,
+  ListenForMatches, ListenForMatchFound, ListenForMatchResults, ListenForNewMatchCreated,
+  NewMatch, NewMatchResult, QueUp, StopListeningForMatches,
+  UpdateMatch,
+  UpdateMatches
+} from '../Lobby/state/match.actions';
+import {MatchModel} from '../shared/match.model';
+import {MatchState} from '../Lobby/state/match.state';
+import {FormBuilder} from '@angular/forms';
+import {MatchDto} from '../shared/match.dto';
+import {NewMessage} from '../Chat/state/chat.actions';
+import {MatchResultsModel} from '../shared/match-results.model';
+import {insertItem} from '@ngxs/store/operators';
+import {Router} from '@angular/router';
 
 
 @Component({
@@ -23,21 +36,42 @@ import {MatchState} from "../Lobby/state/match.state";
 export class ProfileComponent implements OnInit, OnDestroy
 {
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
+  /*
   @Select(MatchState.matches) matches$: Observable<MatchModel[]> | undefined;
+  @Select(MatchState.activeMatch) activeMatch$: Observable<MatchModel> | undefined;
+
+   */
+  @Select(MatchState.matchResults) matchResults$: Observable<MatchResultsModel[]> | undefined;
+
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
+
   // loggedInUser: AuthUserModel;
 
   unsubscribe$ = new Subject();
-  queuedUsers: UserModel[] = [];
-  matchFound: boolean;
+  activeMatches: MatchModel[] = [];
+  relevantResults: MatchResultsModel[] = [];
+  activeMatch: MatchModel;
   testUser: UserModel[] = [];
+  matchFb = this.fb.group({
+    score: [''],
+    matchResults: ['']
+  });
+  matchResultFb = this.fb.group({
+    result: [''],
+    match: [''],
+    user: [''],
+  });
+  loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
 
-  constructor(private store: Store) {}
+  constructor(private store: Store, private fb: FormBuilder) {}
 
   ngOnInit(): void {
-    this.store.dispatch(new ListenForUsers());
-    this.store.dispatch(new ListenForMatches());
-    // this.store.dispatch(new LoadUserFromStorage());
+    this.store.dispatch([new ListenForUsers(), new ListenForMatches(),
+      new ListenForNewMatchCreated(), new ListenForJoinedMatch(), new ListenForMatchFound(), new ListenForMatchResults()]);
+    this.store.dispatch(new LoadUserFromStorage());
+    this.getMatchHistory();
+    console.log(this.getMatchHistory(), 'nice meme');
+
   }
 
   ngOnDestroy(): void {
@@ -48,29 +82,75 @@ export class ProfileComponent implements OnInit, OnDestroy
   }
 
   queueUp(): void {
-    const user = {...this.store.selectSnapshot(LoginState.loggedInUser)};
-    user.inQueue = !user.inQueue;
-    this.store.dispatch(new UpdateUser(user));
-    this.users$.subscribe((users) => {
-      users.forEach(queuedUser => {
-        if (queuedUser.id === user.id) {
+    this.store.dispatch(new JoinLobby(this.store.selectSnapshot(LoginState.loggedInUser)));
+    /*console.log({...this.store.selectSnapshot(MatchState.matches)});
+    console.log({...this.store.selectSnapshot(UserState.users)});
+
+    this.findActiveMatches();
+
+    if (this.activeMatches.length <= 0)
+    {
+      this.createMatch();
+      this.findActiveMatches();
+    }*/
+  }
+
+  /*
+  findActiveMatches(): void {
+    this.matches$.pipe(takeUntil(this.unsubscribe$)).subscribe((matches) => {
+      matches.forEach(activeMatch => {
+        if (activeMatch.matchResults === undefined)
+        {
           return;
         }
-        if (queuedUser.inQueue === true) {
-          this.queuedUsers.push(queuedUser);
-          console.log(queuedUser);
+        if (activeMatch.matchResults.length === 0 || activeMatch.matchResults.length === 1)
+        {
+          this.activeMatches.push(activeMatch);
+          this.matchResultFb.patchValue({
+            result: false,
+            match: activeMatch,
+            user: this.loggedInUser
+          });
+          const matchResultDto: MatchResultsModel = this.matchResultFb.value;
+          this.store.dispatch(new CreateMatchResult(matchResultDto));
+          this.unsubscribe$.next();
+          this.unsubscribe$.complete();
+          this.activeMatch = activeMatch;
+          // this.router.navigateByUrl('/Lobby/' + this.activeMatch.id);
         }
       });
     });
-    console.log(this.queuedUsers);
-    if (this.queuedUsers.length > 0) {
-      const firstUser = this.queuedUsers[0];
-      this.testUser.push(firstUser);
-      this.matchFound = true;
-      console.log(this.testUser);
-    }
   }
+
+  createMatch(): void {
+    this.matchFb.patchValue({
+      score: '0-0',
+      matchResults: [] = [],
+    });
+    const matchDto: MatchModel = this.matchFb.value;
+    this.store.dispatch(new CreateMatch(matchDto));
+    console.log(matchDto);
+  }
+
+   */
+
+  getMatchHistory(): void {
+    const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
+    console.log(this.matchResults$, 'danklordweed');
+    this.matchResults$.pipe(takeUntil(this.unsubscribe$)).subscribe((matchResults) => {
+      matchResults.forEach(relevantResult => {
+        const index = this.relevantResults.findIndex(result => result.id === relevantResult.id);
+        if (relevantResult.user.id === loggedInUser.id && index === -1)
+        {
+          this.relevantResults.push(relevantResult);
+          console.log(relevantResult, 'gaylordweed');
+        }
+      });
+    });
+  }
+
   logout(): void {
     this.store.dispatch(new RemoveUserFromStorage);
   }
+
 }

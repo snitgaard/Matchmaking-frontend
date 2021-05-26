@@ -23,6 +23,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ChatState} from './MatchMaking/Chat/state/chat.state';
 import {LoginState} from './MatchMaking/login/state/login.state';
+import {MatchState} from "./MatchMaking/Lobby/state/match.state";
 
 @Injectable()
 export class SocketApp extends Socket {
@@ -48,13 +49,13 @@ export class SocketApp extends Socket {
     MatIconModule,
     MatInputModule,
     MatButtonModule,
-    NgxsModule.forRoot([LoginState, UserState], {
+    NgxsModule.forRoot([LoginState, UserState, MatchState], {
       developmentMode: !environment.production
     }),
     NgxsLoggerPluginModule.forRoot(),
     NgxsReduxDevtoolsPluginModule.forRoot(),
     NgxsStoragePluginModule.forRoot({
-      key: [ChatState, LoginState, UserState]
+      key: [ChatState, LoginState, UserState, MatchState]
     }),
     ReactiveFormsModule
   ],

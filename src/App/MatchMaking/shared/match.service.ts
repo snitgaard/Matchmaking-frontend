@@ -4,6 +4,8 @@ import {SocketApp} from '../../app.module';
 import {MatchModel} from './match.model';
 import {UserModel} from "./user.model";
 import {MatchDto} from "./match.dto";
+import {ChatModel} from "./chat.model";
+import {MatchResultsModel} from "./match-results.model";
 
 
 
@@ -13,10 +15,43 @@ import {MatchDto} from "./match.dto";
 })
 export class MatchService {
   matchModel: MatchModel | undefined;
+  matchResultModel: MatchResultsModel | undefined;
   constructor(private socketApp: SocketApp) { }
 
-  sendMatch(match: MatchDto): void {
-    this.socketApp.emit('match', match);
+  //New Stuff
+  joinLobby(user: UserModel) {
+    this.socketApp.emit('joinLobby', user);
+  }
+
+  listenForNewMatchCreated(): Observable<MatchModel> {
+    return this.socketApp.fromEvent<MatchModel>('NewMatchCreatedForMe');
+  }
+
+  listenForMatchFound(): Observable<MatchModel> {
+    return this.socketApp.fromEvent<MatchModel>('MatchFoundForMe');
+  }
+
+  listenForJoinedMatch(): Observable<MatchModel> {
+    return this.socketApp.fromEvent<MatchModel>('SomeoneJoinedMatch');
+  }
+
+  updateMatchResult(id: string, matchResult: MatchResultsModel): void {
+    this.socketApp.emit('updateMatchResult', matchResult);
+  }
+
+  //New Stuff End
+
+  createMatch(match: MatchModel) {
+    this.socketApp.emit('create-match', match);
+  }
+  createMatchResult(matchResult: MatchResultsModel) {
+    this.socketApp.emit('create-matchresult', matchResult);
+  }
+  listenForNewMatch(): Observable<MatchModel> {
+    return this.socketApp.fromEvent<MatchModel>('new-match');
+  }
+  listenForNewMatchResult(): Observable<MatchResultsModel> {
+    return this.socketApp.fromEvent<MatchResultsModel>('new-matchresult');
   }
   updateMatch(id: string, match: MatchModel): void {
     this.socketApp.emit('updateMatch', match);
@@ -30,8 +65,14 @@ export class MatchService {
   listenForMatches(): Observable<MatchModel[]>{
     return this.socketApp.fromEvent<MatchModel[]>('matches');
   }
+  listenForMatchResults(): Observable<MatchResultsModel[]>{
+    return this.socketApp.fromEvent<MatchResultsModel[]>('matchResults');
+  }
   getAllMatches(): void{
     this.socketApp.emit('getAllMatches');
+  }
+  getAllMatchResults(): void {
+    this.socketApp.emit('getAllMatchResults');
   }
 
 }

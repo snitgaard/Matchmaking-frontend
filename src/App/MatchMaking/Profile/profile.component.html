@@ -1,5 +1,3 @@
-<body>
-
 <div class="image" fxLayout="column" fxFlex>
 
   <div style="padding: 30px" fxLayout="column" fxFlex *ngIf="loggedInUser$ | async as user">
@@ -14,7 +12,7 @@
         </div>
       </mat-card-content>
       <mat-card-footer style="padding: 30px" fxLayoutAlign="center center">
-        <button class="styleBox" mat-button matSuffix> PLAY NOW</button>
+        <button class="styleBox" mat-button matSuffix (click)="queueUp()"> PLAY NOW</button>
       </mat-card-footer>
     </mat-card>
   </div>
@@ -32,14 +30,16 @@
           <h3 class="black"> Win/Lose </h3>
         </div>
       </mat-card-content>
-      <mat-card-footer *ngIf="loggedInUser$ | async as user">
-        <mat-list style="margin: 30px" fxLayoutAlign="space-between center center" class="scroll">
-          <div class="black"> {{user.username}} </div>
-          <div class="black"> {{user.username}} </div>
-          <div class="black"> {{user.username}} </div>
+      <mat-card-footer>
+        <div *ngIf="relevantResults as results">
+        <mat-list *ngFor="let result of results | slice:results.length - 5" style="margin: 30px" fxLayoutAlign="space-between center center" class="scroll">
+          <div class="black"> {{result.user.username}} </div>
+          <div class="black"> {{result.user.rating}} </div>
+          <div class="black"> {{result.result && 'Won' || 'Lost'}} </div>
         </mat-list>
+        </div>
       </mat-card-footer>
     </mat-card>
   </div>
 </div>
-</body>
+
