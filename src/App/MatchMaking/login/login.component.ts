@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {LoginState} from './state/login.state';
 import {Observable, Subject} from 'rxjs';
@@ -22,7 +22,9 @@ export class LoginComponent implements OnInit {
     username: [''],
     password: [''],
   });
-  constructor(private store: Store, private loginService: LoginService, private fb: FormBuilder, private router: Router) { }
+
+  constructor(private store: Store, private loginService: LoginService, private fb: FormBuilder, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch([new LoadUserFromStorage(), new ListenForLogin()]);

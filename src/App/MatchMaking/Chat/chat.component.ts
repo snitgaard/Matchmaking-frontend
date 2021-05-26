@@ -18,8 +18,7 @@ import {LoginState} from '../login/state/login.state';
   styleUrls: ['./chat.component.css']
 })
 
-export class ChatComponent implements OnInit, OnDestroy
-{
+export class ChatComponent implements OnInit, OnDestroy {
   @Select(ChatState.messages) messages$: Observable<ChatModel[]> | undefined;
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
@@ -34,6 +33,7 @@ export class ChatComponent implements OnInit, OnDestroy
   username: string;
   error$: Observable<string> | undefined;
   activeUsers: UserModel[] = [];
+
   constructor(private store: Store) {
   }
 
@@ -52,8 +52,7 @@ export class ChatComponent implements OnInit, OnDestroy
     this.users$.pipe(takeUntil(this.unsubscribe$)).subscribe((users) => {
       users.forEach(activeUser => {
         const index = this.activeUsers.findIndex(user => user.id === activeUser.id)
-        if (activeUser.isActive === true && index === -1)
-        {
+        if (activeUser.isActive === true && index === -1) {
           this.activeUsers.push(activeUser);
         }
       });

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder} from '@angular/forms';
 import {Select, Store} from '@ngxs/store';
 import {CreateUser} from '../Profile/state/user.actions';
@@ -26,7 +26,8 @@ export class CreateUserComponent implements OnInit {
   });
   userCreate: UserModel | undefined;
 
-  constructor(private userService: UserService, private fb: FormBuilder, private store: Store, private router: Router) { }
+  constructor(private userService: UserService, private fb: FormBuilder, private store: Store, private router: Router) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch(new ListenForMessages()).pipe(takeUntil(this.unsubscribe$))

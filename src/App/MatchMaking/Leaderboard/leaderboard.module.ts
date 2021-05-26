@@ -30,4 +30,5 @@ import {CommonModule} from '@angular/common';
     CommonModule,
   ]
 })
-export class LeaderboardModule { }
+export class LeaderboardModule {
+}

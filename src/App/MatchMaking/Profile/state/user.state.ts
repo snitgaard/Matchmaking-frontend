@@ -1,13 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 
 import {Subscription} from 'rxjs';
 
-import {
-  CreateUser,
-  ListenForUsers, NewUser, StopListeningForUsers, UpdateUser,
-  UpdateUsers
-} from './user.actions';
+import {CreateUser, ListenForUsers, NewUser, StopListeningForUsers, UpdateUser, UpdateUsers} from './user.actions';
 import {UserModel} from '../../shared/user.model';
 import {UserService} from '../../shared/user.service';
 import {tap} from 'rxjs/operators';
@@ -64,8 +60,7 @@ export class UserState {
       ctx.dispatch(new UpdateUsers(users));
       const loggedInId = this.store.selectSnapshot(LoginState.loggedInUser).id;
       users.forEach(user => {
-        if (user.id === loggedInId)
-        {
+        if (user.id === loggedInId) {
           ctx.dispatch(new LoggedInUserUpdate(user));
         }
       });
@@ -99,7 +94,7 @@ export class UserState {
   }
 
   @Action(CreateUser)
-  createUser({getState, patchState }: StateContext<UserStateModel>, { payload }: CreateUser) {
+  createUser({getState, patchState}: StateContext<UserStateModel>, {payload}: CreateUser) {
     return this.userService.createUser(payload).pipe(tap((result) => {
       const state = getState();
       patchState({
@@ -120,5 +115,4 @@ export class UserState {
       });
     });
   }
-
 }

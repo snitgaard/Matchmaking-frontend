@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Observable} from 'rxjs';
 import {SocketApp} from '../../app.module';
 import {MatchModel} from './match.model';
@@ -7,15 +7,13 @@ import {MatchDto} from './match.dto';
 import {MatchResultsModel} from './match-results.model';
 
 
-
-
 @Injectable({
   providedIn: 'root'
 })
 export class MatchService {
   matchModel: MatchModel | undefined;
-  matchResultModel: MatchResultsModel | undefined;
-  constructor(private socketApp: SocketApp) { }
+  constructor(private socketApp: SocketApp) {
+  }
 
   // New Stuff
   joinLobby(user: UserModel) {
@@ -37,33 +35,43 @@ export class MatchService {
   updateMatchResult(id: string, matchResult: MatchResultsModel): void {
     this.socketApp.emit('updateMatchResult', matchResult);
   }
+
   createMatch(match: MatchModel) {
     this.socketApp.emit('create-match', match);
   }
+
   createMatchResult(matchResult: MatchResultsModel) {
     this.socketApp.emit('create-matchresult', matchResult);
   }
+
   listenForNewMatch(): Observable<MatchModel> {
     return this.socketApp.fromEvent<MatchModel>('new-match');
   }
+
   listenForNewMatchResult(): Observable<MatchResultsModel> {
     return this.socketApp.fromEvent<MatchResultsModel>('new-matchresult');
   }
+
   updateMatch(id: string, match: MatchModel): void {
     this.socketApp.emit('updateMatch', match);
   }
+
   listenForCreateSuccess(): Observable<MatchDto> {
     return this.socketApp.fromEvent<MatchDto>('match-created-success');
   }
+
   listenForCreateError(): Observable<string> {
     return this.socketApp.fromEvent<string>('match-created-error');
   }
-  listenForMatchResults(): Observable<MatchResultsModel[]>{
+
+  listenForMatchResults(): Observable<MatchResultsModel[]> {
     return this.socketApp.fromEvent<MatchResultsModel[]>('matchResults');
   }
-  getAllMatches(): void{
+
+  getAllMatches(): void {
     this.socketApp.emit('getAllMatches');
   }
+
   getAllMatchResults(): void {
     this.socketApp.emit('getAllMatchResults');
   }

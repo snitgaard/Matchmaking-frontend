@@ -3,7 +3,6 @@ import {PageNotFoundComponent} from './page-not-found.component';
 import {PageNotFoundRoutingModule} from './page-not-found-routing.module';
 
 
-
 @NgModule({
   declarations: [
     PageNotFoundComponent,
@@ -13,4 +12,5 @@ import {PageNotFoundRoutingModule} from './page-not-found-routing.module';
     PageNotFoundRoutingModule
   ]
 })
-export class PageNotFoundModule { }
+export class PageNotFoundModule {
+}

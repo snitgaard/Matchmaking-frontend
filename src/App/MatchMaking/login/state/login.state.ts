@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 import {UserModel} from '../../shared/user.model';
 import {UserService} from '../../shared/user.service';
@@ -89,7 +89,7 @@ export class LoginState {
       inQueue: userLoggedInAction.user.inQueue,
       isActive: userLoggedInAction.user.isActive,
     });
-    }
+  }
 
   @Action(LoadUserFromStorage)
   loadUserFromStorage(ctx: StateContext<UserStateModel>): void {

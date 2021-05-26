@@ -16,7 +16,6 @@ import {UserState} from '../Profile/state/user.state';
 import {ReactiveFormsModule} from '@angular/forms';
 
 
-
 @NgModule({
   declarations: [
     ChatComponent,
@@ -37,4 +36,5 @@ import {ReactiveFormsModule} from '@angular/forms';
     ReactiveFormsModule
   ]
 })
-export class ChatModule { }
+export class ChatModule {
+}

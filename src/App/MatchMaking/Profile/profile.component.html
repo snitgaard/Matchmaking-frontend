@@ -3,7 +3,7 @@
   <div style="padding: 30px" fxLayout="column" fxFlex *ngIf="loggedInUser$ | async as user">
     <mat-card fxFlex class="example-card-transparent">
       <mat-card-header style="padding: 30px" fxLayoutAlign="center center">
-        <h1 style="color: green; font-size: 50px" > Welcome {{user.username}}</h1>
+        <h1 style="color: green; font-size: 50px"> Welcome {{user.username}}</h1>
       </mat-card-header>
       <mat-card-content fxLayoutAlign="center center">
         <div>
@@ -24,7 +24,7 @@
         <h1 style="font-size: 20px" class="black"> Match History</h1>
       </mat-card-header>
       <mat-card-content>
-        <div   fxLayoutAlign="space-between center center">
+        <div fxLayoutAlign="space-between center center">
           <h3 class="black"> Name </h3>
           <h3 class="black"> Rating </h3>
           <h3 class="black"> Win/Lose </h3>
@@ -32,11 +32,12 @@
       </mat-card-content>
       <mat-card-footer>
         <div *ngIf="relevantResults as results">
-        <mat-list *ngFor="let result of results | slice:results.length - 5" style="margin: 30px" fxLayoutAlign="space-between center center" class="scroll">
-          <div class="black"> {{result.user.username}} </div>
-          <div class="black"> {{result.user.rating}} </div>
-          <div class="black"> {{result.result && 'Won' || 'Lost'}} </div>
-        </mat-list>
+          <mat-list *ngFor="let result of results | slice:results.length - 5" style="margin: 30px"
+                    fxLayoutAlign="space-between center center" class="scroll">
+            <div class="black"> {{result.user.username}} </div>
+            <div class="black"> {{result.user.rating}} </div>
+            <div class="black"> {{result.result && 'Won' || 'Lost'}} </div>
+          </mat-list>
         </div>
       </mat-card-footer>
     </mat-card>

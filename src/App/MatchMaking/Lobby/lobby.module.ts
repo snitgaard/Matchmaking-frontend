@@ -34,4 +34,5 @@ import {LobbyComponent} from './lobby.component';
     MatSelectModule,
   ]
 })
-export class LobbyModule { }
+export class LobbyModule {
+}

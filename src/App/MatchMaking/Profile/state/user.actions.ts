@@ -22,14 +22,16 @@ export class NewUser {
 
 export class UpdateUser {
   static readonly type = '[User] Updated User';
+
   constructor(public updatedUser: UserModel) {
   }
 }
 
 export class UpdateUsers {
-  constructor(public users: UserModel[]) {}
-
   static readonly type = '[User] Update Users';
+
+  constructor(public users: UserModel[]) {
+  }
 }
 
 

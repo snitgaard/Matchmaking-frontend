@@ -23,8 +23,7 @@ import {UserModel} from '../shared/user.model';
   styleUrls: ['./lobby.component.css']
 })
 
-export class LobbyComponent implements OnInit, OnDestroy
-{
+export class LobbyComponent implements OnInit, OnDestroy {
   @Select(MatchState.currentMatch) currentMatch$: Observable<MatchModel> | undefined;
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
   @Select(MatchState.currentMatchResults) currentMatchResults$: Observable<MatchResultsModel[]> | undefined;
@@ -37,7 +36,8 @@ export class LobbyComponent implements OnInit, OnDestroy
   selectedResult: MatchResultsModel;
   unsubscribe$ = new Subject();
 
-  constructor(private store: Store, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {}
+  constructor(private store: Store, private route: ActivatedRoute, private fb: FormBuilder, private router: Router) {
+  }
 
   ngOnInit(): void {
 
@@ -48,6 +48,7 @@ export class LobbyComponent implements OnInit, OnDestroy
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
+
   endMatch(): void {
     this.store.dispatch(new UpdateMatchResult(this.selectedResult));
   }

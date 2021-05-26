@@ -32,14 +32,15 @@
 .box {
   display: flex;
 }
+
 .push {
   margin-left: auto;
 }
 
 .center {
-  width:50%;
-  margin-left:25%;
-  margin-right:25%;
+  width: 50%;
+  margin-left: 25%;
+  margin-right: 25%;
   margin-top: 25%;
   margin-bottom: 25%;
 }

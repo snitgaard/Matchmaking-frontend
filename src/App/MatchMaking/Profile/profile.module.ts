@@ -27,4 +27,5 @@ import {MatFormFieldModule} from '@angular/material/form-field';
     MatFormFieldModule
   ]
 })
-export class ProfileModule { }
+export class ProfileModule {
+}

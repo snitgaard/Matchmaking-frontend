@@ -38,10 +38,10 @@
         <mat-form-field fxFlex>
           <mat-label class="black">Enter Message</mat-label>
           <label>
-            <input matInput type="text" [formControl]="messageFc" >
+            <input matInput type="text" [formControl]="messageFc">
           </label>
           <button mat-button matSuffix mat-icon-button aria-label="Clear">
-            <mat-icon style="font-size: 20px" class="black"(click)="sendMessage()">send</mat-icon>
+            <mat-icon style="font-size: 20px" class="black" (click)="sendMessage()">send</mat-icon>
           </button>
         </mat-form-field>
       </mat-card-actions>

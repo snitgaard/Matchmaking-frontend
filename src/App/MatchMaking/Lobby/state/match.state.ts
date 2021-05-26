@@ -3,36 +3,22 @@ import {Action, Selector, State, StateContext, Store} from '@ngxs/store';
 import {Injectable} from '@angular/core';
 import {Subscription} from 'rxjs';
 import {
-  CreateMatch,
-  CreateMatchResult,
-  GetUsersOnMatch,
   JoinLobby,
   ListenForJoinedMatch,
-  ListenForMatches,
   ListenForMatchFound,
   ListenForMatchResults,
   ListenForNewMatchCreated,
   MatchUpdated,
   MatchUpdateType,
-  NewMatch,
-  NewMatchCreated,
-  NewMatchResult,
-  QueUp,
-  StopListeningForMatches,
   UpdateMatch,
-  UpdateMatches,
   UpdateMatchResult,
   UpdateMatchResults
 } from './match.actions';
 import {MatchService} from '../../shared/match.service';
 import {MatchResultsModel} from '../../shared/match-results.model';
 import {Router} from '@angular/router';
-import {LoginState} from '../../login/state/login.state';
 import {tap} from 'rxjs/operators';
 import {LoggedInUserUpdate} from '../../login/state/login.actions';
-import {UserModel} from '../../shared/user.model';
-import {UpdateUser} from '../../Profile/state/user.actions';
-import {UserStateModel} from '../../Profile/state/user.state';
 
 
 export interface MatchStateModel {
@@ -96,12 +82,12 @@ export class MatchState {
   }
 
   @Action(JoinLobby)
-  joinLobby(ctx: StateContext<MatchStateModel>, action: JoinLobby){
+  joinLobby(ctx: StateContext<MatchStateModel>, action: JoinLobby) {
     this.matchService.joinLobby(action.user);
   }
 
   @Action(ListenForNewMatchCreated)
-  listenForNewMatchCreated(ctx: StateContext<MatchStateModel>){
+  listenForNewMatchCreated(ctx: StateContext<MatchStateModel>) {
     this.matchService.listenForNewMatchCreated()
       .pipe(
         tap(match => {
@@ -111,7 +97,7 @@ export class MatchState {
   }
 
   @Action(ListenForMatchFound)
-  listenForMatchFound(ctx: StateContext<MatchStateModel>){
+  listenForMatchFound(ctx: StateContext<MatchStateModel>) {
     this.matchService.listenForMatchFound()
       .pipe(
         tap(match => {
@@ -121,7 +107,7 @@ export class MatchState {
   }
 
   @Action(ListenForJoinedMatch)
-  listenForJoinedMatch(ctx: StateContext<MatchStateModel>){
+  listenForJoinedMatch(ctx: StateContext<MatchStateModel>) {
     this.matchService.listenForJoinedMatch()
       .pipe(
         tap(match => {
@@ -131,7 +117,7 @@ export class MatchState {
   }
 
   @Action(MatchUpdated)
-  matchUpdated(ctx: StateContext<MatchStateModel>, action: MatchUpdated){
+  matchUpdated(ctx: StateContext<MatchStateModel>, action: MatchUpdated) {
     switch (action.type) {
       case MatchUpdateType.Found: {
         ctx.setState({
@@ -160,16 +146,16 @@ export class MatchState {
         break;
       }
     }
-    if (ctx.getState().currentMatch !== null && ctx.getState().currentMatch.matchResults.length > 0)
-    {
+    if (ctx.getState().currentMatch !== null && ctx.getState().currentMatch.matchResults.length > 0) {
       console.log('RAMMMMMM', ctx.getState().currentMatch);
       this.router.navigateByUrl('/Lobby/' + ctx.getState().currentMatch.id);
     }
   }
+
   @Action(UpdateMatchResult)
   updateMatchResult(ctx: StateContext<MatchStateModel>, updateMatchResult: UpdateMatchResult) {
     this.matchService.updateMatchResult(updateMatchResult.matchResult.id, updateMatchResult.matchResult);
-    }
+  }
 
   @Action(UpdateMatch)
   updateMatch(ctx: StateContext<MatchStateModel>, updateMatch: UpdateMatch) {
@@ -184,8 +170,7 @@ export class MatchState {
 
   @Action(ListenForMatchResults)
   getMatchResults(ctx: StateContext<MatchStateModel>) {
-    if (this.matchResultsUnsub)
-    {
+    if (this.matchResultsUnsub) {
       this.matchResultsUnsub.unsubscribe();
     }
     this.matchResultsUnsub = this.matchService.listenForMatchResults().subscribe(matchResults => {
@@ -205,8 +190,7 @@ export class MatchState {
     };
     ctx.setState(newState);
     um.matchResults.forEach(result => {
-      if (result.match.id === ctx.getState().currentMatch.id && result.result === true)
-      {
+      if (result.match.id === ctx.getState().currentMatch.id && result.result === true) {
         const endState: MatchStateModel = {
           ...state,
           matchResults: um.matchResults,

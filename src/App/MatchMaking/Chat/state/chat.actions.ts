@@ -12,9 +12,10 @@ export class StopListeningForMessages {
 
 
 export class UpdateMessages {
-  constructor(public messages: ChatModel[]) {}
-
   static readonly type = '[Chat] Update Messages';
+
+  constructor(public messages: ChatModel[]) {
+  }
 }
 
 export class SendMessage {

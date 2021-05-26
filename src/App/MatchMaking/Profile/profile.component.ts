@@ -7,13 +7,16 @@ import {takeUntil} from 'rxjs/operators';
 import {LoginState} from '../login/state/login.state';
 import {LoadUserFromStorage, RemoveUserFromStorage} from '../login/state/login.actions';
 import {
-  JoinLobby, ListenForJoinedMatch,
-  ListenForMatches, ListenForMatchFound, ListenForMatchResults, ListenForNewMatchCreated,
+  JoinLobby,
+  ListenForJoinedMatch,
+  ListenForMatches,
+  ListenForMatchFound,
+  ListenForMatchResults,
+  ListenForNewMatchCreated,
 } from '../Lobby/state/match.actions';
 import {MatchState} from '../Lobby/state/match.state';
 import {FormBuilder} from '@angular/forms';
 import {MatchResultsModel} from '../shared/match-results.model';
-import {MatchModel} from '../shared/match.model';
 import {UserModel} from '../shared/user.model';
 
 
@@ -23,15 +26,16 @@ import {UserModel} from '../shared/user.model';
   styleUrls: ['./profile.component.css']
 })
 
-export class ProfileComponent implements OnInit, OnDestroy
-{
+export class ProfileComponent implements OnInit, OnDestroy {
   @Select(UserState.users) users$: Observable<UserModel[]> | undefined;
   @Select(MatchState.matchResults) matchResults$: Observable<MatchResultsModel[]> | undefined;
   @Select(LoginState.loggedInUser) loggedInUser$: Observable<UserModel> | undefined;
 
   unsubscribe$ = new Subject();
   relevantResults: MatchResultsModel[] = [];
-  constructor(private store: Store, private fb: FormBuilder) {}
+
+  constructor(private store: Store, private fb: FormBuilder) {
+  }
 
   ngOnInit(): void {
     this.store.dispatch([new ListenForUsers(), new ListenForMatches(),
@@ -55,8 +59,7 @@ export class ProfileComponent implements OnInit, OnDestroy
     this.matchResults$.pipe(takeUntil(this.unsubscribe$)).subscribe((matchResults) => {
       matchResults.forEach(relevantResult => {
         const index = this.relevantResults.findIndex(result => result.id === relevantResult.id);
-        if (relevantResult.user.id === loggedInUser.id && index === -1)
-        {
+        if (relevantResult.user.id === loggedInUser.id && index === -1) {
           this.relevantResults.push(relevantResult);
         }
       });

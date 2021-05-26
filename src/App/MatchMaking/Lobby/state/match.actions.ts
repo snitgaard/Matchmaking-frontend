@@ -1,6 +1,7 @@
 import {MatchModel} from '../../shared/match.model';
 import {UserModel} from '../../shared/user.model';
 import {MatchResultsModel} from '../../shared/match-results.model';
+
 export enum MatchUpdateType {
   Joined,
   New,
@@ -15,9 +16,10 @@ export class JoinLobby {
 }
 
 export class UpdateMatchResult {
-  constructor(public matchResult: MatchResultsModel) {}
-
   static readonly type = '[MatchResult] Update MatchResult';
+
+  constructor(public matchResult: MatchResultsModel) {
+  }
 }
 
 export class ListenForNewMatchCreated {
@@ -37,6 +39,7 @@ export class ListenForJoinedMatch {
 
 export class MatchUpdated {
   static readonly type = '[Match] a match has updated';
+
   constructor(public match: MatchModel, public type: MatchUpdateType) {
   }
 
@@ -72,6 +75,7 @@ export class NewMatch {
 
 export class NewMatchCreated {
   static readonly type = '[Match] New Match Created';
+
   constructor(public match: MatchModel) {
   }
 }
@@ -83,24 +87,28 @@ export class GetUsersOnMatch {
 export class ListenForMatches {
   static readonly type = '[Match] Listen for Matches';
 }
+
 export class ListenForMatchResults {
   static readonly type = '[MatchResult] Listen for MatchResults';
 }
 
 export class UpdateMatches {
-  constructor(public matches: MatchModel[]) {}
-
   static readonly type = '[Match] Update Matches';
+
+  constructor(public matches: MatchModel[]) {
+  }
 }
 
 export class UpdateMatchResults {
-  constructor(public matchResults: MatchResultsModel[]) {}
-
   static readonly type = '[MatchResult] Update MatchResults';
+
+  constructor(public matchResults: MatchResultsModel[]) {
+  }
 }
 
 export class UpdateMatch {
   static readonly type = '[Match] Updated Match';
+
   constructor(public updatedMatch: MatchModel) {
   }
 }

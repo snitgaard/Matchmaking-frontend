@@ -1,12 +1,9 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
 
 import {Subscription} from 'rxjs';
 
-import {
-  ListenForMessages, NewMessage, SendMessage, StopListeningForMessages,
-  UpdateMessages
-} from './chat.actions';
+import {ListenForMessages, NewMessage, SendMessage, StopListeningForMessages, UpdateMessages} from './chat.actions';
 
 import {ChatModel} from '../../shared/chat.model';
 import {ChatService} from '../../shared/chat.service';
@@ -37,7 +34,7 @@ export class ChatState {
   }
 
   @Action(ListenForMessages)
-  getMessages(ctx: StateContext<ChatStateModel>){
+  getMessages(ctx: StateContext<ChatStateModel>) {
     this.messagesUnsub = this.chatService.listenForMessages().subscribe(messages => {
       ctx.dispatch(new UpdateMessages(messages));
     });
@@ -75,6 +72,7 @@ export class ChatState {
     };
     ctx.setState(newState);
   }
+
   @Action(StopListeningForMessages)
   stopListeningForMessages(ctx: StateContext<ChatStateModel>): void {
     if (this.messagesUnsub) {
