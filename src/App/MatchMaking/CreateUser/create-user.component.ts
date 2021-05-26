@@ -8,6 +8,7 @@ import {takeUntil} from 'rxjs/operators';
 import {ListenForMessages} from '../Chat/state/chat.actions';
 import {UserModel} from '../shared/user.model';
 import {UserService} from '../shared/user.service';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-create-user',
@@ -25,7 +26,7 @@ export class CreateUserComponent implements OnInit {
   });
   userCreate: UserModel | undefined;
 
-  constructor(private userService: UserService, private fb: FormBuilder, private store: Store) { }
+  constructor(private userService: UserService, private fb: FormBuilder, private store: Store, private router: Router) { }
 
   ngOnInit(): void {
     this.store.dispatch(new ListenForMessages()).pipe(takeUntil(this.unsubscribe$))
@@ -34,8 +35,7 @@ export class CreateUserComponent implements OnInit {
 
   createUser(): void {
     const userDto: UserModel = this.userFb.value;
-    console.log(userDto);
     this.store.dispatch(new CreateUser(userDto));
+    this.router.navigateByUrl('/Login');
   }
-
 }
