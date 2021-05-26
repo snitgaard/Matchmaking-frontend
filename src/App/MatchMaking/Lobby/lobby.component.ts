@@ -31,7 +31,7 @@ export class LobbyComponent implements OnInit, OnDestroy {
   selectedResult: MatchResultsModel;
   unsubscribe$ = new Subject();
 
-  constructor(private store: Store, private route: ActivatedRoute, private fb: FormBuilder) {
+  constructor(private store: Store) {
   }
 
   ngOnInit(): void {
