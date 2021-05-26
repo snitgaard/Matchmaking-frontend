@@ -30,9 +30,9 @@
           <h3 class="black"> Win/Lose </h3>
         </div>
       </mat-card-content>
-      <mat-card-footer >
+      <mat-card-footer>
         <div *ngIf="relevantResults as results">
-        <mat-list *ngFor="let result of results" style="margin: 30px" fxLayoutAlign="space-between center center" class="scroll">
+        <mat-list *ngFor="let result of results | slice:results.length - 5" style="margin: 30px" fxLayoutAlign="space-between center center" class="scroll">
           <div class="black"> {{result.user.username}} </div>
           <div class="black"> {{result.user.rating}} </div>
           <div class="black"> {{result.result && 'Won' || 'Lost'}} </div>
