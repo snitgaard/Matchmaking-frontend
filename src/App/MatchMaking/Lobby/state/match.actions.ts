@@ -1,13 +1,11 @@
 import {MatchModel} from '../../shared/match.model';
 import {UserModel} from '../../shared/user.model';
 import {MatchResultsModel} from '../../shared/match-results.model';
-import {Observable} from 'rxjs';
 export enum MatchUpdateType {
   Joined,
   New,
   Found
 }
-//New Stuff
 
 export class JoinLobby {
   static readonly type = '[Match] Join The Lobby';
@@ -43,7 +41,6 @@ export class MatchUpdated {
   }
 
 }
-// New Stuff End
 
 export class CreateMatch {
   static readonly type = '[Match] Create Match';
@@ -83,18 +80,13 @@ export class GetUsersOnMatch {
   static readonly type = '[Match] Get Users On Match';
 }
 
-export class LoadMatchFromStorage {
-  static readonly type = '[Match] Load Match From Storage';
-}
 export class ListenForMatches {
   static readonly type = '[Match] Listen for Matches';
 }
 export class ListenForMatchResults {
   static readonly type = '[MatchResult] Listen for MatchResults';
 }
-export class RemoveMatchesFromStorage {
-  static readonly type = '[Match] Remove User From Storage';
-}
+
 export class UpdateMatches {
   constructor(public matches: MatchModel[]) {}
 
@@ -115,8 +107,4 @@ export class UpdateMatch {
 
 export class StopListeningForMatches {
   static readonly type = '[Match] Stop Listening For Matches';
-}
-
-export class StopListeningForMatchResults {
-  static readonly type = '[MatchResult] Stop Listening For MatchResults';
 }

@@ -9,11 +9,7 @@ import {MatListModule} from '@angular/material/list';
 import {MatButtonModule} from '@angular/material/button';
 import {MatInputModule} from '@angular/material/input';
 import {LeaderboardRoutingModule} from './leaderboard-routing.module';
-import {CommonModule} from "@angular/common";
-import {NgxsModule} from "@ngxs/store";
-import {UserState} from "../Profile/state/user.state";
-import {ProfileModule} from "../Profile/profile.module";
-
+import {CommonModule} from '@angular/common';
 
 
 @NgModule({

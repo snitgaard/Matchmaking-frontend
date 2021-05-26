@@ -18,6 +18,6 @@ export class AppComponent {
   constructor(private store: Store) {}
 
   logout(): void {
-    this.store.dispatch(new RemoveUserFromStorage)
+    this.store.dispatch(new RemoveUserFromStorage);
   }
 }

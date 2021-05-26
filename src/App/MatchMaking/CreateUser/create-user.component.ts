@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import {UserModel} from '../shared/user.model';
-import {UserService} from '../shared/user.service';
 import {FormBuilder} from '@angular/forms';
 import {Select, Store} from '@ngxs/store';
-import {CreateUser, ListenForUsers} from '../Profile/state/user.actions';
+import {CreateUser} from '../Profile/state/user.actions';
 import {UserState} from '../Profile/state/user.state';
 import {Observable, Subject} from 'rxjs';
 import {takeUntil} from 'rxjs/operators';
 import {ListenForMessages} from '../Chat/state/chat.actions';
+import {UserModel} from '../shared/user.model';
+import {UserService} from '../shared/user.service';
 
 @Component({
   selector: 'app-create-user',
@@ -36,7 +36,6 @@ export class CreateUserComponent implements OnInit {
     const userDto: UserModel = this.userFb.value;
     console.log(userDto);
     this.store.dispatch(new CreateUser(userDto));
-    //this.userService.createUser(userDto);
   }
 
 }

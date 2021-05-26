@@ -2,10 +2,9 @@ import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs';
 import {SocketApp} from '../../app.module';
 import {MatchModel} from './match.model';
-import {UserModel} from "./user.model";
-import {MatchDto} from "./match.dto";
-import {ChatModel} from "./chat.model";
-import {MatchResultsModel} from "./match-results.model";
+import {UserModel} from './user.model';
+import {MatchDto} from './match.dto';
+import {MatchResultsModel} from './match-results.model';
 
 
 
@@ -18,7 +17,7 @@ export class MatchService {
   matchResultModel: MatchResultsModel | undefined;
   constructor(private socketApp: SocketApp) { }
 
-  //New Stuff
+  // New Stuff
   joinLobby(user: UserModel) {
     this.socketApp.emit('joinLobby', user);
   }
@@ -38,9 +37,6 @@ export class MatchService {
   updateMatchResult(id: string, matchResult: MatchResultsModel): void {
     this.socketApp.emit('updateMatchResult', matchResult);
   }
-
-  //New Stuff End
-
   createMatch(match: MatchModel) {
     this.socketApp.emit('create-match', match);
   }
@@ -61,9 +57,6 @@ export class MatchService {
   }
   listenForCreateError(): Observable<string> {
     return this.socketApp.fromEvent<string>('match-created-error');
-  }
-  listenForMatches(): Observable<MatchModel[]>{
-    return this.socketApp.fromEvent<MatchModel[]>('matches');
   }
   listenForMatchResults(): Observable<MatchResultsModel[]>{
     return this.socketApp.fromEvent<MatchResultsModel[]>('matchResults');

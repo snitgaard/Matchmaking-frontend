@@ -1,4 +1,4 @@
-import {MatchModel} from "./match.model";
+import {MatchModel} from './match.model';
 
 export interface MatchDto {
   matches: MatchModel[];

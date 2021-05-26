@@ -1,5 +1,4 @@
 import {UserModel} from '../../shared/user.model';
-import {AuthUserModel} from '../../shared/auth-user.model';
 
 export class UserLoggedIn {
   constructor(public user: UserModel) {}

@@ -1,4 +1,3 @@
-import {MatchModel} from './match.model';
 import {ChatModel} from './chat.model';
 import {MatchResultsModel} from './match-results.model';
 

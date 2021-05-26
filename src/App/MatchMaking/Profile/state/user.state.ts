@@ -11,11 +11,8 @@ import {
 import {UserModel} from '../../shared/user.model';
 import {UserService} from '../../shared/user.service';
 import {tap} from 'rxjs/operators';
-import {patch, updateItem} from '@ngxs/store/operators';
 import {LoginState} from '../../login/state/login.state';
 import {LoggedInUserUpdate} from '../../login/state/login.actions';
-import {NewMessage} from "../../Chat/state/chat.actions";
-import {ChatStateModel} from "../../Chat/state/chat.state";
 
 
 export interface UserStateModel {
@@ -35,7 +32,6 @@ export interface UserStateModel {
 @Injectable()
 export class UserState {
   private usersUnsub: Subscription | undefined;
-  private updatedUser: Subscription | undefined;
   private unsubscribeNewUser: Subscription | undefined;
 
   constructor(private userService: UserService, private store: Store) {
@@ -66,13 +62,13 @@ export class UserState {
   getUsers(ctx: StateContext<UserStateModel>) {
     this.usersUnsub = this.userService.listenForUsers().subscribe(users => {
       ctx.dispatch(new UpdateUsers(users));
-      const loggedInId = this.store.selectSnapshot(LoginState.loggedInUser).id
+      const loggedInId = this.store.selectSnapshot(LoginState.loggedInUser).id;
       users.forEach(user => {
-        if(user.id === loggedInId)
+        if (user.id === loggedInId)
         {
-          ctx.dispatch(new LoggedInUserUpdate(user))
+          ctx.dispatch(new LoggedInUserUpdate(user));
         }
-      })
+      });
     });
     this.userService.getAllUsers();
   }
@@ -116,7 +112,7 @@ export class UserState {
   newUser(ctx: StateContext<UserStateModel>) {
     this.unsubscribeNewUser = this.userService.listenForNewUser().subscribe(user => {
       const state = ctx.getState();
-      const newUsers = [...state.Users]
+      const newUsers = [...state.Users];
       newUsers.push(user);
       ctx.setState({
         ...state,

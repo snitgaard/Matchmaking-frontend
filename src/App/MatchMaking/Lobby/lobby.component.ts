@@ -1,13 +1,11 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Select, Store} from '@ngxs/store';
 import {FormBuilder} from '@angular/forms';
-import {ActivatedRoute, Params, Router} from '@angular/router';
-import {ProfileComponent} from '../Profile/profile.component';
+import {ActivatedRoute, Router} from '@angular/router';
 import {MatchModel} from '../shared/match.model';
 import {MatchState} from './state/match.state';
 import {Observable, Subject} from 'rxjs';
 import {LoginState} from '../login/state/login.state';
-import {takeUntil} from 'rxjs/operators';
 import {MatchResultsModel} from '../shared/match-results.model';
 import {
   GetUsersOnMatch,
@@ -16,9 +14,7 @@ import {
   NewMatchResult,
   UpdateMatchResult
 } from './state/match.actions';
-import {ListenForUsers, UpdateUser} from '../Profile/state/user.actions';
 import {UserModel} from '../shared/user.model';
-import {LoggedInUserUpdate} from '../login/state/login.actions';
 
 
 @Component({
@@ -37,8 +33,6 @@ export class LobbyComponent implements OnInit, OnDestroy
     player1: [''],
     player2: [''],
   });
-  endMatchText: string;
-  endMatchBoolean: boolean;
 
   selectedResult: MatchResultsModel;
   unsubscribe$ = new Subject();
@@ -54,15 +48,7 @@ export class LobbyComponent implements OnInit, OnDestroy
     this.unsubscribe$.next();
     this.unsubscribe$.complete();
   }
-
-  redirect(): void {
-    this.router.navigateByUrl('/Profile');
-  }
-
   endMatch(): void {
-    this.endMatchText = "Match has ended. Winner was: " + this.selectedResult;
-    this.endMatchBoolean = true;
-    console.log(this.selectedResult.result, ":(");
     this.store.dispatch(new UpdateMatchResult(this.selectedResult));
   }
 

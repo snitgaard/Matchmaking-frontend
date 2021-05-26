@@ -4,7 +4,6 @@ import {UserState} from '../Profile/state/user.state';
 import {Observable} from 'rxjs';
 import {UserModel} from '../shared/user.model';
 import {ListenForUsers, StopListeningForUsers} from '../Profile/state/user.actions';
-import {map, tap} from "rxjs/operators";
 
 @Component({
   selector: 'app-leaderboard',

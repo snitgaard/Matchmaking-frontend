@@ -1,5 +1,4 @@
 import {NgModule} from '@angular/core';
-import {LobbyComponent} from './lobby.component';
 import {LobbyRoutingModule} from './lobby-routing.module';
 import {FlexModule} from '@angular/flex-layout';
 import {MatCardModule} from '@angular/material/card';
@@ -12,6 +11,7 @@ import {MatInputModule} from '@angular/material/input';
 import {CommonModule} from '@angular/common';
 import {MatOptionModule} from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select';
+import {LobbyComponent} from './lobby.component';
 
 
 @NgModule({

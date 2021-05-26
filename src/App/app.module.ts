@@ -14,7 +14,6 @@ import {UserState} from './MatchMaking/Profile/state/user.state';
 import {NgxsLoggerPluginModule} from '@ngxs/logger-plugin';
 import {NgxsStoragePluginModule} from '@ngxs/storage-plugin';
 import {NgxsReduxDevtoolsPluginModule} from '@ngxs/devtools-plugin';
-import { LoginComponent } from './MatchMaking/login/login.component';
 import {MatCardModule} from '@angular/material/card';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MatIconModule} from '@angular/material/icon';
@@ -23,7 +22,7 @@ import {MatButtonModule} from '@angular/material/button';
 import {ReactiveFormsModule} from '@angular/forms';
 import {ChatState} from './MatchMaking/Chat/state/chat.state';
 import {LoginState} from './MatchMaking/login/state/login.state';
-import {MatchState} from "./MatchMaking/Lobby/state/match.state";
+import {MatchState} from './MatchMaking/Lobby/state/match.state';
 
 @Injectable()
 export class SocketApp extends Socket {

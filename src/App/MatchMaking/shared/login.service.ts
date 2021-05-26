@@ -3,7 +3,6 @@ import {UserModel} from './user.model';
 import {SocketApp} from '../../app.module';
 import {Observable} from 'rxjs';
 import {map} from 'rxjs/operators';
-import {AuthUserModel} from './auth-user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -18,24 +17,24 @@ export class LoginService {
   }
 
   listenForLogin(): Observable<UserModel> {
-    return this.socketApp.fromEvent<UserModel>("iamconnected")
+    return this.socketApp.fromEvent<UserModel>('iamconnected');
   }
 
   listenForConnect(): Observable<string> {
     return this.socketApp
-      .fromEvent<string>("connect")
+      .fromEvent<string>('connect')
       .pipe(
         map(() => {
           return this.socketApp.ioSocket.id;
-        }))
-  };
+        }));
+  }
   listenForDisconnect(): Observable<string> {
     return this.socketApp
-      .fromEvent<string>("disconnect")
+      .fromEvent<string>('disconnect')
       .pipe(
         map(() => {
           return this.socketApp.ioSocket.id;
-        }))
-  };
+        }));
+  }
 
 }

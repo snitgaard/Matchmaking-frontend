@@ -1,7 +1,5 @@
 import { Injectable } from '@angular/core';
 import {Action, Selector, State, StateContext} from '@ngxs/store';
-
-import {Subscription} from 'rxjs';
 import {UserModel} from '../../shared/user.model';
 import {UserService} from '../../shared/user.service';
 import {LoginService} from '../../shared/login.service';
@@ -12,10 +10,7 @@ import {
   RemoveUserFromStorage,
   UserLoggedIn
 } from './login.actions';
-import {AuthUserModel} from '../../shared/auth-user.model';
 import {tap} from 'rxjs/operators';
-import {patch, removeItem} from '@ngxs/store/operators';
-import {log} from 'util';
 
 
 export interface UserStateModel {
@@ -32,8 +27,6 @@ export interface UserStateModel {
 })
 @Injectable()
 export class LoginState {
-  private usersUnsub: Subscription | undefined;
-
   constructor(private userService: UserService, private loginService: LoginService) {
   }
 

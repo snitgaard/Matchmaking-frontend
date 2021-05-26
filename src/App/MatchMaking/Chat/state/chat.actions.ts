@@ -1,5 +1,4 @@
-import {ChatModel} from "../../shared/chat.model";
-import {UserModel} from '../../shared/user.model';
+import {ChatModel} from '../../shared/chat.model';
 import {ChatDto} from '../../shared/chat.dto';
 
 
@@ -26,16 +25,5 @@ export class SendMessage {
 }
 
 export class NewMessage {
-  static readonly type = '[Chat] New Message'
-}
-
-/*
-export class UserLoggedIn {
-  constructor(public user: ChatModel) {}
-
-  static readonly type = '[User] New User Logged In';
-}
-*/
-export class LoadMessageFromStorage {
-  static readonly type = '[Chat] Load Message From Storage';
+  static readonly type = '[Chat] New Message';
 }

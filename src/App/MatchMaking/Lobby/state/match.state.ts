@@ -147,17 +147,6 @@ export class MatchState {
         });
         this.store.dispatch(new LoggedInUserUpdate(action.match.matchResults[0].user));
         this.store.dispatch(new UpdateMatch(action.match));
-        // connectUserDto.lobbyLeader = true;
-        // await this.userService.updateUser(connectUserDto.id, connectUserDto);
-        /// console.log("QueerIT", connectUserDto.username + connectUserDto.lobbyLeader)
-
-
-        /*const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
-        console.log(loggedInUser, 'homo sapiens');
-        loggedInUser.lobbyLeader = true;
-        this.store.dispatch(new LoggedInUserUpdate(loggedInUser));
-        this.store.dispatch(new UpdateUser(loggedInUser));
-         */
         break;
       }
       case MatchUpdateType.Joined: {
@@ -179,18 +168,6 @@ export class MatchState {
   }
   @Action(UpdateMatchResult)
   updateMatchResult(ctx: StateContext<MatchStateModel>, updateMatchResult: UpdateMatchResult) {
-     /*const currentMatch = {...ctx.getState().currentMatch};
-    currentMatch.matchResults.forEach(result => {
-      if(updateMatchResult.matchResult == result && updateMatchResult.matchResult)
-      {
-        result.result = updateMatchResult.matchResult.result;
-      }
-    })
-    ctx.setState({
-      ...ctx.getState(),
-      currentMatch: currentMatch
-    });
-      */
     this.matchService.updateMatchResult(updateMatchResult.matchResult.id, updateMatchResult.matchResult);
     }
 
@@ -201,7 +178,7 @@ export class MatchState {
     ctx.setState({
       ...ctx.getState(),
       currentMatch: match
-    })
+    });
 
   }
 
@@ -221,8 +198,6 @@ export class MatchState {
   updateMatchResults(ctx: StateContext<MatchStateModel>, um: UpdateMatchResults): void {
     const state = ctx.getState();
     const newMatch = {...state.currentMatch};
-    // newMatch.matchResults = um.matchResults;
-    console.log('hej', newMatch);
     const newState: MatchStateModel = {
       ...state,
       matchResults: um.matchResults,
@@ -242,197 +217,4 @@ export class MatchState {
       }
     });
   }
-
-
-
-  // New Stuff END
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  /*
-  @Selector()
-  static relevantResults(state: MatchStateModel): MatchResultsModel[] {
-    return state.relevantResults;
-  }
-
-  @Selector()
-  static matches(state: MatchStateModel): MatchModel[] {
-    return state.matches;
-  }
-
-  @Selector()
-  static matchIds(state: MatchStateModel): string[] {
-    return state.matches.map(c => c.id);
-  }
-  @Selector()
-  static activeMatch(state: MatchStateModel): MatchModel {
-    return state.activeMatch;
-  }
-
-  @Action(ListenForMatches)
-  getMatches(ctx: StateContext<MatchStateModel>){
-    if (this.matchesUnsub)
-    {
-      this.matchesUnsub.unsubscribe();
-    }
-    this.matchesUnsub = this.matchService.listenForMatches().subscribe(matches => {
-      ctx.dispatch(new UpdateMatches(matches));
-    });
-    this.matchService.getAllMatches();
-  }
-
-
-
-  @Action(UpdateMatches)
-  updateMatches(ctx: StateContext<MatchStateModel>, uc: UpdateMatches): void {
-    const state = ctx.getState();
-    const newState: MatchStateModel = {
-      ...state,
-      matches: uc.matches,
-    };
-    ctx.setState(newState);
-  }
-
-
-
-  @Action(GetUsersOnMatch)
-  getUsersOnMatch(ctx: StateContext<MatchStateModel>) {
-    const state = ctx.getState();
-    const activeMatch = state.activeMatch;
-    const matchResults = state.matchResults;
-    const relevantResults: MatchResultsModel[] = [
-      ...matchResults.filter(mr => mr.match.id === activeMatch.id)
-    ];
-    ctx.setState({
-      ...state,
-      relevantResults: relevantResults,
-    })
-  }
-
-  @Action(NewMatch)
-  newMatch(ctx: StateContext<MatchStateModel>) {
-    this.unsubscribeNewMatch = this.matchService.listenForNewMatch().subscribe(match => {
-      ctx.dispatch(new NewMatchCreated(match));
-    });
-  }
-
-  @Action(NewMatchCreated)
-  newMatchCreated(ctx: StateContext<MatchStateModel>, action: NewMatchCreated) {
-    const state = ctx.getState();
-    const newMatches = [...state.matches];
-    newMatches.push(action.match);
-    ctx.setState({
-      ...state,
-      matches: newMatches,
-      activeMatch: state.waitingForMatch ? action.match : state.activeMatch,
-    });
-    if(ctx.getState().waitingForMatch) {
-      ctx.dispatch(new QueUp());
-    }
-  }
-
-  @Action(StopListeningForMatches)
-  stopListeningForClients(ctx: StateContext<MatchStateModel>): void {
-    if (this.matchesUnsub) {
-      this.matchesUnsub.unsubscribe();
-    }
-  }
-
-  @Action(CreateMatch)
-  createMatch(ctx: StateContext<MatchStateModel>, createMatch: CreateMatch) {
-    return this.matchService.createMatch({
-      id: createMatch.payload.id,
-      matchResults: createMatch.payload.matchResults,
-      score: createMatch.payload.score
-    });
-  }
-
-  @Action(CreateMatchResult)
-  createMatchResult(ctx: StateContext<MatchStateModel>, createMatchResult: CreateMatchResult) {
-    return this.matchService.createMatchResult({
-      id: createMatchResult.resultPayload.id,
-      result: createMatchResult.resultPayload.result,
-      match: createMatchResult.resultPayload.match,
-      user: createMatchResult.resultPayload.user
-    });
-  }
-
-  @Action(NewMatchResult)
-  newMatchResult(ctx: StateContext<MatchStateModel>) {
-    this.unsubscribeNewMatchResult = this.matchService.listenForNewMatchResult().subscribe(matchResult => {
-      ctx.dispatch(new UpdateMatchResult(matchResult));
-    });
-  }
-
-  @Action(UpdateMatchResult)
-  updateMatchResult(ctx: StateContext<MatchStateModel>, um: UpdateMatchResult): void {
-    const state = ctx.getState();
-    const matchResults = [...state.matchResults]
-    if(!matchResults.find(mr => mr.id === um.matchResult.id)) {
-      matchResults.push(um.matchResult);
-      const newState: MatchStateModel = {
-        ...state,
-        matchResults: matchResults,
-      };
-      ctx.setState(newState);
-
-    }
-    ctx.dispatch(new GetUsersOnMatch());
-    if(um.matchResult.user.id === this.store.selectSnapshot(LoginState.loggedInUser)?.id) {
-      this.router.navigateByUrl('/Lobby/' + state.activeMatch.id);
-    }
-
-  }
-
-  @Action(QueUp)
-  queUp(ctx: StateContext<MatchStateModel>, action: QueUp): void {
-    const matches = ctx.getState().matches;
-    const availableMatchResult = matches.find(m => !m.matchResults || m.matchResults.length === 0 || m.matchResults.length === 1 );
-    if(!availableMatchResult) {
-      ctx.setState({
-        ...ctx.getState(),
-        waitingForMatch: true
-      })
-      ctx.dispatch(new CreateMatch({
-        id: undefined,
-        score: '0-0',
-        matchResults: [],
-      }));
-    } else {
-      ctx.setState({
-        ...ctx.getState(),
-        waitingForMatch: false,
-        activeMatch: availableMatchResult,
-      })
-      const activeMatch: MatchModel = availableMatchResult;
-
-      const matchResultDto: MatchResultsModel = {
-        id: undefined,
-        result: false,
-        match: activeMatch,
-        user: this.store.selectSnapshot(LoginState.loggedInUser)
-      };
-      ctx.dispatch(new CreateMatchResult(matchResultDto));
-    }
-  }
-*/
 }

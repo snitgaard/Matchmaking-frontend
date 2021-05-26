@@ -6,12 +6,11 @@ import {Observable, Subject} from 'rxjs';
 import {Select, Store} from '@ngxs/store';
 import {UserState} from '../Profile/state/user.state';
 import {ChatState} from './state/chat.state';
-import {CreateUser, ListenForUsers, StopListeningForUsers, UpdateUser} from '../Profile/state/user.actions';
+import {ListenForUsers, StopListeningForUsers, UpdateUser} from '../Profile/state/user.actions';
 import {ListenForMessages, NewMessage, SendMessage, StopListeningForMessages} from './state/chat.actions';
 import {ChatDto} from '../shared/chat.dto';
 import {takeUntil} from 'rxjs/operators';
 import {LoginState} from '../login/state/login.state';
-import {LoadUserFromStorage, UserLoggedIn} from '../login/state/login.actions';
 
 @Component({
   selector: 'app-chat',
