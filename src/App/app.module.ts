@@ -28,7 +28,7 @@ import {MatchState} from './MatchMaking/Lobby/state/match.state';
 export class SocketApp extends Socket {
 
   constructor() {
-    super({url: 'http://localhost:3300', options: {}});
+    super({url: environment.matchmakingBackend, options: {}});
   }
 }
 

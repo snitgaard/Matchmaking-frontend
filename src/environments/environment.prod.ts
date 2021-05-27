@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  matchmakingBackend: 'http://matchmakingapp.herokuapp.com/',
 };
