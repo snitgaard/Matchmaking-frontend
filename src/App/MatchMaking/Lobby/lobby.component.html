@@ -17,9 +17,6 @@
       </mat-card-content>
     </mat-card>
   </div>
-  <div *ngIf="match.hasEnded == true">
-    <h1> Hej :) </h1>
-  </div>
   <div class="center" *ngIf="loggedInUser$ | async as user">
     <div *ngIf="match?.matchResults?.length == 2 && user.id == match?.matchResults[0]?.user.id">
       <h1 class="text-color">
