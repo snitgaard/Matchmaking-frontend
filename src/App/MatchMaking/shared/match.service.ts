@@ -15,7 +15,6 @@ export class MatchService {
   constructor(private socketApp: SocketApp) {
   }
 
-  // New Stuff
   joinLobby(user: UserModel) {
     this.socketApp.emit('joinLobby', user);
   }

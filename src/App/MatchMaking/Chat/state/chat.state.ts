@@ -43,7 +43,6 @@ export class ChatState {
 
   @Action(NewMessage)
   newMessage(ctx: StateContext<ChatStateModel>) {
-    console.log('init');
     this.unsubscribeNewMessage = this.chatService.listenForNewMessage().subscribe(message => {
       const state = ctx.getState();
       const newMessages = [...state.Messages];

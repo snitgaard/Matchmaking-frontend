@@ -70,11 +70,11 @@ export class ChatComponent implements OnInit, OnDestroy {
 
   sendMessage(): void {
     const loggedInUser = {...this.store.selectSnapshot(LoginState.loggedInUser)};
-    const dtoTest: ChatDto = {
+    const chatDTO: ChatDto = {
       message: this.messageFc.value,
       userId: loggedInUser.id
     };
-    this.store.dispatch(new SendMessage(dtoTest));
+    this.store.dispatch(new SendMessage(chatDTO));
     this.messageFc.patchValue('');
   }
 }

@@ -43,7 +43,6 @@ export class UserState {
     return state.sortedUsers;
   }
 
-
   @Selector()
   static userIds(state: UserStateModel): string[] {
     return state.Users.map(c => c.id);
